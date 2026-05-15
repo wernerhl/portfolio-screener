@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Screener</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>◎</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#07070a;--c1:rgba(255,255,255,0.02);--bd:rgba(255,255,255,0.04);
+--t1:#a3a3a3;--t2:#737373;--t3:#525252;--t4:#333;--t5:#1a1a1a;
+--g:#4ade80;--y:#facc15;--r:#f87171;--b:#60a5fa;--p:#a78bfa;
+--m:'IBM Plex Mono','SF Mono',monospace;--s:'Inter',-apple-system,sans-serif}
+body{background:var(--bg);color:#d4d4d4;font-family:var(--s);min-height:100vh}
+.w{max-width:900px;margin:0 auto;padding:24px 16px 48px}
+a{color:var(--b);text-decoration:none}
+button{cursor:pointer;font-family:var(--m)}
+
+/* Header */
+.hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.hd h1{font:700 14px var(--m);color:var(--t1);letter-spacing:.06em}
+.hd-dot{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(74,222,128,.5);display:inline-block;margin-right:8px}
+.hd-sub{font:400 10px var(--m);color:var(--t4);margin-top:3px}
+.hd-r{font:400 9px var(--m);color:var(--t5);text-align:right}
+
+/* Summary cards row */
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.sum-card{background:var(--c1);border:1px solid var(--bd);border-radius:6px;padding:12px 14px}
+.sum-label{font:600 8px var(--m);color:var(--t3);letter-spacing:.2em;margin-bottom:4px}
+.sum-val{font:800 20px var(--m);color:#d4d4d4;letter-spacing:-.03em}
+.sum-val small{font-size:11px;color:var(--t3);font-weight:500}
+.sum-sub{font:400 9px var(--m);color:var(--t4);margin-top:2px}
+
+/* Tabs */
+.tabs{display:flex;gap:3px;margin-bottom:14px;border-bottom:1px solid var(--bd);padding-bottom:10px}
+.tab{background:0;border:1px solid transparent;color:var(--t3);border-radius:4px;padding:5px 12px;font:600 10px var(--m);letter-spacing:.03em;transition:all .1s}
+.tab:hover{color:var(--t2)}
+.tab.on{background:rgba(255,255,255,.05);color:var(--t1);border-color:rgba(255,255,255,.08)}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--m)}
+th{font:600 8.5px var(--m);color:var(--t3);letter-spacing:.12em;text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--t2)}
+th.sort-asc::after{content:' ▲';color:var(--b)}
+th.sort-desc::after{content:' ▼';color:var(--b)}
+td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.02);white-space:nowrap}
+tr:hover td{background:rgba(255,255,255,.02)}
+.tk{font-weight:700;color:#e5e5e5}
+.nm{color:var(--t2);font-weight:400;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.sc{font-weight:700;font-size:13px}
+.pos{color:var(--g)}.neg{color:var(--r)}.neut{color:var(--t2)}
+.badge{display:inline-block;font:700 7.5px var(--m);letter-spacing:.1em;padding:2px 6px;border-radius:3px}
+.badge-growth{color:var(--p);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)}
+.badge-compounder{color:var(--b);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2)}
+.badge-core{color:var(--t2);background:rgba(115,115,115,.1);border:1px solid rgba(115,115,115,.2)}
+.badge-cyclical{color:var(--y);background:rgba(202,138,4,.1);border:1px solid rgba(202,138,4,.2)}
+.badge-speculative{color:var(--r);background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2)}
+.badge-catalyst{color:#fb923c;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2)}
+
+/* Score bar inline */
+.sbar{display:flex;height:3px;width:60px;border-radius:2px;overflow:hidden;gap:1px;margin-top:2px}
+.sbar div{border-radius:1px}
+
+/* Section */
+.sec{margin-bottom:20px}
+.sec-title{font:700 9px var(--m);color:var(--t3);letter-spacing:.15em;margin-bottom:8px;padding-left:2px}
+
+/* Footer */
+.ft{margin-top:24px;padding:12px;background:var(--c1);border:1px solid var(--bd);border-radius:6px;font:400 9px var(--m);color:var(--t5);line-height:1.8}
+.ft .k{color:var(--t4);font-weight:700;letter-spacing:.1em}
+
+/* Loading */
+.ld{text-align:center;padding:60px;font:500 12px var(--m);color:var(--t3)}
+
+@media(max-width:640px){
+  .sum{grid-template-columns:repeat(2,1fr)}
+  .tbl-wrap{font-size:10px}
+}
+</style>
+</head>
+<body>
+<div class="w" id="app"><div class="ld">Loading screener data...</div></div>
+<script>
+let S={tab:'watchlist',sort:null,sortDir:1,data:null};
+
+const badgeCls=c=>({Growth:'badge-growth',Compounder:'badge-compounder',Core:'badge-core',Cyclical:'badge-cyclical',Speculative:'badge-speculative',Catalyst:'badge-catalyst'}[c]||'badge-core');
+const fmt=n=>typeof n==='number'?n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}):'—';
+const fmtD=n=>typeof n==='number'?n.toFixed(2):'—';
+const fmtP=n=>typeof n==='number'?(n>=0?'+':'')+n.toFixed(1)+'%':'—';
+const pnl=n=>n>=0?'pos':n<0?'neg':'neut';
+
+function scoreColor(s){return s>=55?'var(--g)':s>=45?'var(--y)':s>=35?'var(--t2)':'var(--r)'}
+
+function sortBy(data,key,dir){
+  return[...data].sort((a,b)=>{
+    let va=a[key],vb=b[key];
+    if(typeof va==='string')return dir*va.localeCompare(vb);
+    if(va==null)return 1;if(vb==null)return-1;
+    return dir*(va-vb);
+  });
+}
+
+function renderPortfolioTable(holdings){
+  if(!holdings||!holdings.length)return'<p style="color:var(--t4)">No holdings data</p>';
+  let rows=S.sort?sortBy(holdings,S.sort,S.sortDir):holdings;
+  const cls=(k)=>S.sort===k?(S.sortDir>0?'sort-asc':'sort-desc'):'';
+  return`<div class="tbl-wrap"><table>
+    <tr><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('shares')}" data-k="shares">SHARES</th><th class="${cls('cost')}" data-k="cost">COST</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('market_value')}" data-k="market_value">VALUE</th><th class="${cls('gain_pct')}" data-k="gain_pct">GAIN</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
+    ${rows.map(r=>`<tr>
+      <td class="tk">${r.ticker}</td>
+      <td class="nm">${r.name}</td>
+      <td>${r.shares}</td>
+      <td>$${fmtD(r.cost)}</td>
+      <td>$${fmtD(r.current_price)}</td>
+      <td>$${fmt(r.market_value)}</td>
+      <td class="${pnl(r.gain_pct)}">${fmtP(r.gain_pct)}</td>
+      <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>
+      <td><div class="sbar"><div style="flex:${r.fundamental};background:var(--b)"></div><div style="flex:${r.technical};background:var(--p)"></div><div style="flex:${r.visibility};background:var(--g)"></div></div><span style="font:400 8px var(--m);color:var(--t4)">F${r.fundamental} T${r.technical} V${r.visibility}</span></td>
+      <td><span class="badge ${badgeCls(r.category)}">${r.category.toUpperCase()}</span></td>
+    </tr>`).join('')}</table></div>`;
+}
+
+function renderWatchlistTable(watchlist){
+  if(!watchlist||!watchlist.length)return'<p style="color:var(--t4)">No watchlist data</p>';
+  let rows=S.sort?sortBy(watchlist,S.sort,S.sortDir):watchlist;
+  const cls=(k)=>S.sort===k?(S.sortDir>0?'sort-asc':'sort-desc'):'';
+  return`<div class="tbl-wrap"><table>
+    <tr><th class="${cls('composite')}" data-k="composite">#</th><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('sector')}" data-k="sector">SECTOR</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('corr_penalty')}" data-k="corr_penalty">CORR</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('entry_level')}" data-k="entry_level">ENTRY</th><th>GAP</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
+    ${rows.map((r,i)=>{
+      const gap=r.entry_level&&r.current_price?((r.entry_level/r.current_price-1)*100):0;
+      const gapCls=gap<=-2?'pos':gap>=2?'neg':'neut';
+      return`<tr>
+      <td style="color:var(--t3)">${i+1}</td>
+      <td class="tk">${r.ticker}</td>
+      <td class="nm">${r.name}</td>
+      <td style="color:var(--t3);font-size:10px">${(r.sector||'').substring(0,18)}</td>
+      <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>
+      <td><div class="sbar"><div style="flex:${r.fundamental};background:var(--b)"></div><div style="flex:${r.technical};background:var(--p)"></div><div style="flex:${r.visibility};background:var(--g)"></div></div><span style="font:400 8px var(--m);color:var(--t4)">F${r.fundamental} T${r.technical} V${r.visibility}</span></td>
+      <td style="color:${r.corr_penalty<-4?'var(--r)':r.corr_penalty<0?'var(--y)':'var(--t3)'}">${r.corr_penalty||0}</td>
+      <td>$${fmtD(r.current_price)}</td>
+      <td style="color:var(--b)">$${fmtD(r.entry_level)}</td>
+      <td class="${gapCls}" style="font-size:10px">${gap.toFixed(1)}%</td>
+      <td><span class="badge ${badgeCls(r.category)}">${(r.category||'Core').toUpperCase()}</span></td>
+    </tr>`}).join('')}</table></div>`;
+}
+
+function render(){
+  const a=document.getElementById('app');
+  if(!S.data){a.innerHTML='<div class="ld">Loading...</div>';return}
+  const D=S.data;
+  const P=D.portfolio||{};
+  const W=D.watchlist||[];
+  const U=D.universe||{};
+  const up=D.updated?new Date(D.updated).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+
+  const totalGain=P.holdings?P.holdings.reduce((s,h)=>(s+(h.current_price-h.cost)*h.shares),0):0;
+  const totalGainPct=P.total_value?((P.total_equity-P.holdings.reduce((s,h)=>s+h.cost*h.shares,0))/P.total_value*100):0;
+
+  let h=`
+  <div class="hd">
+    <div><div><span class="hd-dot"></span><h1 style="display:inline">PORTFOLIO SCREENER</h1><span style="font:400 9px var(--m);color:var(--t5);margin-left:6px">v1.0</span></div>
+    <div class="hd-sub">${up} ET · ${U.total||0} tickers scored · 4-factor model</div></div>
+    <div class="hd-r">private repo<br>monthly refresh</div>
+  </div>
+
+  <div class="sum">
+    <div class="sum-card"><div class="sum-label">TOTAL VALUE</div><div class="sum-val">$${fmt(P.total_value)}</div><div class="sum-sub">${P.holdings?.length||0} positions + cash</div></div>
+    <div class="sum-card"><div class="sum-label">EQUITY</div><div class="sum-val">$${fmt(P.total_equity)}<small> ${P.equity_pct||0}%</small></div><div class="sum-sub">${P.holdings?.length||0} positions</div></div>
+    <div class="sum-card"><div class="sum-label">CASH</div><div class="sum-val">$${fmt(P.cash)}<small> ${P.cash_pct||0}%</small></div><div class="sum-sub">dry powder</div></div>
+    <div class="sum-card"><div class="sum-label">UNREAL. P&L</div><div class="sum-val ${pnl(totalGain)}">${totalGain>=0?'+':''}$${fmt(Math.abs(totalGain))}</div><div class="sum-sub">universe median: ${U.median_score||0}</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab ${S.tab==='watchlist'?'on':''}" data-t="watchlist">Watchlist (${W.length})</button>
+    <button class="tab ${S.tab==='portfolio'?'on':''}" data-t="portfolio">Portfolio (${P.holdings?.length||0})</button>
+  </div>`;
+
+  if(S.tab==='portfolio'){
+    h+=`<div class="sec"><div class="sec-title">CURRENT HOLDINGS</div>${renderPortfolioTable(P.holdings)}</div>`;
+    // Score breakdown legend
+    h+=`<div style="font:400 9px var(--m);color:var(--t4);padding:4px 8px;display:flex;gap:12px">
+      <span><span style="color:var(--b)">■</span> Fundamental</span>
+      <span><span style="color:var(--p)">■</span> Technical</span>
+      <span><span style="color:var(--g)">■</span> Visibility</span>
+      <span style="margin-left:auto">Scores: 0-25 per factor · 75 max composite</span>
+    </div>`;
+  } else {
+    h+=`<div class="sec"><div class="sec-title">TOP CANDIDATES — NOT IN PORTFOLIO</div>${renderWatchlistTable(W)}</div>`;
+    h+=`<div style="font:400 9px var(--m);color:var(--t4);padding:4px 8px;display:flex;gap:12px;flex-wrap:wrap">
+      <span><span style="color:var(--b)">■</span> Fundamental</span>
+      <span><span style="color:var(--p)">■</span> Technical</span>
+      <span><span style="color:var(--g)">■</span> Visibility</span>
+      <span>CORR = penalty for overlap with current holdings</span>
+      <span>GAP = distance from entry to current price (negative = below entry)</span>
+    </div>`;
+  }
+
+  h+=`<div class="ft">
+    <span class="k">MODEL </span>4-factor: Fundamental (FCF yield, growth, margins, ROIC) + Technical (200-DMA, RSI, rel str, support) + Visibility (backlog, contracted rev, sector) + Correlation penalty<br>
+    <span class="k">SCHEDULE </span>Monthly re-score via GitHub Actions · config.json for portfolio + overrides<br>
+    <span class="k">WORKFLOW </span>Score → Review top 30 → Apply discretionary thesis → Write entry ticket → Set limit order
+  </div>`;
+
+  a.innerHTML=h;
+
+  // Bind tabs
+  document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{S.tab=b.dataset.t;S.sort=null;render()}));
+  // Bind sort
+  document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{
+    const k=th.dataset.k;
+    if(S.sort===k)S.sortDir*=-1;else{S.sort=k;S.sortDir=-1}
+    render();
+  }));
+}
+
+async function init(){
+  try{const r=await fetch('data/scores.json?'+Date.now());if(r.ok)S.data=await r.json()}
+  catch(e){console.warn('Fetch failed:',e)}
+  if(!S.data){
+    // Try loading sample/fallback
+    try{const r=await fetch('data/scores.json');if(r.ok)S.data=await r.json()}catch(e){}
+  }
+  if(!S.data)document.getElementById('app').innerHTML='<div class="ld">No data found. Run: python scripts/score_universe.py && python scripts/build_json.py</div>';
+  else render();
+}
+init();
+</script>
+</body>
+</html>

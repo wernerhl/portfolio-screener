@@ -1,0 +1,42 @@
+{
+  "portfolio": {
+    "MSFT": {"shares": 50, "cost": 500.40, "category": "Catalyst"},
+    "AVGO": {"shares": 50, "cost": 326.75, "category": "Compounder"},
+    "GOOG": {"shares": 50, "cost": 326.81, "category": "Compounder"},
+    "NVDA": {"shares": 100, "cost": 86.68, "category": "Compounder"},
+    "TSM":  {"shares": 25, "cost": 380.00, "category": "Compounder"},
+    "ETN":  {"shares": 15, "cost": 410.00, "category": "Compounder"},
+    "VRT":  {"shares": 20, "cost": 400.00, "category": "Compounder"},
+    "CEG":  {"shares": 15, "cost": 275.00, "category": "Compounder"}
+  },
+  "cash": 58000,
+  "visibility_overrides": {
+    "GEV":  [23, "$163B backlog, 25yr service contracts"],
+    "AVGO": [22, "$73B contracted backlog through 2028"],
+    "ANET": [20, "Multi-year AI networking pipeline"],
+    "VRT":  [20, "$15B backlog, 109% YoY growth"],
+    "CEG":  [21, "Multi-decade nuclear PPAs"],
+    "LMT":  [22, "$166B defense backlog"],
+    "RTX":  [21, "$196B defense/aero backlog"],
+    "GD":   [21, "$91B defense backlog"],
+    "ORCL": [19, "RPO $130B+"],
+    "GOOG": [20, "$460B cloud backlog"],
+    "MSFT": [18, "$627B commercial RPO"],
+    "NVDA": [20, "$1T order book through 2027"],
+    "TSM":  [21, "Multi-year contracted wafer starts"],
+    "ETN":  [19, "Record electrical backlog"],
+    "POWL": [18, "Backlog at record levels"],
+    "TLN":  [19, "AWS nuclear PPA"],
+    "META": [17, "Ad revenue recurring but not contracted"]
+  },
+  "midcap_additions": [
+    "CRDO","ALAB","COHR","LITE","CIEN","FN",
+    "ONTO","ACMR","AEHR","PLAB","COHU","UCTT","KLIC",
+    "TLN","NRG","OKLO","BWXT","POWL",
+    "NBIS","DLR","EQIX",
+    "PLTR","AI","SOUN","BBAI","PATH","ESTC","MDB","CFLT","DDOG",
+    "IONQ","RGTI","QBTS",
+    "MRVL","ARM","SMCI","DELL","PSTG","WDC",
+    "GEV","VST","IREN","WULF","APLD","CIFR"
+  ]
+}

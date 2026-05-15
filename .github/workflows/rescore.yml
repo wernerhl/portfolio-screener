@@ -1,0 +1,60 @@
+name: Monthly Rescreen
+
+on:
+  schedule:
+    # First Saturday of each month at 10am ET (14:00 UTC)
+    - cron: '0 14 1-7 * 6'
+  workflow_dispatch: # Manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Run scoring model
+        run: |
+          cd scripts
+          python score_universe.py
+          python build_json.py
+
+      - name: Commit results
+        run: |
+          git config user.name "Screener Bot"
+          git config user.email "bot@screener"
+          git add data/
+          git diff --cached --quiet || git commit -m "📊 Rescore $(date -u +%Y-%m-%d)"
+          git push
+
+  deploy:
+    needs: score
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/configure-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

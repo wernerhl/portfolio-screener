@@ -31,7 +31,7 @@ except ImportError:
 
 # ── Configuration ──────────────────────────────────────────────────────
 
-OUTPUT_DIR = Path("data")
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # Current portfolio (for correlation penalty)

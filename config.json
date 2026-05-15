@@ -1,15 +1,12 @@
 {
   "portfolio": {
-    "MSFT": {"shares": 50, "cost": 500.40, "category": "Catalyst"},
-    "AVGO": {"shares": 50, "cost": 326.75, "category": "Compounder"},
-    "GOOG": {"shares": 50, "cost": 326.81, "category": "Compounder"},
-    "NVDA": {"shares": 100, "cost": 86.68, "category": "Compounder"},
-    "TSM":  {"shares": 25, "cost": 380.00, "category": "Compounder"},
-    "ETN":  {"shares": 15, "cost": 410.00, "category": "Compounder"},
-    "VRT":  {"shares": 20, "cost": 400.00, "category": "Compounder"},
-    "CEG":  {"shares": 15, "cost": 275.00, "category": "Compounder"}
+    "GOOG": {"shares": 50,       "cost": 326.81, "category": "Compounder"},
+    "AVGO": {"shares": 50,       "cost": 326.75, "category": "Compounder"},
+    "MSFT": {"shares": 50,       "cost": 500.40, "category": "Catalyst"},
+    "NVDA": {"shares": 100.0224, "cost": 86.68,  "category": "Compounder"},
+    "BMNR": {"shares": 200.0702, "cost": 39.046, "category": "Speculative"}
   },
-  "cash": 58000,
+  "cash": 87820.06,
   "visibility_overrides": {
     "GEV":  [23, "$163B backlog, 25yr service contracts"],
     "AVGO": [22, "$73B contracted backlog through 2028"],
@@ -30,6 +27,7 @@
     "META": [17, "Ad revenue recurring but not contracted"]
   },
   "midcap_additions": [
+    "BMNR",
     "CRDO","ALAB","COHR","LITE","CIEN","FN",
     "ONTO","ACMR","AEHR","PLAB","COHU","UCTT","KLIC",
     "TLN","NRG","OKLO","BWXT","POWL",

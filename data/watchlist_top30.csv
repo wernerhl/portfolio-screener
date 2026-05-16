@@ -8,9 +8,9 @@ rank,ticker,name,sector,industry,category,mcap_B,current_price,entry_level,funda
 7,GEV,GE Vernova Inc.,Industrials,Specialty Industrial Machinery,Compounder,281.9,1049.23,996.77,16.5,15.7,23,0.0,55.2,3.3,16.3,20.3,75.7,39.7,43.5,78.3,0.456,AVGO,False
 8,BMY,Bristol-Myers Squibb Company,Healthcare,Drug Manufacturers - General,Core,116.4,57.0,58.31,20.5,16.7,17,0.0,54.2,8.5,2.6,72.0,38.7,46.3,10.5,9.9,0.182,MSFT,False
 9,PG,Procter & Gamble Company (The),Consumer Defensive,Household & Personal Products,Core,329.7,141.57,145.22,18.5,18.6,17,0.0,54.1,3.9,7.4,51.0,31.1,34.3,-4.4,-12.9,0.348,NVDA,False
-10,AMGN,Amgen Inc.,Healthcare,Drug Manufacturers - General,Core,176.2,326.31,347.94,19.5,17.3,17,0.0,53.8,4.2,5.8,71.4,101.3,39.1,0.8,-11.5,0.1,GOOG,False
-11,CRM,"Salesforce, Inc.",Technology,Software - Application,Core,141.9,173.51,183.6,20.5,16.2,17,0.0,53.7,11.5,12.1,77.7,12.4,44.0,-22.3,-37.5,0.401,MSFT,False
-12,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,321.2,133.99,144.4,21.0,15.7,17,0.0,53.7,0.5,84.7,84.1,32.6,38.9,-18.0,-32.1,0.412,NVDA,False
+10,AMGN,Amgen Inc.,Healthcare,Drug Manufacturers - General,Core,176.2,326.31,345.38,19.5,17.3,17,0.0,53.8,4.2,5.8,71.4,101.3,40.7,1.5,-10.7,0.1,GOOG,False
+11,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,321.2,133.99,144.4,21.0,15.7,17,0.0,53.7,0.5,84.7,84.1,32.6,38.9,-18.0,-32.1,0.412,NVDA,False
+12,CRM,"Salesforce, Inc.",Technology,Software - Application,Core,141.9,173.51,183.6,20.5,16.2,17,0.0,53.7,11.5,12.1,77.7,12.4,44.0,-22.3,-37.5,0.401,MSFT,False
 13,V,Visa Inc.,Financial Services,Credit Services,Core,619.5,325.75,311.26,20.5,15.1,18,0.0,53.6,3.4,17.1,97.8,60.3,62.6,-1.2,-12.6,0.121,BMNR,False
 14,META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,Growth,1559.2,614.23,621.8,20.0,18.5,15,0.0,53.5,1.6,33.1,81.9,32.9,25.3,-8.7,-9.1,0.281,NVDA,False
 15,ADBE,Adobe Inc.,Technology,Software - Application,Core,100.1,247.6,247.53,23.0,13.4,17,0.0,53.4,9.3,12.0,89.4,58.8,56.9,-19.7,-35.7,0.267,MSFT,False
@@ -20,12 +20,12 @@ rank,ticker,name,sector,industry,category,mcap_B,current_price,entry_level,funda
 19,VZ,Verizon Communications Inc.,Communication Services,Telecom Services,Core,193.6,46.37,48.01,19.0,17.6,16,0.0,52.6,10.1,2.9,58.9,17.2,43.8,8.0,6.5,0.22,NVDA,False
 20,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.3,10.27,10.87,20.5,15.1,17,0.0,52.6,8.9,13.6,83.2,14.4,47.6,-21.0,-37.1,0.242,MSFT,False
 21,CL,Colgate-Palmolive Company,Consumer Defensive,Household & Personal Products,Core,70.5,88.13,85.89,19.5,15.1,18,0.0,52.6,4.7,8.4,60.1,363.6,63.4,6.2,3.3,0.381,NVDA,False
-22,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,366.4,87.02,94.45,23.0,15.5,14,0.0,52.5,7.1,16.2,49.0,48.5,35.0,-15.2,-34.6,0.194,MSFT,False
+22,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,47.1,139.68,156.23,18.5,16.0,18,0.0,52.5,1.0,43.4,38.6,42.9,25.5,-20.3,-28.3,0.436,AVGO,False
 23,SYK,Stryker Corporation,Healthcare,Medical Devices,Core,117.6,306.76,327.07,17.0,18.5,17,0.0,52.5,3.7,2.6,64.7,15.2,36.6,-14.3,-27.4,0.099,GOOG,False
-24,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,47.1,139.68,156.23,18.5,16.0,18,0.0,52.5,1.0,43.4,38.6,42.9,25.5,-20.3,-28.3,0.436,AVGO,False
+24,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,366.4,87.02,94.45,23.0,15.5,14,0.0,52.5,7.1,16.2,49.0,48.5,35.0,-15.2,-34.6,0.194,MSFT,False
 25,ETN,"Eaton Corporation, PLC",Industrials,Specialty Industrial Machinery,Core,155.1,399.44,386.35,16.5,16.9,19,0.0,52.4,1.7,16.8,37.1,20.8,44.1,10.4,3.5,0.482,AVGO,False
 26,PFE,"Pfizer, Inc.",Healthcare,Drug Manufacturers - General,Core,144.4,25.33,26.55,18.0,17.3,17,0.0,52.3,8.6,5.4,74.8,8.3,32.3,1.5,-8.4,0.117,MSFT,False
-27,MRK,"Merck & Company, Inc.",Healthcare,Drug Manufacturers - General,Core,275.1,111.38,115.68,18.0,17.0,17,0.0,52.0,5.1,4.9,76.7,18.9,54.2,11.0,11.8,0.252,MSFT,False
-28,ADP,"Automatic Data Processing, Inc",Technology,Software - Application,Core,85.7,214.48,206.08,20.0,16.0,16,0.0,52.0,5.5,7.0,48.5,71.2,66.2,-14.0,-24.5,0.218,MSFT,False
+27,ADP,"Automatic Data Processing, Inc",Technology,Software - Application,Core,85.7,214.48,206.08,20.0,16.0,16,0.0,52.0,5.5,7.0,48.5,71.2,66.2,-14.0,-24.5,0.218,MSFT,False
+28,MRK,"Merck & Company, Inc.",Healthcare,Drug Manufacturers - General,Core,275.1,111.38,115.68,18.0,17.0,17,0.0,52.0,5.1,4.9,76.7,18.9,54.2,11.0,11.8,0.252,MSFT,False
 29,RTX,RTX Corporation,Industrials,Aerospace & Defense,Compounder,230.5,171.18,190.73,14.5,16.4,21,0.0,51.9,3.1,8.7,20.2,11.6,45.9,-4.4,-10.8,0.124,AVGO,False
-30,IBM,International Business Machine,Technology,Information Technology Service,Core,206.1,219.3,238.02,19.5,16.3,16,0.0,51.8,6.3,9.5,58.4,35.8,42.6,-17.8,-37.1,0.226,GOOG,False
+30,SCHW,Charles Schwab Corporation (Th,Financial Services,Capital Markets,Core,158.1,90.88,92.6,18.5,17.3,16,0.0,51.8,12.7,15.8,97.5,19.1,51.7,-4.2,-13.7,0.26,NVDA,False

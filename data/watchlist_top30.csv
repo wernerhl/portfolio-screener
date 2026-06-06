@@ -1,31 +1,31 @@
 rank,ticker,name,sector,industry,category,mcap_B,current_price,entry_level,fundamental,technical,visibility,corr_penalty,composite,fwd_pe,rev_growth_pct,gross_margin_pct,roe_pct,rsi,ma200_dist_pct,rel_str_6m_pct,max_corr,max_corr_with,in_portfolio
-1,GEV,GE Vernova Inc.,Industrials,Specialty Industrial Machinery,Compounder,253.9,944.47,1007.84,16.5,18.0,23,0.0,57.5,3.7,16.3,20.3,75.7,31.2,24.9,41.5,0.455,AVGO,False
-2,TSM,Taiwan Semiconductor Manufactu,Technology,Semiconductors,Growth,2191.1,422.7,401.57,24.0,14.5,21,-2.0,57.5,32.8,35.1,61.9,36.2,57.4,29.9,36.2,0.628,NVDA,False
-3,AXP,American Express Company,Financial Services,Credit Services,Core,210.6,308.6,314.25,21.0,18.3,18,0.0,57.3,15.3,11.6,62.8,34.4,44.6,-8.1,-25.3,0.235,GOOG,False
-4,ANET,"Arista Networks, Inc.",Technology,Computer Hardware,Growth,194.6,154.5,152.28,21.5,15.5,20,0.0,57.0,2.2,35.1,63.5,31.5,59.7,9.6,11.3,0.484,AVGO,False
-5,V,Visa Inc.,Financial Services,Credit Services,Core,613.5,322.54,316.47,20.5,17.2,18,0.0,55.7,3.4,17.1,97.8,60.3,46.4,-1.9,-9.8,0.173,MSFT,False
-6,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,329.2,137.32,140.94,21.0,17.5,17,0.0,55.5,0.5,84.7,84.1,32.6,52.8,-14.8,-31.7,0.463,MSFT,False
-7,ICE,Intercontinental Exchange Inc.,Financial Services,Financial Data & Stock Exchang,Core,78.8,139.47,155.71,20.5,18.9,16,0.0,55.4,4.7,20.4,100.0,13.9,23.7,-13.0,-20.7,0.106,MSFT,False
-8,INTU,Intuit Inc.,Technology,Software - Application,Core,80.5,294.42,378.58,22.0,16.0,17,0.0,55.0,6.5,10.4,80.8,22.5,29.8,-45.3,-64.2,0.453,MSFT,False
-9,ADBE,Adobe Inc.,Technology,Software - Application,Core,101.2,250.45,246.12,23.0,14.8,17,0.0,54.8,9.2,12.0,89.4,58.8,51.6,-17.0,-32.7,0.427,MSFT,False
-10,VRT,"Vertiv Holdings, LLC",Industrials,Electrical Equipment & Parts,Growth,117.7,306.52,313.2,19.0,15.8,20,0.0,54.8,1.7,30.1,37.2,45.1,25.0,41.9,59.1,0.5,NVDA,False
-11,MA,Mastercard Incorporated,Financial Services,Credit Services,Core,432.2,489.01,499.69,19.0,17.8,18,0.0,54.8,3.7,15.8,100.0,232.1,46.5,-9.1,-18.4,0.19,MSFT,False
-12,CL,Colgate-Palmolive Company,Consumer Defensive,Household & Personal Products,Core,70.6,88.21,86.24,19.5,17.0,18,0.0,54.5,4.7,8.4,60.1,363.6,50.3,5.8,6.2,0.235,NVDA,False
-13,MO,"Altria Group, Inc.",Consumer Defensive,Tobacco,Core,120.8,72.34,68.97,19.0,17.5,18,0.0,54.5,7.1,5.3,87.4,,46.6,14.7,19.5,0.27,NVDA,False
-14,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.5,62.03,58.93,22.0,15.2,17,0.0,54.2,7.1,16.0,76.1,33.4,68.7,-10.3,-24.7,0.465,MSFT,False
-15,VZ,Verizon Communications Inc.,Communication Services,Telecom Services,Core,189.2,45.34,47.35,19.0,19.2,16,0.0,54.2,10.4,2.9,58.9,17.2,42.1,4.6,4.6,0.212,NVDA,False
-16,BLK,"BlackRock, Inc.",Financial Services,Asset Management,Core,162.6,996.82,1035.09,20.5,18.3,15,0.0,53.8,4.4,27.0,46.9,11.9,32.2,-6.6,-15.2,0.315,GOOG,False
-17,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.8,11.12,10.74,20.5,16.1,17,0.0,53.6,9.0,17.3,83.0,18.2,57.9,-14.6,-48.7,0.347,MSFT,False
-18,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,195.9,143.29,152.32,18.5,18.0,17,0.0,53.5,4.5,8.5,54.4,43.9,35.7,-3.8,-9.5,0.229,NVDA,False
-19,T,AT&T Inc.,Communication Services,Telecom Services,Core,157.9,22.73,25.82,18.0,19.5,16,0.0,53.5,5.6,2.9,59.4,18.4,34.5,-12.3,-17.4,0.23,MSFT,False
-20,SCHW,Charles Schwab Corporation (Th,Financial Services,Capital Markets,Core,152.8,87.88,91.21,18.5,19.0,16,0.0,53.5,12.2,15.8,97.5,19.1,40.8,-6.9,-15.7,0.234,MSFT,False
-21,CME,CME Group Inc.,Financial Services,Financial Data & Stock Exchang,Core,92.6,256.21,287.99,18.0,19.2,16,0.0,53.2,3.3,14.4,100.0,15.9,19.7,-7.5,-12.4,0.219,AVGO,False
-22,BMY,Bristol-Myers Squibb Company,Healthcare,Drug Manufacturers - General,Core,117.8,57.67,57.97,20.5,15.7,17,0.0,53.2,8.4,2.6,72.0,38.7,53.0,10.0,4.6,0.204,GOOG,False
-23,PM,Philip Morris International In,Consumer Defensive,Tobacco,Core,277.9,178.34,170.57,16.5,18.4,18,0.0,52.9,3.1,9.1,67.3,,31.5,8.8,13.3,0.098,NVDA,False
-24,TLN,Talen Energy Corporation,Utilities,Utilities - Independent Power ,Growth,16.6,363.72,354.95,19.0,14.7,19,0.0,52.7,8.3,96.7,40.1,-1.9,59.8,-2.1,-10.0,0.333,NVDA,False
-25,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,50.4,149.49,154.39,18.5,16.1,18,0.0,52.6,0.9,43.4,38.6,42.9,58.7,-13.0,-23.7,0.38,AVGO,False
-26,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,342.5,81.35,92.11,23.0,15.5,14,0.0,52.5,7.6,16.2,49.0,48.5,28.9,-18.8,-30.1,0.183,MSFT,False
-27,ISRG,"Intuitive Surgical, Inc.",Healthcare,Medical Instruments & Supplies,Core,151.0,426.57,447.73,17.5,17.9,17,0.0,52.4,1.5,23.0,66.3,17.2,52.5,-13.5,-33.8,0.187,MSFT,False
-28,ETN,"Eaton Corporation, PLC",Industrials,Specialty Industrial Machinery,Core,155.8,401.0,397.53,16.5,16.8,19,0.0,52.3,1.7,16.8,37.1,20.8,50.7,10.0,10.2,0.461,AVGO,False
-29,KO,Coca-Cola Company (The),Consumer Defensive,Beverages - Non-Alcoholic,Core,342.9,79.69,78.04,18.5,15.4,18,0.0,51.9,0.9,12.1,61.7,43.4,45.6,9.7,5.0,0.234,NVDA,False
-30,META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,Growth,1549.4,610.48,619.87,20.0,16.9,15,0.0,51.9,1.6,33.1,81.9,32.9,48.5,-7.8,-16.4,0.326,NVDA,False
+1,TSM,Taiwan Semiconductor Manufactu,Technology,Semiconductors,Growth,2153.3,415.17,394.41,24.0,16.1,21,-2.0,59.1,33.4,35.1,61.9,36.2,54.1,27.6,34.8,0.641,NVDA,False
+2,GEV,GE Vernova Inc.,Industrials,Specialty Industrial Machinery,Compounder,250.9,933.61,1007.62,16.5,18.1,23,0.0,57.6,3.7,16.3,20.3,75.7,30.0,23.5,40.9,0.462,AVGO,False
+3,AXP,American Express Company,Financial Services,Credit Services,Core,212.0,310.66,314.3,21.0,17.2,18,0.0,56.2,15.4,11.6,62.8,34.4,46.8,-7.5,-23.5,0.23,GOOG,False
+4,V,Visa Inc.,Financial Services,Credit Services,Core,615.3,323.57,316.49,20.5,17.3,18,0.0,55.8,3.4,17.1,97.8,60.3,47.6,-1.6,-8.3,0.166,MSFT,False
+5,INTU,Intuit Inc.,Technology,Software - Application,Core,81.2,296.76,378.62,22.0,16.5,17,0.0,55.5,6.4,10.4,80.8,22.5,30.0,-44.9,-62.7,0.453,MSFT,False
+6,ICE,Intercontinental Exchange Inc.,Financial Services,Financial Data & Stock Exchang,Core,80.0,141.5,155.75,20.5,18.7,16,0.0,55.2,4.7,20.4,100.0,13.9,25.6,-11.7,-18.2,0.107,MSFT,False
+7,ANET,"Arista Networks, Inc.",Technology,Computer Hardware,Growth,194.3,154.27,152.28,21.5,15.6,20,-2.0,55.1,2.2,35.1,63.5,31.5,59.5,9.5,12.3,0.504,AVGO,False
+8,ADBE,Adobe Inc.,Technology,Software - Application,Core,101.6,251.44,246.14,23.0,14.8,17,0.0,54.8,9.2,12.0,89.4,58.8,52.1,-16.6,-31.2,0.431,MSFT,False
+9,CL,Colgate-Palmolive Company,Consumer Defensive,Household & Personal Products,Core,70.9,88.58,86.25,19.5,17.2,18,0.0,54.7,4.7,8.4,60.1,363.6,51.4,6.2,7.9,0.262,NVDA,False
+10,MA,Mastercard Incorporated,Financial Services,Credit Services,Core,433.9,491.08,499.73,19.0,17.7,18,0.0,54.7,3.7,15.8,100.0,232.1,47.9,-8.7,-16.8,0.178,MSFT,False
+11,MO,"Altria Group, Inc.",Consumer Defensive,Tobacco,Core,120.5,72.19,68.96,19.0,17.6,18,0.0,54.6,7.1,5.3,87.4,,45.9,14.4,20.4,0.281,NVDA,False
+12,VZ,Verizon Communications Inc.,Communication Services,Telecom Services,Core,189.4,45.37,47.35,19.0,19.3,16,0.0,54.3,10.4,2.9,58.9,17.2,42.3,4.6,5.9,0.218,NVDA,False
+13,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.5,61.79,58.7,22.0,15.2,17,0.0,54.2,7.1,16.0,76.1,33.4,68.2,-10.7,-23.9,0.471,MSFT,False
+14,BLK,"BlackRock, Inc.",Financial Services,Asset Management,Core,162.1,995.6,1029.38,20.5,18.5,15,0.0,54.0,4.4,27.0,46.9,11.9,32.8,-6.2,-13.6,0.317,GOOG,False
+15,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.8,11.24,10.75,20.5,16.1,17,0.0,53.6,8.8,17.3,83.0,18.2,59.2,-13.7,-46.9,0.351,MSFT,False
+16,T,AT&T Inc.,Communication Services,Telecom Services,Core,158.1,22.75,25.82,18.0,19.6,16,0.0,53.6,5.6,2.9,59.4,18.4,34.7,-12.2,-16.1,0.23,MSFT,False
+17,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,194.0,141.92,150.74,18.5,18.1,17,0.0,53.6,4.5,8.5,54.4,43.9,36.0,-3.7,-8.2,0.232,NVDA,False
+18,SCHW,Charles Schwab Corporation (Th,Financial Services,Capital Markets,Core,154.5,88.84,91.23,18.5,19.1,16,0.0,53.6,12.3,15.8,97.5,19.1,44.0,-5.9,-13.5,0.227,MSFT,False
+19,BMY,Bristol-Myers Squibb Company,Healthcare,Drug Manufacturers - General,Core,116.9,57.27,57.96,20.5,15.9,17,0.0,53.4,8.4,2.6,72.0,38.7,51.2,9.2,5.0,0.199,GOOG,False
+20,CME,CME Group Inc.,Financial Services,Financial Data & Stock Exchang,Core,93.0,257.4,288.02,18.0,19.4,16,0.0,53.4,3.3,14.4,100.0,15.9,21.0,-7.1,-10.8,0.223,AVGO,False
+21,META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,Growth,1505.3,593.0,619.52,20.0,18.2,15,0.0,53.2,1.7,33.1,81.9,32.9,42.8,-10.4,-17.9,0.344,NVDA,False
+22,KO,Coca-Cola Company (The),Consumer Defensive,Beverages - Non-Alcoholic,Core,342.0,79.48,78.04,18.5,16.6,18,0.0,53.1,0.9,12.1,61.7,43.4,44.6,9.4,5.9,0.264,NVDA,False
+23,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,324.9,135.53,140.9,21.0,15.0,17,0.0,53.0,0.5,84.7,84.1,32.6,51.3,-15.9,-31.5,0.469,MSFT,False
+24,PM,Philip Morris International In,Consumer Defensive,Tobacco,Core,277.9,178.29,170.57,16.5,18.5,18,0.0,53.0,3.1,9.1,67.3,,31.4,8.7,14.5,0.109,NVDA,False
+25,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,346.0,82.18,92.12,23.0,16.0,14,0.0,53.0,7.5,16.2,49.0,48.5,32.5,-18.0,-28.1,0.179,MSFT,False
+26,VRT,"Vertiv Holdings, LLC",Industrials,Electrical Equipment & Parts,Growth,115.4,300.51,313.08,19.0,15.9,20,-2.0,52.9,1.7,30.1,37.2,45.1,23.8,39.2,57.0,0.511,NVDA,False
+27,TLN,Talen Energy Corporation,Utilities,Utilities - Independent Power ,Growth,16.7,364.74,354.97,19.0,14.8,19,0.0,52.8,8.3,96.7,40.1,-1.9,60.2,-1.9,-8.5,0.342,AVGO,False
+28,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,50.2,148.76,154.38,18.5,16.1,18,0.0,52.6,1.0,43.4,38.6,42.9,57.9,-13.4,-23.0,0.391,AVGO,False
+29,ISRG,"Intuitive Surgical, Inc.",Healthcare,Medical Instruments & Supplies,Core,149.5,422.06,447.64,17.5,18.0,17,0.0,52.5,1.5,23.0,66.3,17.2,50.4,-14.5,-33.5,0.183,MSFT,False
+30,ETN,"Eaton Corporation, PLC",Industrials,Specialty Industrial Machinery,Core,153.7,395.94,397.43,16.5,17.0,19,0.0,52.5,1.7,16.8,37.1,20.8,48.5,8.6,9.8,0.486,AVGO,False

@@ -1,5 +1,5 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-06-06 15:04
+PORTFOLIO SCORING MODEL — 2026-06-07 15:17
 ======================================================================
 
 Universe: 148 scored tickers
@@ -25,17 +25,17 @@ Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry
 12    VZ      Verizon Communications Inc.   54.3  19.0  19.3  16.0   0.0     47.35 Core        
 13    ESTC    Elastic N.V.                54.2  22.0  15.2  17.0   0.0     58.70 Speculative 
 14    BLK     BlackRock, Inc.             54.0  20.5  18.5  15.0   0.0   1029.38 Core        
-15    PATH    UiPath, Inc.                53.6  20.5  16.1  17.0   0.0     10.75 Speculative 
+15    PEP     Pepsico, Inc.               53.6  18.5  18.1  17.0   0.0    150.74 Core        
 16    T       AT&T Inc.                   53.6  18.0  19.6  16.0   0.0     25.82 Core        
-17    PEP     Pepsico, Inc.               53.6  18.5  18.1  17.0   0.0    150.74 Core        
-18    SCHW    Charles Schwab Corporation (Th   53.6  18.5  19.1  16.0   0.0     91.23 Core        
+17    SCHW    Charles Schwab Corporation (Th   53.6  18.5  19.1  16.0   0.0     91.23 Core        
+18    PATH    UiPath, Inc.                53.6  20.5  16.1  17.0   0.0     10.75 Speculative 
 19    BMY     Bristol-Myers Squibb Company   53.4  20.5  15.9  17.0   0.0     57.96 Core        
 20    CME     CME Group Inc.              53.4  18.0  19.4  16.0   0.0    288.02 Core        
 21    META    Meta Platforms, Inc.        53.2  20.0  18.2  15.0   0.0    619.52 Growth      
 22    KO      Coca-Cola Company (The)     53.1  18.5  16.6  18.0   0.0     78.04 Core        
-23    PLTR    Palantir Technologies Inc.   53.0  21.0  15.0  17.0   0.0    140.90 Growth      
-24    PM      Philip Morris International In   53.0  16.5  18.5  18.0   0.0    170.57 Core        
-25    NFLX    Netflix, Inc.               53.0  23.0  16.0  14.0   0.0     92.12 Core        
+23    NFLX    Netflix, Inc.               53.0  23.0  16.0  14.0   0.0     92.12 Core        
+24    PLTR    Palantir Technologies Inc.   53.0  21.0  15.0  17.0   0.0    140.90 Growth      
+25    PM      Philip Morris International In   53.0  16.5  18.5  18.0   0.0    170.57 Core        
 26    VRT     Vertiv Holdings, LLC        52.9  19.0  15.9  20.0  -2.0    313.08 Growth      
 27    TLN     Talen Energy Corporation    52.8  19.0  14.8  19.0   0.0    354.97 Growth      
 28    VST     Vistra Corp.                52.6  18.5  16.1  18.0   0.0    154.38 Growth      

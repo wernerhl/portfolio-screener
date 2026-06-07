@@ -11,19 +11,19 @@ rank,ticker,name,sector,industry,category,mcap_B,current_price,entry_level,funda
 10,MA,Mastercard Incorporated,Financial Services,Credit Services,Core,433.9,491.08,499.73,19.0,17.7,18,0.0,54.7,3.7,15.8,100.0,232.1,47.9,-8.7,-16.8,0.178,MSFT,False
 11,MO,"Altria Group, Inc.",Consumer Defensive,Tobacco,Core,120.5,72.19,68.96,19.0,17.6,18,0.0,54.6,7.1,5.3,87.4,,45.9,14.4,20.4,0.281,NVDA,False
 12,VZ,Verizon Communications Inc.,Communication Services,Telecom Services,Core,189.4,45.37,47.35,19.0,19.3,16,0.0,54.3,10.4,2.9,58.9,17.2,42.3,4.6,5.9,0.218,NVDA,False
-13,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.5,61.79,58.7,22.0,15.2,17,0.0,54.2,7.1,16.0,76.1,33.4,68.2,-10.7,-23.9,0.471,MSFT,False
+13,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.4,61.79,58.7,22.0,15.2,17,0.0,54.2,7.2,16.0,76.1,33.4,68.2,-10.7,-23.9,0.471,MSFT,False
 14,BLK,"BlackRock, Inc.",Financial Services,Asset Management,Core,162.1,995.6,1029.38,20.5,18.5,15,0.0,54.0,4.4,27.0,46.9,11.9,32.8,-6.2,-13.6,0.317,GOOG,False
-15,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.8,11.24,10.75,20.5,16.1,17,0.0,53.6,8.8,17.3,83.0,18.2,59.2,-13.7,-46.9,0.351,MSFT,False
+15,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,194.0,141.92,150.74,18.5,18.1,17,0.0,53.6,4.5,8.5,54.4,43.9,36.0,-3.7,-8.2,0.232,NVDA,False
 16,T,AT&T Inc.,Communication Services,Telecom Services,Core,158.1,22.75,25.82,18.0,19.6,16,0.0,53.6,5.6,2.9,59.4,18.4,34.7,-12.2,-16.1,0.23,MSFT,False
-17,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,194.0,141.92,150.74,18.5,18.1,17,0.0,53.6,4.5,8.5,54.4,43.9,36.0,-3.7,-8.2,0.232,NVDA,False
-18,SCHW,Charles Schwab Corporation (Th,Financial Services,Capital Markets,Core,154.5,88.84,91.23,18.5,19.1,16,0.0,53.6,12.3,15.8,97.5,19.1,44.0,-5.9,-13.5,0.227,MSFT,False
+17,SCHW,Charles Schwab Corporation (Th,Financial Services,Capital Markets,Core,154.5,88.84,91.23,18.5,19.1,16,0.0,53.6,12.3,15.8,97.5,19.1,44.0,-5.9,-13.5,0.227,MSFT,False
+18,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.8,11.24,10.75,20.5,16.1,17,0.0,53.6,8.8,17.3,83.0,18.2,59.2,-13.7,-46.9,0.351,MSFT,False
 19,BMY,Bristol-Myers Squibb Company,Healthcare,Drug Manufacturers - General,Core,116.9,57.27,57.96,20.5,15.9,17,0.0,53.4,8.4,2.6,72.0,38.7,51.2,9.2,5.0,0.199,GOOG,False
 20,CME,CME Group Inc.,Financial Services,Financial Data & Stock Exchang,Core,93.0,257.4,288.02,18.0,19.4,16,0.0,53.4,3.3,14.4,100.0,15.9,21.0,-7.1,-10.8,0.223,AVGO,False
 21,META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,Growth,1505.3,593.0,619.52,20.0,18.2,15,0.0,53.2,1.7,33.1,81.9,32.9,42.8,-10.4,-17.9,0.344,NVDA,False
 22,KO,Coca-Cola Company (The),Consumer Defensive,Beverages - Non-Alcoholic,Core,342.0,79.48,78.04,18.5,16.6,18,0.0,53.1,0.9,12.1,61.7,43.4,44.6,9.4,5.9,0.264,NVDA,False
-23,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,324.9,135.53,140.9,21.0,15.0,17,0.0,53.0,0.5,84.7,84.1,32.6,51.3,-15.9,-31.5,0.469,MSFT,False
-24,PM,Philip Morris International In,Consumer Defensive,Tobacco,Core,277.9,178.29,170.57,16.5,18.5,18,0.0,53.0,3.1,9.1,67.3,,31.4,8.7,14.5,0.109,NVDA,False
-25,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,346.0,82.18,92.12,23.0,16.0,14,0.0,53.0,7.5,16.2,49.0,48.5,32.5,-18.0,-28.1,0.179,MSFT,False
+23,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,346.0,82.18,92.12,23.0,16.0,14,0.0,53.0,7.5,16.2,49.0,48.5,32.5,-18.0,-28.1,0.179,MSFT,False
+24,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,324.9,135.53,140.9,21.0,15.0,17,0.0,53.0,0.5,84.7,84.1,32.6,51.3,-15.9,-31.5,0.469,MSFT,False
+25,PM,Philip Morris International In,Consumer Defensive,Tobacco,Core,277.9,178.29,170.57,16.5,18.5,18,0.0,53.0,3.1,9.1,67.3,,31.4,8.7,14.5,0.109,NVDA,False
 26,VRT,"Vertiv Holdings, LLC",Industrials,Electrical Equipment & Parts,Growth,115.4,300.51,313.08,19.0,15.9,20,-2.0,52.9,1.7,30.1,37.2,45.1,23.8,39.2,57.0,0.511,NVDA,False
 27,TLN,Talen Energy Corporation,Utilities,Utilities - Independent Power ,Growth,16.7,364.74,354.97,19.0,14.8,19,0.0,52.8,8.3,96.7,40.1,-1.9,60.2,-1.9,-8.5,0.342,AVGO,False
 28,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,50.2,148.76,154.38,18.5,16.1,18,0.0,52.6,1.0,43.4,38.6,42.9,57.9,-13.4,-23.0,0.391,AVGO,False

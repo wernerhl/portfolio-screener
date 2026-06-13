@@ -1,71 +1,71 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-06-07 15:17
+PORTFOLIO SCORING MODEL — 2026-06-13 15:24
 ======================================================================
 
 Universe: 148 scored tickers
-Score range: 31.2 — 59.1
-Median: 47.2
+Score range: 32.4 — 57.6
+Median: 47.8
 
 ──────────────────────────────────────────────────────────────────────
 TOP 30 CANDIDATES (excluding current portfolio)
 ──────────────────────────────────────────────────────────────────────
 Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry Cat         
 ──────────────────────────────────────────────────────────────────────
-1     TSM     Taiwan Semiconductor Manufactu   59.1  24.0  16.1  21.0  -2.0    394.41 Growth      
-2     GEV     GE Vernova Inc.             57.6  16.5  18.1  23.0   0.0   1007.62 Compounder  
-3     AXP     American Express Company    56.2  21.0  17.2  18.0   0.0    314.30 Core        
-4     V       Visa Inc.                   55.8  20.5  17.3  18.0   0.0    316.49 Core        
-5     INTU    Intuit Inc.                 55.5  22.0  16.5  17.0   0.0    378.62 Core        
-6     ICE     Intercontinental Exchange Inc.   55.2  20.5  18.7  16.0   0.0    155.75 Core        
-7     ANET    Arista Networks, Inc.       55.1  21.5  15.6  20.0  -2.0    152.28 Growth      
-8     ADBE    Adobe Inc.                  54.8  23.0  14.8  17.0   0.0    246.14 Core        
-9     CL      Colgate-Palmolive Company   54.7  19.5  17.2  18.0   0.0     86.25 Core        
-10    MA      Mastercard Incorporated     54.7  19.0  17.7  18.0   0.0    499.73 Core        
-11    MO      Altria Group, Inc.          54.6  19.0  17.6  18.0   0.0     68.96 Core        
-12    VZ      Verizon Communications Inc.   54.3  19.0  19.3  16.0   0.0     47.35 Core        
-13    ESTC    Elastic N.V.                54.2  22.0  15.2  17.0   0.0     58.70 Speculative 
-14    BLK     BlackRock, Inc.             54.0  20.5  18.5  15.0   0.0   1029.38 Core        
-15    PEP     Pepsico, Inc.               53.6  18.5  18.1  17.0   0.0    150.74 Core        
-16    T       AT&T Inc.                   53.6  18.0  19.6  16.0   0.0     25.82 Core        
-17    SCHW    Charles Schwab Corporation (Th   53.6  18.5  19.1  16.0   0.0     91.23 Core        
-18    PATH    UiPath, Inc.                53.6  20.5  16.1  17.0   0.0     10.75 Speculative 
-19    BMY     Bristol-Myers Squibb Company   53.4  20.5  15.9  17.0   0.0     57.96 Core        
-20    CME     CME Group Inc.              53.4  18.0  19.4  16.0   0.0    288.02 Core        
-21    META    Meta Platforms, Inc.        53.2  20.0  18.2  15.0   0.0    619.52 Growth      
-22    KO      Coca-Cola Company (The)     53.1  18.5  16.6  18.0   0.0     78.04 Core        
-23    NFLX    Netflix, Inc.               53.0  23.0  16.0  14.0   0.0     92.12 Core        
-24    PLTR    Palantir Technologies Inc.   53.0  21.0  15.0  17.0   0.0    140.90 Growth      
-25    PM      Philip Morris International In   53.0  16.5  18.5  18.0   0.0    170.57 Core        
-26    VRT     Vertiv Holdings, LLC        52.9  19.0  15.9  20.0  -2.0    313.08 Growth      
-27    TLN     Talen Energy Corporation    52.8  19.0  14.8  19.0   0.0    354.97 Growth      
-28    VST     Vistra Corp.                52.6  18.5  16.1  18.0   0.0    154.38 Growth      
-29    ISRG    Intuitive Surgical, Inc.    52.5  17.5  18.0  17.0   0.0    447.64 Core        
-30    ETN     Eaton Corporation, PLC      52.5  16.5  17.0  19.0   0.0    397.43 Core        
+1     GEV     GE Vernova Inc.             57.6  16.5  18.1  23.0   0.0   1012.77 Compounder  
+2     TSM     Taiwan Semiconductor Manufactu   57.5  24.0  14.5  21.0  -2.0    402.73 Growth      
+3     ADBE    Adobe Inc.                  56.5  23.0  16.5  17.0   0.0    244.89 Core        
+4     MA      Mastercard Incorporated     55.8  19.0  18.8  18.0   0.0    499.34 Core        
+5     V       Visa Inc.                   55.7  20.5  17.2  18.0   0.0    318.71 Core        
+6     MO      Altria Group, Inc.          55.5  19.0  18.5  18.0   0.0     69.56 Core        
+7     INTU    Intuit Inc.                 55.5  22.0  16.5  17.0   0.0    364.77 Core        
+8     ICE     Intercontinental Exchange Inc.   55.3  20.5  18.8  16.0   0.0    154.14 Core        
+9     VST     Vistra Corp.                55.2  18.5  18.7  18.0   0.0    153.71 Growth      
+10    CL      Colgate-Palmolive Company   54.8  19.5  17.3  18.0   0.0     86.66 Core        
+11    BMY     Bristol-Myers Squibb Company   54.6  20.5  17.1  17.0   0.0     57.65 Core        
+12    PLTR    Palantir Technologies Inc.   54.5  21.0  16.5  17.0   0.0    139.64 Growth      
+13    TLN     Talen Energy Corporation    54.4  19.0  16.4  19.0   0.0    358.12 Growth      
+14    ESTC    Elastic N.V.                54.3  22.0  15.3  17.0   0.0     57.33 Speculative 
+15    T       AT&T Inc.                   53.9  18.0  19.9  16.0   0.0     25.26 Core        
+16    META    Meta Platforms, Inc.        53.7  20.0  18.7  15.0   0.0    621.83 Growth      
+17    ANET    Arista Networks, Inc.       53.4  21.5  13.9  20.0  -2.0    155.73 Growth      
+18    VRT     Vertiv Holdings, LLC        53.4  19.0  16.4  20.0  -2.0    317.56 Growth      
+19    AXP     American Express Company    53.4  21.0  14.4  18.0   0.0    316.29 Core        
+20    PEP     Pepsico, Inc.               53.3  18.5  17.8  17.0   0.0    149.80 Core        
+21    CME     CME Group Inc.              53.2  18.0  19.2  16.0   0.0    283.10 Core        
+22    SPGI    S&P Global Inc.             53.1  19.5  17.6  16.0   0.0    424.07 Core        
+23    ORCL    Oracle Corporation          53.1  16.5  17.6  19.0   0.0    184.95 Core        
+24    BLK     BlackRock, Inc.             52.9  20.5  17.4  15.0   0.0   1036.12 Core        
+25    ADP     Automatic Data Processing, Inc   52.8  20.0  16.8  16.0   0.0    214.90 Core        
+26    PM      Philip Morris International In   52.7  16.5  18.2  18.0   0.0    175.09 Core        
+27    KO      Coca-Cola Company (The)     52.7  18.5  16.2  18.0   0.0     78.65 Core        
+28    MRK     Merck & Company, Inc.       52.6  18.0  17.6  17.0   0.0    116.18 Core        
+29    NFLX    Netflix, Inc.               52.6  23.0  15.6  14.0   0.0     90.85 Core        
+30    BSX     Boston Scientific Corporation   52.5  19.5  16.0  17.0   0.0     56.23 Core        
 
 ──────────────────────────────────────────────────────────────────────
 CURRENT PORTFOLIO SCORES
 ──────────────────────────────────────────────────────────────────────
-  AVGO    Broadcom Inc.             Score:  49.1  (F:21 T:16 V:22)
-  NVDA    NVIDIA Corporation        Score:  48.3  (F:21 T:17 V:20)
-  GOOG    Alphabet Inc.             Score:  44.8  (F:20 T:15 V:20)
-  MSFT    Microsoft Corporation     Score:  43.8  (F:19 T:17 V:18)
-  BMNR    BitMine Immersion Technologies Score:  34.6  (F:13 T:16 V:16)
+  NVDA    NVIDIA Corporation        Score:  48.5  (F:21 T:18 V:20)
+  AVGO    Broadcom Inc.             Score:  48.1  (F:21 T:15 V:22)
+  MSFT    Microsoft Corporation     Score:  45.5  (F:19 T:18 V:18)
+  GOOG    Alphabet Inc.             Score:  45.4  (F:20 T:15 V:20)
+  BMNR    BitMine Immersion Technologies Score:  35.0  (F:13 T:16 V:16)
 
 ──────────────────────────────────────────────────────────────────────
 SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Technology                     7
+  Technology                     8
   Financial Services             7
   Consumer Defensive             5
-  Communication Services         4
-  Industrials                    3
-  Healthcare                     2
+  Healthcare                     3
+  Communication Services         3
+  Industrials                    2
   Utilities                      2
 
 ──────────────────────────────────────────────────────────────────────
 CATEGORY DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Core                 20
+  Core                 21
   Growth               7
-  Speculative          2
   Compounder           1
+  Speculative          1

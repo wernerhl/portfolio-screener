@@ -1,72 +1,72 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-07-07 16:16
+PORTFOLIO SCORING MODEL — 2026-07-11 14:44
 ======================================================================
 
 Universe: 147 scored tickers
-Score range: 35.4 — 59.3
-Median: 47.2
+Score range: 35.3 — 60.4
+Median: 47.4
 
 ──────────────────────────────────────────────────────────────────────
 TOP 30 CANDIDATES (excluding current portfolio)
 ──────────────────────────────────────────────────────────────────────
 Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry Cat         
 ──────────────────────────────────────────────────────────────────────
-1     TSM     Taiwan Semiconductor Manufactu   59.3  24.0  16.3  21.0  -2.0    421.22 Growth      
-2     ESTC    Elastic N.V.                56.9  22.0  17.9  17.0   0.0     56.92 Speculative 
-3     ANET    Arista Networks, Inc.       56.7  21.5  15.2  20.0   0.0    160.39 Growth      
-4     GEV     GE Vernova Inc.             54.5  16.5  15.0  23.0   0.0   1040.11 Compounder  
-5     TLN     Talen Energy Corporation    54.3  19.0  16.3  19.0   0.0    376.33 Growth      
-6     INTU    Intuit Inc.                 54.3  22.0  15.3  17.0   0.0    328.14 Core        
-7     VST     Vistra Corp.                54.2  18.5  17.7  18.0   0.0    154.23 Growth      
-8     VZ      Verizon Communications Inc.   54.1  19.0  19.1  16.0   0.0     46.48 Core        
-9     VRT     Vertiv Holdings, LLC        54.0  19.0  17.0  20.0  -2.0    324.39 Growth      
-10    ICE     Intercontinental Exchange Inc.   53.8  20.5  17.3  16.0   0.0    144.40 Core        
-11    PG      Procter & Gamble Company (The)   53.5  18.5  18.0  17.0   0.0    146.38 Core        
-12    PEP     Pepsico, Inc.               53.4  18.5  17.9  17.0   0.0    146.10 Core        
-13    PFE     Pfizer, Inc.                53.4  18.0  18.4  17.0   0.0     25.51 Core        
-14    ETN     Eaton Corporation, PLC      53.3  16.5  17.8  19.0   0.0    406.08 Core        
-15    PATH    UiPath, Inc.                53.2  20.5  15.7  17.0   0.0     11.32 Speculative 
-16    CL      Colgate-Palmolive Company   53.2  19.5  15.7  18.0   0.0     89.93 Core        
-17    ADBE    Adobe Inc.                  53.1  23.0  13.1  17.0   0.0    233.96 Core        
-18    PLTR    Palantir Technologies Inc.   53.1  21.0  17.1  17.0  -2.0    134.06 Growth      
-19    NFLX    Netflix, Inc.               53.0  23.0  16.0  14.0   0.0     83.45 Core        
-20    BLK     BlackRock, Inc.             52.8  20.5  17.3  15.0   0.0   1033.77 Core        
-21    BSX     Boston Scientific Corporation   52.8  19.5  16.3  17.0   0.0     50.79 Core        
-22    DLR     Digital Realty Trust, Inc.   52.7  17.0  19.7  16.0   0.0    188.93 Core        
-23    CME     CME Group Inc.              52.3  18.0  18.3  16.0   0.0    266.24 Core        
-24    MU      Micron Technology, Inc.     52.3  21.0  16.3  15.0   0.0    877.77 Growth      
-26    META    Meta Platforms, Inc.        52.0  20.0  17.0  15.0   0.0    602.26 Growth      
-27    EQIX    Equinix, Inc.               51.7  16.5  19.2  16.0   0.0   1069.28 Core        
-28    WDC     Western Digital Corporation   51.6  21.0  16.6  14.0   0.0    535.84 Growth      
-29    KO      Coca-Cola Company (The)     51.5  18.5  15.0  18.0   0.0     80.10 Core        
-30    CEG     Constellation Energy Corporati   51.4  14.0  16.4  21.0   0.0    276.82 Growth      
-31    ORCL    Oracle Corporation          51.4  16.5  15.9  19.0   0.0    184.78 Core        
+1     TSM     Taiwan Semiconductor Manufactu   60.4  24.0  17.4  21.0  -2.0    423.37 Growth      
+2     VST     Vistra Corp.                56.0  18.5  19.5  18.0   0.0    153.86 Growth      
+3     TLN     Talen Energy Corporation    56.0  19.0  18.0  19.0   0.0    377.20 Growth      
+4     ESTC    Elastic N.V.                55.8  22.0  16.8  17.0   0.0     57.23 Speculative 
+5     PEP     Pepsico, Inc.               55.0  18.5  19.5  17.0   0.0    145.22 Core        
+6     PG      Procter & Gamble Company (The)   54.6  18.5  19.1  17.0   0.0    146.34 Core        
+7     VZ      Verizon Communications Inc.   54.3  19.0  19.3  16.0   0.0     45.44 Core        
+8     GEV     GE Vernova Inc.             54.2  16.5  14.7  23.0   0.0   1038.38 Compounder  
+9     ICE     Intercontinental Exchange Inc.   54.0  20.5  17.5  16.0   0.0    143.13 Core        
+10    ETN     Eaton Corporation, PLC      53.4  16.5  17.9  19.0   0.0    405.40 Core        
+11    NFLX    Netflix, Inc.               53.3  23.0  16.3  14.0   0.0     82.41 Core        
+12    PFE     Pfizer, Inc.                53.2  18.0  18.2  17.0   0.0     25.38 Core        
+13    MO      Altria Group, Inc.          53.0  19.0  16.0  18.0   0.0     70.90 Core        
+14    DLR     Digital Realty Trust, Inc.   53.0  17.0  20.0  16.0   0.0    187.91 Core        
+15    INTU    Intuit Inc.                 52.8  22.0  13.8  17.0   0.0    319.44 Core        
+16    CME     CME Group Inc.              52.4  18.0  18.4  16.0   0.0    263.71 Core        
+17    AXP     American Express Company    52.2  21.0  13.2  18.0   0.0    333.05 Core        
+18    CL      Colgate-Palmolive Company   52.2  19.5  14.7  18.0   0.0     89.52 Core        
+19    MU      Micron Technology, Inc.     52.1  21.0  16.1  15.0   0.0    930.33 Growth      
+20    VRT     Vertiv Holdings, LLC        52.1  19.0  15.1  20.0  -2.0    324.69 Growth      
+21    ANET    Arista Networks, Inc.       52.0  20.0  14.0  20.0  -2.0    177.61 Growth      
+22    BSX     Boston Scientific Corporation   51.8  19.5  15.3  17.0   0.0     49.87 Core        
+23    BLK     BlackRock, Inc.             51.8  20.5  16.3  15.0   0.0   1032.06 Core        
+24    ORCL    Oracle Corporation          51.4  16.5  15.9  19.0   0.0    182.44 Core        
+25    MA      Mastercard Incorporated     51.3  19.0  14.3  18.0   0.0    500.40 Core        
+26    PATH    UiPath, Inc.                51.3  20.5  13.8  17.0   0.0     11.10 Speculative 
+27    WDC     Western Digital Corporation   51.2  21.0  16.2  14.0   0.0    553.46 Growth      
+28    ADBE    Adobe Inc.                  51.2  23.0  11.2  17.0   0.0    232.60 Core        
+29    CEG     Constellation Energy Corporati   51.1  14.0  16.1  21.0   0.0    273.08 Growth      
+30    KO      Coca-Cola Company (The)     51.0  18.5  14.5  18.0   0.0     80.26 Core        
 
 ──────────────────────────────────────────────────────────────────────
 CURRENT PORTFOLIO SCORES
 ──────────────────────────────────────────────────────────────────────
-  AVGO    Broadcom Inc.             Score:  52.0  (F:21 T:19 V:22)
-  NVDA    NVIDIA Corporation        Score:  49.4  (F:21 T:18 V:20)
-  MSFT    Microsoft Corporation     Score:  44.4  (F:19 T:17 V:18)
-  GOOG    Alphabet Inc.             Score:  44.2  (F:20 T:14 V:20)
-  BMNR    BitMine Immersion Technologies Score:  35.4  (F:13 T:16 V:16)
+  AVGO    Broadcom Inc.             Score:  50.6  (F:21 T:18 V:22)
+  NVDA    NVIDIA Corporation        Score:  47.4  (F:21 T:16 V:20)
+  GOOG    Alphabet Inc.             Score:  45.9  (F:20 T:16 V:20)
+  MSFT    Microsoft Corporation     Score:  44.6  (F:19 T:18 V:18)
+  BMNR    BitMine Immersion Technologies Score:  35.3  (F:13 T:16 V:16)
 
 ──────────────────────────────────────────────────────────────────────
 SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Technology                     10
-  Consumer Defensive             4
-  Industrials                    3
+  Technology                     9
+  Consumer Defensive             5
+  Financial Services             5
   Utilities                      3
-  Communication Services         3
-  Financial Services             3
+  Industrials                    3
+  Communication Services         2
   Healthcare                     2
-  Real Estate                    2
+  Real Estate                    1
 
 ──────────────────────────────────────────────────────────────────────
 CATEGORY DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Core                 17
-  Growth               10
+  Core                 19
+  Growth               8
   Speculative          2
   Compounder           1

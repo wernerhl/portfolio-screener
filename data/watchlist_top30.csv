@@ -1,31 +1,31 @@
 rank,ticker,name,sector,industry,category,mcap_B,current_price,entry_level,fundamental,technical,visibility,corr_penalty,composite,fwd_pe,rev_growth_pct,gross_margin_pct,roe_pct,rsi,ma200_dist_pct,rel_str_6m_pct,max_corr,max_corr_with,in_portfolio
-1,TSM,Taiwan Semiconductor Manufactu,Technology,Semiconductors,Growth,2066.1,398.37,425.19,24.0,18.0,21,-2.0,61.0,35.8,36.0,64.2,40.0,39.9,13.7,9.8,0.635,NVDA,False
-2,GEV,GE Vernova Inc.,Industrials,Specialty Industrial Machinery,Compounder,284.3,1057.84,1036.02,16.5,16.4,23,0.0,55.9,3.3,16.3,20.3,75.7,51.4,29.6,57.5,0.477,AVGO,False
-3,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,187.3,137.12,143.48,18.5,19.6,17,0.0,55.1,4.2,6.4,54.2,51.5,44.0,-7.1,-12.0,0.276,NVDA,False
-4,VZ,Verizon Communications Inc.,Communication Services,Telecom Services,Core,182.0,43.59,45.08,19.0,19.9,16,0.0,54.9,10.8,2.9,58.9,17.2,38.5,1.3,6.9,0.246,NVDA,False
-5,ANET,"Arista Networks, Inc.",Technology,Computer Hardware,Growth,212.3,168.61,160.66,21.5,15.2,20,-2.0,54.7,2.1,35.1,63.5,31.5,56.5,16.5,21.7,0.503,AVGO,False
-6,TLN,Talen Energy Corporation,Utilities,Utilities - Independent Power ,Growth,17.8,372.37,378.56,19.0,16.6,19,0.0,54.6,7.8,96.7,40.1,-1.9,38.7,0.5,-18.5,0.413,NVDA,False
-7,VRT,"Vertiv Holdings, LLC",Industrials,Electrical Equipment & Parts,Growth,111.2,289.56,321.96,19.0,17.2,20,-2.0,54.2,1.8,30.1,37.2,45.1,45.2,20.3,60.5,0.516,NVDA,False
-8,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,290.3,68.95,80.56,23.0,16.5,14,0.0,53.5,8.9,13.4,49.1,49.5,38.0,-26.4,-29.1,0.244,MSFT,False
-9,PG,PG,Consumer Defensive,Household & Personal Products,Core,349.2,149.98,146.63,18.5,17.8,17,0.0,53.3,3.6,7.4,51.0,31.1,51.6,2.1,-2.2,0.316,AVGO,False
-10,CL,CL,Consumer Defensive,Household & Personal Products,Core,74.4,92.98,90.2,19.5,15.8,18,0.0,53.3,4.5,8.4,60.1,363.6,52.2,9.6,4.2,0.313,AVGO,False
-11,ETN,ETN,Industrials,Specialty Industrial Machinery,Core,155.3,399.99,404.02,16.5,17.5,19,0.0,53.0,1.7,16.8,37.1,20.8,49.0,7.6,13.3,0.499,AVGO,False
-12,T,AT&T Inc.,Communication Services,Telecom Services,Core,151.5,21.81,22.87,18.0,19.0,16,0.0,53.0,5.8,2.9,59.4,18.4,43.7,-11.8,-13.3,0.228,NVDA,False
-13,CRDO,Credo Technology Group Holding,Technology,Semiconductors,Growth,37.8,202.68,228.95,21.0,18.8,15,-2.0,52.8,0.7,157.0,68.0,34.4,40.7,24.5,28.5,0.544,AVGO,False
-14,KO,KO,Consumer Defensive,Beverages - Non-Alcoholic,Core,350.9,81.56,80.78,18.5,16.3,18,0.0,52.8,0.9,12.1,61.7,43.4,46.9,9.7,9.9,0.292,NVDA,False
-15,VST,Vistra Corp.,Utilities,Utilities - Independent Power ,Growth,52.4,155.44,153.81,16.5,18.2,18,0.0,52.7,-0.3,43.4,38.6,42.9,39.5,-6.2,-20.9,0.404,AVGO,False
-16,INTU,Intuit Inc.,Technology,Software - Application,Core,79.6,291.09,308.62,22.0,13.7,17,0.0,52.7,6.6,10.4,80.8,22.5,63.7,-39.5,-54.5,0.483,MSFT,False
-17,QCOM,QUALCOMM Incorporated,Technology,Semiconductors,Core,181.1,171.78,206.8,19.0,19.6,14,0.0,52.6,5.3,-3.5,54.8,36.1,34.5,2.4,0.1,0.327,AVGO,False
-18,LLY,LLY,Healthcare,Drug Manufacturers - General,Growth,1051.5,1179.11,1120.15,20.5,15.0,17,0.0,52.5,0.9,55.5,82.8,107.5,44.0,17.3,7.1,0.164,GOOG,False
-19,ALAB,"Astera Labs, Inc.",Technology,Semiconductors,Growth,52.0,303.62,338.9,20.0,17.3,15,0.0,52.3,0.5,93.4,76.0,21.1,38.8,49.5,66.7,0.483,AVGO,False
-20,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.4,61.59,58.51,22.0,13.2,17,0.0,52.2,7.2,16.0,76.2,33.4,73.3,-6.0,-22.8,0.485,MSFT,False
-21,MU,MU,Technology,Semiconductors,Growth,958.8,848.95,933.57,21.0,16.1,15,0.0,52.1,0.8,345.7,72.6,66.6,24.0,75.8,144.9,0.484,AVGO,False
-22,WDC,WDC,Technology,Computer Hardware,Growth,164.5,477.22,554.03,21.0,17.0,14,0.0,52.0,1.3,45.5,45.4,85.9,38.0,52.9,107.6,0.437,AVGO,False
-23,MO,MO,Consumer Defensive,Tobacco,Core,123.9,74.21,70.97,19.0,15.0,18,0.0,52.0,6.9,5.3,87.4,,51.6,16.9,17.0,0.33,NVDA,False
-24,IBM,International Business Machine,Technology,Information Technology Service,Core,199.9,212.67,261.6,19.5,16.4,16,0.0,51.9,6.6,9.5,58.4,35.8,30.2,-21.6,-35.1,0.294,MSFT,False
-25,DLR,"Digital Realty Trust, Inc.",Real Estate,REIT - Specialty,Core,65.4,173.88,185.71,17.0,18.9,16,0.0,51.9,5.0,16.7,55.3,5.7,26.0,0.2,2.4,0.262,AVGO,False
-26,BSX,Boston Scientific Corporation,Healthcare,Medical Devices,Core,65.4,44.03,48.57,19.5,15.4,17,0.0,51.9,4.3,11.6,68.9,14.7,49.1,-41.9,-58.5,0.094,GOOG,False
-27,SYK,Stryker Corporation,Healthcare,Medical Devices,Core,122.6,319.87,310.45,17.0,17.9,17,0.0,51.9,3.6,2.6,64.7,15.2,43.9,-6.8,-18.7,0.165,AVGO,False
-28,V,V,Financial Services,Credit Services,Core,681.9,358.56,340.63,20.5,13.3,18,0.0,51.8,3.1,17.1,97.8,60.3,66.0,9.1,2.5,0.203,MSFT,False
-29,AXP,American Express Company,Financial Services,Credit Services,Core,242.5,355.35,337.58,21.0,12.8,18,0.0,51.8,17.6,11.6,62.8,34.4,60.9,5.5,-7.4,0.248,BMNR,False
-30,EQIX,"Equinix, Inc.",Real Estate,REIT - Specialty,Core,100.6,1020.0,1060.68,16.5,19.2,16,0.0,51.7,2.7,12.1,51.6,10.1,33.2,11.8,21.1,0.158,BMNR,False
+1,TSM,Taiwan Semiconductor Manufactu,Technology,Semiconductors,Growth,2092.3,403.41,425.68,24.0,18.1,21,-2.0,61.1,35.3,36.0,64.2,40.0,27.9,14.1,13.9,0.631,NVDA,False
+2,GEV,GE Vernova Inc.,Industrials,Specialty Industrial Machinery,Compounder,270.3,1014.75,1032.86,19.0,17.8,23,0.0,59.8,5.8,21.9,20.6,82.6,33.0,22.7,47.3,0.466,AVGO,False
+3,TLN,Talen Energy Corporation,Utilities,Utilities - Independent Power ,Growth,17.2,359.9,376.53,19.0,18.2,19,0.0,56.2,8.1,96.7,40.1,-1.9,43.2,-2.5,-9.0,0.421,AVGO,False
+4,AXP,American Express Company,Financial Services,Credit Services,Core,222.6,326.17,330.55,21.0,17.1,18,0.0,56.1,16.2,16.9,61.8,34.4,31.4,-3.3,-16.5,0.253,BMNR,False
+5,ESTC,Elastic N.V.,Technology,Software - Application,Speculative,6.1,58.68,58.96,22.0,17.0,17,0.0,56.0,7.6,16.0,76.2,33.4,50.4,-9.6,-25.4,0.49,MSFT,False
+6,PEP,"Pepsico, Inc.",Consumer Defensive,Beverages - Non-Alcoholic,Core,186.7,136.64,141.83,18.5,19.8,17,0.0,55.3,4.2,6.4,54.2,51.5,36.7,-7.4,-10.8,0.267,NVDA,False
+7,VRT,"Vertiv Holdings, LLC",Industrials,Electrical Equipment & Parts,Growth,111.5,290.36,316.32,19.0,18.2,20,-2.0,55.2,1.8,30.1,37.2,45.1,36.3,18.9,52.0,0.515,NVDA,False
+8,ADBE,Adobe Inc.,Technology,Software - Application,Core,89.5,225.11,227.99,23.0,14.6,17,0.0,54.6,10.3,12.7,89.4,63.0,54.5,-19.3,-32.4,0.483,MSFT,False
+9,ANET,"Arista Networks, Inc.",Technology,Computer Hardware,Growth,219.1,173.99,165.29,20.0,16.4,20,-2.0,54.4,2.0,35.1,63.5,31.5,50.6,19.7,20.4,0.502,AVGO,False
+10,MA,Mastercard Incorporated,Financial Services,Credit Services,Core,476.8,539.66,512.68,19.0,17.1,18,0.0,54.1,3.4,15.8,100.0,232.1,54.2,2.5,-4.0,0.233,MSFT,False
+11,CL,Colgate-Palmolive Company,Consumer Defensive,Household & Personal Products,Core,72.6,90.75,90.09,19.5,16.3,18,0.0,53.8,4.6,8.4,60.1,363.6,44.6,7.2,-1.2,0.304,AVGO,False
+12,MO,"Altria Group, Inc.",Consumer Defensive,Tobacco,Core,121.9,72.99,71.45,19.0,16.6,18,0.0,53.6,7.0,5.3,87.4,,54.5,14.5,14.5,0.335,NVDA,False
+13,V,Visa Inc.,Financial Services,Credit Services,Core,676.5,355.74,337.95,20.5,15.0,18,0.0,53.5,3.1,17.1,97.8,60.3,48.6,8.1,2.3,0.209,MSFT,False
+14,PATH,"UiPath, Inc.",Technology,Software - Infrastructure,Speculative,5.6,10.84,11.08,20.5,15.8,17,0.0,53.3,9.1,17.3,83.0,18.2,37.6,-15.9,-33.9,0.382,MSFT,False
+16,NFLX,"Netflix, Inc.",Communication Services,Entertainment,Core,291.9,70.09,78.69,23.0,15.8,14,0.0,52.8,8.7,13.4,49.1,49.5,28.9,-24.3,-25.8,0.231,MSFT,False
+17,PG,Procter & Gamble Company (The),Consumer Defensive,Household & Personal Products,Core,343.3,147.41,145.83,18.5,17.3,17,0.0,52.8,3.7,7.4,51.0,31.1,48.5,1.1,-7.5,0.31,AVGO,False
+18,SPGI,S&P Global Inc.,Financial Services,Financial Data & Stock Exchang,Core,126.2,426.4,407.14,19.5,17.2,16,0.0,52.7,4.2,10.4,70.5,13.9,38.7,-1.8,-22.3,0.332,MSFT,False
+19,INTU,Intuit Inc.,Technology,Software - Application,Core,81.1,296.33,298.26,22.0,13.6,17,0.0,52.6,6.5,10.4,80.8,22.5,63.3,-37.2,-54.2,0.482,MSFT,False
+20,CRDO,Credo Technology Group Holding,Technology,Semiconductors,Growth,39.7,213.15,231.55,21.0,18.6,15,-2.0,52.6,0.6,157.0,68.0,34.4,33.5,29.4,52.9,0.544,AVGO,False
+21,QCOM,QUALCOMM Incorporated,Technology,Semiconductors,Core,176.0,166.97,202.79,19.0,19.4,14,0.0,52.4,5.4,-3.5,54.8,36.1,30.0,-0.6,1.1,0.329,AVGO,False
+22,MU,"Micron Technology, Inc.",Technology,Semiconductors,Growth,1040.1,920.95,955.28,21.0,16.3,15,0.0,52.3,0.7,345.7,72.6,66.6,44.4,83.5,123.4,0.484,AVGO,False
+23,META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,Growth,1510.8,595.19,605.83,20.0,17.2,15,0.0,52.2,1.7,33.1,81.9,32.9,48.8,-6.6,-16.7,0.339,NVDA,False
+24,KO,Coca-Cola Company (The),Consumer Defensive,Beverages - Non-Alcoholic,Core,353.9,82.25,81.13,18.5,15.7,18,0.0,52.2,0.9,12.1,61.7,43.4,47.6,10.0,7.2,0.292,AVGO,False
+25,TXN,Texas Instruments Incorporated,Technology,Semiconductors,Core,255.3,279.58,300.91,20.0,18.0,14,0.0,52.0,1.4,22.8,58.3,35.2,37.3,25.5,39.1,0.255,AVGO,False
+26,ALAB,"Astera Labs, Inc.",Technology,Semiconductors,Growth,50.0,291.58,350.04,20.0,17.0,15,0.0,52.0,0.5,93.4,76.0,21.1,23.3,41.6,64.7,0.488,AVGO,False
+27,MS,Morgan Stanley,Financial Services,Capital Markets,Core,337.2,214.48,212.65,19.5,16.4,16,0.0,51.9,15.8,28.0,87.6,,41.7,17.9,14.0,0.423,BMNR,False
+28,BSX,Boston Scientific Corporation,Healthcare,Medical Devices,Core,65.8,44.25,47.45,19.5,15.4,17,0.0,51.9,4.3,11.6,68.9,14.7,48.0,-40.5,-59.3,0.085,GOOG,False
+29,AMZN,"Amazon.com, Inc.",Consumer Cyclical,Internet Retail,Core,2496.8,232.11,249.22,17.0,17.8,17,0.0,51.8,0.4,16.6,50.6,24.3,37.3,-1.1,-10.1,0.452,GOOG,False
+30,WDC,Western Digital Corporation,Technology,Computer Hardware,Growth,179.2,519.8,558.82,21.0,16.7,14,0.0,51.7,1.2,45.5,45.4,85.9,41.9,61.3,112.9,0.441,AVGO,False
+31,PLTR,Palantir Technologies Inc.,Technology,Software - Infrastructure,Growth,294.7,122.92,131.61,21.0,15.7,17,-2.0,51.7,0.6,84.7,84.1,32.6,35.7,-20.3,-34.7,0.505,MSFT,False

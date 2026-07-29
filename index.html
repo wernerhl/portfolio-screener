@@ -165,6 +165,21 @@ function render(){
     <div class="hd-r">private repo<br>daily refresh</div>
   </div>
 
+  ${(()=>{  // [5] staleness badge + [3] correlation-coverage banner
+    let b='';
+    const sd=D.session_date;
+    if(sd){
+      // expected last completed session, weekday approximation in ET
+      const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+      const past=(now.getHours()>16)||(now.getHours()===16&&now.getMinutes()>=15);
+      let d=new Date(now); const wd=d.getDay();
+      if(!(wd>=1&&wd<=5&&past)){ do{d.setDate(d.getDate()-1);}while(d.getDay()===0||d.getDay()===6); }
+      const exp=d.toISOString().slice(0,10);
+      if(sd<exp)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ as of ${sd}; today's run did not publish${S.status?.failure_reason?' — '+S.status.failure_reason:''}</div>`;
+    }
+    if(S.status?.failure_reason&&!b)b+=`<div style="background:rgba(255,100,80,.10);border:1px solid rgba(255,100,80,.45);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--r)">✗ last run rejected: ${S.status.failure_reason}</div>`;
+    if(typeof D.corr_coverage_pct==='number'&&D.corr_coverage_pct<90)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ correlation coverage ${D.corr_coverage_pct}% — ${(D.corr_impaired||[]).length} names impaired (reasons in data)</div>`;
+    return b;})()}
   <div class="sum">
     <div class="sum-card"><div class="sum-label">TOTAL VALUE</div><div class="sum-val">$${fmt(P.total_value)}</div><div class="sum-sub">${P.holdings?.length||0} positions + cash</div></div>
     <div class="sum-card"><div class="sum-label">EQUITY</div><div class="sum-val">$${fmt(P.total_equity)}<small> ${P.equity_pct||0}%</small></div><div class="sum-sub">${P.holdings?.length||0} positions</div></div>
@@ -192,9 +207,28 @@ function render(){
       <span><span style="color:var(--b)">■</span> Fundamental</span>
       <span><span style="color:var(--p)">■</span> Technical</span>
       <span><span style="color:var(--g)">■</span> Visibility</span>
-      <span>CORR = penalty for return overlap vs your book (weight-aware) · n/a = computation failed, no penalty applied</span>
+      <span title="the watchlist ranks marginal additions to the current book; held names are scored against the rest of the book">CORR = penalty for return overlap vs your book (weight-aware, held names vs rest-of-book) · n/a = failed, no penalty, reason recorded</span>
       <span>GAP = distance from entry to current price (negative = below entry)</span>
     </div>`;
+    // [4] Drawdown-watch shelf: quality names in broken technical state.
+    const DW=D.drawdown_watch||[];
+    if(DW.length){
+      h+=`<div class="sec" style="margin-top:14px"><div class="sec-title">DRAWDOWN WATCH: QUALITY ON SALE</div>
+      <div class="tbl-wrap"><table>
+      <tr><th>#</th><th>TICKER</th><th>NAME</th><th>F</th><th>V</th><th>T (CAPPED)</th><th>BELOW BASE</th><th>RSI</th><th>CORR</th></tr>
+      ${DW.map((r,i)=>`<tr>
+        <td style="color:var(--t3)">${i+1}</td>
+        <td class="tk">${r.ticker} <span title="Broken base — price >10% below base with RSI<25 · technical score capped at 12/25" style="font:700 8px var(--m);color:var(--r);border:1px solid var(--r);border-radius:3px;padding:0 3px;vertical-align:middle">BB</span></td>
+        <td class="nm">${r.name||''}</td>
+        <td>${r.fundamental??'—'}</td><td>${r.visibility??'—'}</td>
+        <td style="color:var(--t4)">${r.technical_capped??'—'}</td>
+        <td class="neg">${r.depth_below_base_pct??'—'}%</td>
+        <td>${r.rsi??'—'}</td>
+        <td title="${r.max_corr_with?`highest overlap ${r.max_corr_with} · vs book ρ=${r.portfolio_corr??'—'}`:''}">${r.corr_penalty==null?'n/a':r.corr_penalty}</td>
+      </tr>`).join('')}</table></div>
+      <div style="font:italic 400 10px var(--s);color:var(--t3);padding:6px 8px">Technical state: broken (score capped). Ranked by business quality and visibility only. Entry timing unvalidated.</div>
+      </div>`;
+    }
   }
 
   h+=`<div class="ft">
@@ -218,6 +252,8 @@ function render(){
 async function init(){
   try{const r=await fetch('data/scores.json?'+Date.now());if(r.ok)S.data=await r.json()}
   catch(e){console.warn('Fetch failed:',e)}
+  // [5] status.json: last attempt/success + failure_reason for the badge
+  try{const r=await fetch('data/status.json?'+Date.now());if(r.ok)S.status=await r.json()}catch(e){}
   if(!S.data){
     // Try loading sample/fallback
     try{const r=await fetch('data/scores.json');if(r.ok)S.data=await r.json()}catch(e){}

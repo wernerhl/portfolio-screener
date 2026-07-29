@@ -558,12 +558,24 @@ def main():
     print("=" * 60)
     
     # 1. Build universe
+    # Load the curated 535-ticker universe (same as the portfolio-tournament
+    # dashboard) from a committed file — deterministic, and it replaces the
+    # flaky Wikipedia S&P-500 scrape that was silently falling back to a
+    # hardcoded ~100 names (the screen had been running on ~149, not 500).
     print("\n[1/5] Building universe...")
-    sp500 = get_sp500_tickers()
-    universe = list(set(sp500 + MIDCAP_ADDITIONS))
+    uni_file = Path(__file__).resolve().parent.parent / "data" / "universe_535.txt"
+    if uni_file.exists():
+        base = [t.strip() for t in uni_file.read_text().split() if t.strip()]
+        src = f"curated {len(base)} (tournament universe)"
+    else:
+        base = get_sp500_tickers()
+        src = f"S&P 500 scrape fallback ({len(base)})"
+    # Always fold in current portfolio holdings + curated mid-caps so the
+    # screen can rank names you own and your growth watchlist.
+    universe = sorted(set(base) | set(MIDCAP_ADDITIONS) | set(CURRENT_PORTFOLIO.keys()))
     # Add SPX for relative strength calculation
     universe_with_bench = list(set(universe + ['^GSPC']))
-    print(f"  Universe: {len(universe)} tickers ({len(sp500)} S&P 500 + {len(MIDCAP_ADDITIONS)} mid-caps)")
+    print(f"  Universe: {len(universe)} tickers  [{src} + {len(MIDCAP_ADDITIONS)} mid-caps + portfolio]")
     
     # 2. Fetch price data
     print("\n[2/5] Fetching price data...")

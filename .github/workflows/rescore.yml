@@ -1,9 +1,11 @@
-name: Monthly Rescreen
+name: Daily Rescreen
 
 on:
   schedule:
-    # First Saturday of each month at 10am ET (14:00 UTC)
-    - cron: '0 14 1-7 * 6'
+    # Weekdays after the close (22:00 UTC ≈ 6pm ET) — settled prices for the
+    # RSI / entry-level / momentum inputs. ~7 min fundamentals fetch for the
+    # 535-ticker universe is well within the Actions runtime budget.
+    - cron: '0 22 * * 1-5'
   workflow_dispatch: # Manual trigger
 
 permissions:
@@ -26,8 +28,11 @@ jobs:
 
       - name: Run scoring model
         run: |
+          # build_json.py calls score_universe.main() internally (writes
+          # scored_universe.csv + watchlist + report) THEN emits scores.json —
+          # so one call does everything. Running score_universe.py separately
+          # would double the ~7-min 535-ticker fundamentals fetch for no gain.
           cd scripts
-          python score_universe.py
           python build_json.py
 
       - name: Commit results

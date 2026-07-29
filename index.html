@@ -162,7 +162,7 @@ function render(){
   <div class="hd">
     <div><div><span class="hd-dot"></span><h1 style="display:inline">PORTFOLIO SCREENER</h1><span style="font:400 9px var(--m);color:var(--t5);margin-left:6px">v1.0</span></div>
     <div class="hd-sub">${up} ET · ${U.total||0} tickers scored · 4-factor model</div></div>
-    <div class="hd-r">private repo<br>monthly refresh</div>
+    <div class="hd-r">private repo<br>daily refresh</div>
   </div>
 
   <div class="sum">
@@ -199,7 +199,7 @@ function render(){
 
   h+=`<div class="ft">
     <span class="k">MODEL </span>4-factor: Fundamental (FCF yield, growth, margins, ROIC) + Technical (200-DMA, RSI, rel str, support) + Visibility (backlog, contracted rev, sector) + Correlation penalty<br>
-    <span class="k">SCHEDULE </span>Monthly re-score via GitHub Actions · config.json for portfolio + overrides<br>
+    <span class="k">SCHEDULE </span>Daily re-score (weekdays, after close) via GitHub Actions · config.json for portfolio + overrides<br>
     <span class="k">WORKFLOW </span>Score → Review top 30 → Apply discretionary thesis → Write entry ticket → Set limit order
   </div>`;
 

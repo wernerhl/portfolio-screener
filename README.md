@@ -1,6 +1,6 @@
 # Portfolio Screener
 
-Private repo. 4-factor scoring model for equity universe screening. Runs monthly, deploys to GitHub Pages.
+Private repo. 4-factor scoring model for equity universe screening. Runs daily (weekdays, after close), deploys to GitHub Pages.
 
 ## Setup
 
@@ -40,7 +40,7 @@ Edit `config.json`:
 
 **Composite = Fundamental + Technical + Visibility + Correlation Penalty** (0-75 range)
 
-## Monthly Workflow
+## Daily Workflow
 
 1. Update `config.json` with current holdings and cash
 2. Run `python scripts/score_universe.py && python scripts/build_json.py`

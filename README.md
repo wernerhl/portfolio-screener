@@ -48,3 +48,19 @@ Edit `config.json`:
 4. Write entry tickets for selected names (see Portfolio OS)
 5. Set limit orders at entry levels
 6. Push to trigger GitHub Pages deploy
+
+## Held-name semantics (correlation)
+
+The watchlist ranks **marginal additions to the current book**; held names are
+scored against the **rest of the book** (self-excluded). A held name's CORR
+penalty answers "what does adding MORE of this duplicate?" — so AVGO is scored
+against GOOG+MSFT+NVDA+BMNR, never against itself.
+
+## Run guard & publication discipline
+
+Scoring publishes only after the close (>= 16:15 ET) on trading days; manual
+runs before that land in `data/scratch/<ts>/` untouched by git. Override:
+`python scripts/build_json.py --force-publish "REASON"` (reason recorded in
+`scores.json` provenance). Tripwire rejections preserve the last good board
+and publish `data/status.json` with the failure reason — the dashboard badge
+reads it. Daily as-published vintages: `data/vintages/<session>/`.

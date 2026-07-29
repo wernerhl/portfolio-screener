@@ -27,6 +27,11 @@ jobs:
         run: pip install yfinance pandas numpy
 
       - name: Run scoring model
+        id: score
+        # [5] continue-on-error so a tripwire rejection still publishes
+        # data/status.json (the staleness badge reads it) while the last good
+        # board is preserved; the job is re-failed in the propagate step below.
+        continue-on-error: true
         run: |
           # build_json.py calls score_universe.main() internally (writes
           # scored_universe.csv + watchlist + report) THEN emits scores.json —
@@ -41,10 +46,20 @@ jobs:
           git config user.email "bot@screener"
           git add data/
           git diff --cached --quiet || git commit -m "📊 Rescore $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main || true
           git push
+
+      - name: Propagate scoring failure
+        if: steps.score.outcome == 'failure'
+        run: |
+          echo "scoring was rejected — last good board preserved, status.json published"
+          exit 1
 
   deploy:
     needs: score
+    # [5] deploy even when scoring was rejected: main then carries the
+    # preserved board + the new status.json, which raises the badge.
+    if: always()
     runs-on: ubuntu-latest
     environment:
       name: github-pages

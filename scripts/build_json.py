@@ -18,7 +18,69 @@ def load_config():
     with open(CONFIG) as f:
         return json.load(f)
 
+DATA = ROOT / "data"
+
+
+def _write_status(path, ok, reason, session_date, computed_at):
+    """[5] data/status.json — written on BOTH success and rejection; the
+    frontend staleness badge reads it. Rejection preserves last_success."""
+    prev = {}
+    try:
+        with open(path) as f:
+            prev = json.load(f)
+    except Exception:
+        pass
+    st = {
+        'last_attempt': computed_at,
+        'last_success': computed_at if ok else prev.get('last_success'),
+        'failure_reason': None if ok else str(reason),
+        'session_date': session_date,
+    }
+    with open(path, 'w') as f:
+        json.dump(st, f, indent=1)
+
+
+def _expected_session(now_et):
+    """Most recent completed NYSE session, weekday approximation (holidays
+    not modeled — a holiday mismatch rejects and needs --force-publish;
+    recorded as a known limitation in the report)."""
+    from datetime import timedelta
+    d = now_et.date()
+    if now_et.weekday() < 5 and (now_et.hour, now_et.minute) >= (16, 15):
+        return str(d)
+    d -= timedelta(days=1)
+    while d.weekday() >= 5:
+        d -= timedelta(days=1)
+    return str(d)
+
+
 def main():
+    # [5] Run guard: publish only after the close (>=16:15 ET) on trading
+    # days, or under --force-publish REASON. Otherwise every output routes to
+    # data/scratch/<ts>/ — a manual midday run can no longer overwrite the
+    # served board. Non-trading days pass the clock gate (no session hazard).
+    import argparse
+    from zoneinfo import ZoneInfo
+    from datetime import datetime as _dt
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--force-publish', metavar='REASON', default=None,
+                    help='publish despite the session guard; reason recorded in provenance')
+    args, _unknown = ap.parse_known_args()
+
+    now_et = _dt.now(ZoneInfo("America/New_York"))
+    is_weekday = now_et.weekday() < 5
+    after_close = (now_et.hour, now_et.minute) >= (16, 15)
+    forced = args.force_publish is not None
+    publish = (not is_weekday) or after_close or forced
+    computed_at = now_et.isoformat(timespec='seconds')
+
+    scratch_dir = None
+    if not publish:
+        scratch_dir = DATA / "scratch" / now_et.strftime('%Y%m%d-%H%M%S')
+        scratch_dir.mkdir(parents=True, exist_ok=True)
+        print(f"[5] RUN GUARD: {now_et.strftime('%H:%M ET')} is pre-close on a trading day "
+              f"and no --force-publish given → SCRATCH MODE ({scratch_dir.relative_to(ROOT)})")
+
     config = load_config()
     
     # Monkey-patch the portfolio and midcap list into score_universe
@@ -52,14 +114,18 @@ def main():
         # Will be picked up in compute_visibility_score
         pass  # Already in the function via VISIBILITY_OVERRIDES dict
     
+    # [5] scratch mode redirects every score_universe output too
+    if scratch_dir is not None:
+        su.OUTPUT_DIR = scratch_dir
+
     # Run the main scoring pipeline
     su.main()
-    
+
     # Now convert CSV output to JSON for the frontend
     import pandas as pd
     from datetime import datetime
-    
-    csv_path = ROOT / "data" / "scored_universe.csv"
+
+    csv_path = (scratch_dir or DATA) / "scored_universe.csv"
     if not csv_path.exists():
         print("ERROR: scored_universe.csv not found")
         return
@@ -135,6 +201,7 @@ def main():
             # None = correlation unavailable (visible impairment) — never 0-filled
             'corr_penalty': _num(r.get('corr_penalty'), 1),
             'corr_status': r.get('corr_status', 'ok') if isinstance(r.get('corr_status'), str) else 'ok',
+            'corr_null_reason': (r.get('corr_null_reason') if isinstance(r.get('corr_null_reason'), str) else None),
             'portfolio_corr': _num(r.get('portfolio_corr')),
             'max_corr': _num(r.get('max_corr')),
             'max_corr_with': (r.get('max_corr_with') if isinstance(r.get('max_corr_with'), str) and r.get('max_corr_with') else None),
@@ -167,19 +234,53 @@ def main():
         # 1) Correlation column must be ALIVE. Against a 4-megacap tech book,
         #    something in a 500+ name universe must correlate > 0.3 (market
         #    beta alone guarantees it). All null/zero → computation dead.
-        mc = pd.to_numeric(df.get('max_corr'), errors='coerce')
-        pc = pd.to_numeric(df.get('portfolio_corr'), errors='coerce')
+        # column-missing-safe: a vanished column must REJECT, not crash
+        import numpy as _np
+        _col = lambda c: (pd.to_numeric(df[c], errors='coerce') if c in df.columns
+                          else pd.Series(_np.nan, index=df.index))
+        mc, pc = _col('max_corr'), _col('portfolio_corr')
         n_alive = int(((mc.abs() > 0.3) | (pc.abs() > 0.3)).sum())
         if n_alive == 0:
             raise SystemExit(
                 "CI FAIL: correlation column is dead — no name in the universe "
                 "shows |corr| > 0.3 vs the portfolio. The computation is broken "
                 "(this exact failure shipped silently in July 2026); refusing to publish.")
+
+        # 1b) [3] Coverage: share of scored names with corr_status == 'ok'.
+        #     <60% fails the build; <90% publishes with an amber banner
+        #     (frontend reads corr_coverage_pct). Every null carries a reason.
+        status = df.get('corr_status').fillna('') if 'corr_status' in df else pd.Series('', index=df.index)
+        ok_mask = status == 'ok'
+        coverage = 100.0 * float(ok_mask.sum()) / max(len(df), 1)
+        impaired = []
+        for _, r in df[~ok_mask].iterrows():
+            reason = r.get('corr_null_reason')
+            if not isinstance(reason, str) or not reason:
+                raise SystemExit(f"CI FAIL: unexplained correlation null for {r['ticker']} "
+                                 "(every null must carry corr_null_reason)")
+            impaired.append({'ticker': r['ticker'], 'reason': reason})
+        if coverage < 60:
+            raise SystemExit(f"CI FAIL: correlation coverage {coverage:.1f}% < 60%")
+        # [3] names that must be alive: current book + the named list + top-40
+        # (top-40/book may alternatively appear in impaired with a reason —
+        # the named seven must be strictly alive)
+        must_alive = ['ANET', 'CRDO', 'MU', 'ALAB', 'QCOM', 'ARM', 'TSM']
+        alive_set = set(df[ok_mask]['ticker'])
+        for t in must_alive:
+            if t not in alive_set:
+                raise SystemExit(f"CI FAIL: {t} is not corr-alive (order item 3.3 names it explicitly)")
+        reasoned = {i['ticker'] for i in impaired}
+        for t in list(portfolio_tickers) + [e['ticker'] for e in watchlist]:
+            if t not in alive_set and t not in reasoned:
+                raise SystemExit(f"CI FAIL: {t} (book/top-40) neither corr-alive nor reasoned")
+
         # 2) Typed ranges (defense in depth — score_universe nulls at source)
+        #    [2] fcf bounds widened to [-60, 30]: the check catches corruption,
+        #    not true deep-burn readings (NBIS -15.6% is a real value signal).
         for e in watchlist:
             if e['fwd_pe'] is not None and not (3 <= e['fwd_pe'] <= 150):
                 raise SystemExit(f"CI FAIL: fwd_pe out of range for {e['ticker']}: {e['fwd_pe']}")
-            if e['fcf_yield_pct'] is not None and not (-5 <= e['fcf_yield_pct'] <= 25):
+            if e['fcf_yield_pct'] is not None and not (-60 <= e['fcf_yield_pct'] <= 30):
                 raise SystemExit(f"CI FAIL: fcf_yield_pct out of range for {e['ticker']}: {e['fcf_yield_pct']}")
         # 3) Structural floors
         if len(watchlist) < 30:
@@ -187,14 +288,69 @@ def main():
         if len(df) < 400:
             raise SystemExit(f"CI FAIL: scored universe collapsed to {len(df)} rows "
                              "(535 expected — Wikipedia-fallback-style regression?)")
-        print(f"  validate_outputs: OK  (corr alive on {n_alive} names, "
-              f"{len(watchlist)} watchlist rows, {len(df)} scored)")
+        print(f"  validate_outputs: OK  (corr alive {n_alive}, coverage {coverage:.1f}%, "
+              f"{len(impaired)} impaired w/reasons, {len(watchlist)} watchlist, {len(df)} scored)")
+        return {'coverage_pct': round(coverage, 1), 'impaired': impaired}
 
-    validate_outputs(df, watchlist)
+    # [5] session-equality check (publish mode) + status.json on both outcomes
+    session_date = getattr(su, 'LAST_PRICE_DATE', None)
+    status_path = (scratch_dir or DATA) / "status.json"
+    try:
+        # forced publishes bypass the session check too (the reason is in
+        # provenance) — force overrides the guard, not just the clock
+        if publish and not forced and session_date != _expected_session(now_et):
+            raise SystemExit(f"CI FAIL: data session {session_date} != current session "
+                             f"{_expected_session(now_et)} — refusing to publish stale/partial data")
+        covmeta = validate_outputs(df, watchlist)
+    except (SystemExit, Exception) as e:   # ANY validation crash = failed run:
+        _write_status(status_path, ok=False, reason=e, session_date=session_date,
+                      computed_at=computed_at)      # status.json still lands
+        print(f"::error::{e}")
+        raise
+    _write_status(status_path, ok=True, reason=None, session_date=session_date,
+                  computed_at=computed_at)
+
+    # [4] Drawdown-watch shelf: broken-base names whose BUSINESS clears the
+    # quality bar (fundamental >= 18/25 AND visibility >= 15/25), ranked by
+    # fundamental + visibility ONLY (capped technical displayed, not ranked).
+    # Max 15 rows. Names with the tag that miss the bar stay in the main list.
+    ddf = df[df.get('broken_base') == True].copy() if 'broken_base' in df else df.iloc[0:0].copy()
+    if len(ddf):
+        ddf['_f'] = pd.to_numeric(ddf['fundamental'], errors='coerce')
+        ddf['_v'] = pd.to_numeric(ddf['visibility'], errors='coerce')
+        ddf = ddf[(ddf['_f'] >= 18) & (ddf['_v'] >= 15)]
+        ddf = ddf.sort_values(by=['_f', '_v'], ascending=False, key=None)
+        ddf['_q'] = ddf['_f'] + ddf['_v']
+        ddf = ddf.sort_values('_q', ascending=False).head(15)
+    drawdown_watch = []
+    for _, r in ddf.iterrows():
+        ep = float(r.get('entry_level') or 0)
+        cp = float(r.get('current_price') or 0)
+        drawdown_watch.append({
+            'ticker': r['ticker'], 'name': r.get('name', ''), 'sector': r.get('sector', ''),
+            'fundamental': _num(r.get('fundamental'), 1), 'visibility': _num(r.get('visibility'), 1),
+            'technical_capped': _num(r.get('technical'), 1), 'composite': _num(r.get('composite'), 1),
+            'quality_rank_score': _num(r.get('_q'), 1),
+            'depth_below_base_pct': round((cp / ep - 1) * 100, 1) if ep and cp else None,
+            'rsi': _num(r.get('rsi'), 1),
+            'corr_penalty': _num(r.get('corr_penalty'), 1),
+            'portfolio_corr': _num(r.get('portfolio_corr')),
+            'max_corr_with': (r.get('max_corr_with') if isinstance(r.get('max_corr_with'), str) else None),
+        })
 
     # Assemble output
     output = {
         'updated': datetime.now().isoformat(),
+        'session_date': session_date,          # [5] the session this data represents
+        'computed_at': computed_at,            # [5] when it was computed (ET)
+        'provenance': {                        # [5] forced publishes carry their reason
+            'mode': 'publish' if publish else 'scratch',
+            'forced_publish': bool(forced),
+            'force_reason': args.force_publish,
+        },
+        'corr_coverage_pct': covmeta['coverage_pct'],   # [3]
+        'corr_impaired': covmeta['impaired'],           # [3] every null + reason
+        'drawdown_watch': drawdown_watch,               # [4]
         'portfolio': {
             'holdings': portfolio_summary,
             'total_equity': round(total_equity_value, 2),
@@ -229,10 +385,11 @@ def main():
             x = float(o); return None if (math.isnan(x) or math.isinf(x)) else x
         return o
 
-    with open(OUTPUT, 'w') as f:
+    out_path = (scratch_dir / "scores.json") if scratch_dir is not None else OUTPUT
+    with open(out_path, 'w') as f:
         json.dump(_clean(output), f, indent=2, cls=NpEncoder, allow_nan=False)
-    
-    print(f"\nJSON output: {OUTPUT}")
+
+    print(f"\nJSON output: {out_path}")
     print(f"Portfolio: {len(portfolio_summary)} positions, ${total_equity_value:,.0f} equity + ${cash:,.0f} cash = ${total_value:,.0f}")
     print(f"Watchlist: {len(watchlist)} candidates")
 
@@ -240,15 +397,18 @@ def main():
     # data/vintages/<date>/ — the tournament's published-vintage convention.
     # This is what makes the pre-registered forward validation (Spearman IC on
     # frozen vintages, first evaluation Feb 2027) possible at all.
-    import shutil
-    vint = ROOT / "data" / "vintages" / datetime.now().strftime("%Y-%m-%d")
-    vint.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(OUTPUT, vint / "scores.json")
-    for fn in ("scored_universe.csv", "watchlist_top30.csv"):
-        src = ROOT / "data" / fn
-        if src.exists():
-            shutil.copy2(src, vint / fn)
-    print(f"Vintage archived: {vint.relative_to(ROOT)}")
+    # [5] PUBLISH MODE ONLY: vintages are as-published records by definition;
+    # scratch runs never mint one.
+    if publish:
+        import shutil
+        vint = ROOT / "data" / "vintages" / (session_date or datetime.now().strftime("%Y-%m-%d"))
+        vint.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(out_path, vint / "scores.json")
+        for fn in ("scored_universe.csv", "watchlist_top30.csv"):
+            src = ROOT / "data" / fn
+            if src.exists():
+                shutil.copy2(src, vint / fn)
+        print(f"Vintage archived: {vint.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

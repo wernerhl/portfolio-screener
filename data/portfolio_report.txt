@@ -1,71 +1,82 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-07-29 14:11
+PORTFOLIO SCORING MODEL — 2026-07-29 15:23
 ======================================================================
 
 Universe: 532 scored tickers
-Score range: 29.9 — 63.4
+Score range: 29.6 — 63.3
 Median: 47.0
 
 ──────────────────────────────────────────────────────────────────────
-TOP 30 CANDIDATES (excluding current portfolio)
+TOP 40 CANDIDATES (all names · ★ = already held, add-to candidate)
 ──────────────────────────────────────────────────────────────────────
 Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry Cat         
 ──────────────────────────────────────────────────────────────────────
-2     GEV     GE Vernova Inc.             62.9  20.0  19.9  23.0   0.0   1026.32 Compounder  
-3     VRT     Vertiv Holdings, LLC        61.7  20.5  21.2  20.0   0.0    309.88 Growth      
-5     ANET    Arista Networks, Inc.       58.2  21.5  16.7  20.0   0.0    165.38 Growth      
-7     TLN     Talen Energy Corporation    56.5  19.0  18.5  19.0   0.0    375.59 Growth      
-8     CRDO    Credo Technology Group Holding   56.3  21.0  20.3  15.0   0.0    232.32 Growth      
-9     POWL    Powell Industries, Inc.     56.1  16.0  22.1  18.0   0.0    266.29 Speculative 
-10    AXP     American Express Company    55.2  21.0  16.2  18.0   0.0    331.53 Core        
-11    ADBE    Adobe Inc.                  55.1  23.0  15.1  17.0   0.0    247.08 Core        
-12    CDNS    Cadence Design Systems, Inc.   55.1  19.0  19.1  17.0   0.0    371.77 Core        
-13    RMD     ResMed Inc.                 55.0  21.0  17.0  17.0   0.0    203.78 Core        
-14    ESTC    Elastic N.V.                55.0  22.0  16.0  17.0   0.0     60.22 Speculative 
-15    ETN     Eaton Corporation, PLC      54.9  16.5  19.4  19.0   0.0    402.74 Core        
-16    UBER    Uber Technologies, Inc.     54.8  21.0  18.8  15.0   0.0     71.98 Core        
-17    GILD    Gilead Sciences, Inc.       54.3  21.0  16.3  17.0   0.0    129.41 Core        
-18    PTC     PTC Inc.                    54.2  24.0  13.2  17.0   0.0    127.22 Core        
-19    STZ     Constellation Brands, Inc.   54.1  19.5  17.6  17.0   0.0    138.83 Core        
-20    ALAB    Astera Labs, Inc.           54.0  20.0  19.0  15.0   0.0    352.30 Growth      
-21    SNDK    Sandisk Corporation         53.8  21.0  18.8  14.0   0.0   1714.35 Growth      
-22    PLTR    Palantir Technologies Inc.   53.7  21.0  15.7  17.0   0.0    131.44 Growth      
-23    ROP     Roper Technologies, Inc.    53.6  18.5  18.1  17.0   0.0    381.21 Core        
-24    IDXX    IDEXX Laboratories, Inc.    53.6  19.0  17.6  17.0   0.0    555.59 Core        
-25    KEYS    Keysight Technologies Inc.   53.6  19.0  19.6  15.0   0.0    334.43 Growth      
-26    PG      Procter & Gamble Company (The)   53.4  18.5  17.9  17.0   0.0    146.21 Core        
-27    BX      Blackstone Inc.             53.4  22.5  14.9  16.0   0.0    122.88 Core        
-28    VST     Vistra Corp.                53.4  16.5  18.9  18.0   0.0    155.58 Growth      
-29    META    Meta Platforms, Inc.        53.3  20.0  18.3  15.0   0.0    604.41 Growth      
-30    CL      Colgate-Palmolive Company   53.3  19.5  15.8  18.0   0.0     90.36 Core        
-31    TMUS    T-Mobile US, Inc.           53.1  17.0  19.1  17.0   0.0    184.17 Core        
-32    NFLX    Netflix, Inc.               53.1  23.0  16.1  14.0   0.0     77.77 Core        
-33    NXPI    NXP Semiconductors N.V.     53.1  20.5  18.6  14.0   0.0    292.83 Core        
+1    ★AVGO   Broadcom Inc.               63.3  21.0  20.3  22.0   0.0    397.05 Growth      
+2     GEV    GE Vernova Inc.             63.1  20.0  20.1  23.0   0.0   1027.99 Compounder  
+3     VRT    Vertiv Holdings, LLC        62.4  20.5  21.9  20.0   0.0    311.80 Growth      
+4    ★NVDA   NVIDIA Corporation          60.0  21.0  19.0  20.0   0.0    207.67 Growth      
+5     ANET   Arista Networks, Inc.       58.9  21.5  17.4  20.0   0.0    164.75 Growth      
+6     TLN    Talen Energy Corporation    57.2  19.0  19.2  19.0   0.0    375.56 Growth      
+7    ★GOOG   Alphabet Inc.               57.1  20.0  17.1  20.0   0.0    359.56 Compounder  
+8     CRDO   Credo Technology Group Holding   56.3  21.0  20.3  15.0   0.0    231.85 Growth      
+9     POWL   Powell Industries, Inc.     56.2  16.0  22.2  18.0   0.0    268.04 Speculative 
+10    ETN    Eaton Corporation, PLC      55.6  16.5  20.1  19.0   0.0    402.86 Core        
+11    AXP    American Express Company    55.2  21.0  16.2  18.0   0.0    331.55 Core        
+12    RMD    ResMed Inc.                 55.1  21.0  17.1  17.0   0.0    202.41 Core        
+13    ADBE   Adobe Inc.                  55.0  23.0  15.0  17.0   0.0    249.55 Core        
+14    UBER   Uber Technologies, Inc.     54.9  21.0  18.9  15.0   0.0     72.05 Core        
+15    NOC    Northrop Grumman Corporation   54.6  16.0  17.6  21.0   0.0    535.71 Compounder  
+16    GILD   Gilead Sciences, Inc.       54.5  21.0  16.5  17.0   0.0    129.34 Core        
+17    LITE   Lumentum Holdings Inc.      54.4  18.5  21.9  14.0   0.0    839.91 Growth      
+18    SNDK   Sandisk Corporation         54.4  21.0  19.4  14.0   0.0   1720.08 Growth      
+19    STZ    Constellation Brands, Inc.   54.3  19.5  17.8  17.0   0.0    139.00 Core        
+20    PTC    PTC Inc.                    54.2  24.0  13.2  17.0   0.0    127.94 Core        
+21    PG     Procter & Gamble Company (The)   54.2  18.5  18.7  17.0   0.0    145.93 Core        
+22    CDNS   Cadence Design Systems, Inc.   54.1  18.0  19.1  17.0   0.0    371.74 Core        
+23    ALAB   Astera Labs, Inc.           54.0  20.0  19.0  15.0   0.0    351.64 Growth      
+24    NXPI   NXP Semiconductors N.V.     54.0  20.5  19.5  14.0   0.0    293.82 Core        
+25    VICI   VICI Properties Inc.        53.9  18.5  18.4  17.0   0.0     27.07 Core        
+26    KEYS   Keysight Technologies Inc.   53.7  19.0  19.7  15.0   0.0    336.06 Growth      
+27    GDDY   GoDaddy Inc.                53.7  20.5  16.2  17.0   0.0     98.61 Core        
+28    PLTR   Palantir Technologies Inc.   53.6  21.0  15.6  17.0   0.0    131.46 Growth      
+29    IDXX   IDEXX Laboratories, Inc.    53.6  19.0  17.6  17.0   0.0    555.53 Core        
+30    ESTC   Elastic N.V.                53.5  22.0  14.5  17.0   0.0     60.11 Speculative 
+31    ADSK   Autodesk, Inc.              53.5  22.0  14.5  17.0   0.0    231.29 Core        
+32    VST    Vistra Corp.                53.5  16.5  19.0  18.0   0.0    155.37 Growth      
+33    BX     Blackstone Inc.             53.3  22.5  14.8  16.0   0.0    122.40 Core        
+34    TMUS   T-Mobile US, Inc.           53.2  17.0  19.2  17.0   0.0    184.21 Core        
+35    CL     Colgate-Palmolive Company   53.2  19.5  15.7  18.0   0.0     90.22 Core        
+36    NFLX   Netflix, Inc.               53.1  23.0  16.1  14.0   0.0     78.06 Core        
+37    FTNT   Fortinet, Inc.              53.1  20.0  16.1  17.0   0.0    147.74 Core        
+38    DXCM   DexCom, Inc.                53.1  20.5  15.6  17.0   0.0     72.13 Core        
+39    MKC    McCormick & Company, Incorpora   53.0  20.0  17.0  16.0   0.0     49.97 Core        
+40    MS     Morgan Stanley              53.0  19.5  17.5  16.0   0.0    212.88 Core        
 
 ──────────────────────────────────────────────────────────────────────
 CURRENT PORTFOLIO SCORES
 ──────────────────────────────────────────────────────────────────────
-  AVGO    Broadcom Inc.             Score:  63.4  (F:21 T:20 V:22)
-  NVDA    NVIDIA Corporation        Score:  59.8  (F:21 T:19 V:20)
-  GOOG    Alphabet Inc.             Score:  57.0  (F:20 T:17 V:20)
+  AVGO    Broadcom Inc.             Score:  63.3  (F:21 T:20 V:22)
+  NVDA    NVIDIA Corporation        Score:  60.0  (F:21 T:19 V:20)
+  GOOG    Alphabet Inc.             Score:  57.1  (F:20 T:17 V:20)
   MSFT    Microsoft Corporation     Score:  52.9  (F:19 T:16 V:18)
   BMNR    BitMine Immersion Technologies Score:  43.6  (F:14 T:14 V:16)
 
 ──────────────────────────────────────────────────────────────────────
 SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Technology                     13
-  Industrials                    4
-  Healthcare                     3
-  Consumer Defensive             3
+  Technology                     18
+  Industrials                    5
+  Healthcare                     4
+  Consumer Defensive             4
   Communication Services         3
+  Financial Services             3
   Utilities                      2
-  Financial Services             2
+  Real Estate                    1
 
 ──────────────────────────────────────────────────────────────────────
 CATEGORY DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Core                 17
-  Growth               10
+  Core                 23
+  Growth               12
+  Compounder           3
   Speculative          2
-  Compounder           1

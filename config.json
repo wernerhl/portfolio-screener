@@ -7,6 +7,12 @@
     "BMNR": {"shares": 200.0702, "cost": 39.046, "category": "Speculative"}
   },
   "cash": 87820.06,
+  "broken_base": {
+    "gap_pct": 10,
+    "rsi": 25,
+    "tech_cap": 12
+  },
+  "visibility_fallback_cap": 10,
   "visibility_overrides": {
     "GEV":  [23, "$163B backlog, 25yr service contracts"],
     "AVGO": [22, "$73B contracted backlog through 2028"],

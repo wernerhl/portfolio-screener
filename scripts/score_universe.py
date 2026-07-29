@@ -116,6 +116,102 @@ MIDCAP_ADDITIONS = [
 
 # ── S&P 500 Tickers ───────────────────────────────────────────────────
 
+# ── Broken-base cap (plan 2.3 — Werner approved 2026-07-29) ───────────
+# A name trading >GAP% below its base with RSI<RSI_MAX is a falling knife,
+# not an entry: cap the technical score so the board stops ranking the
+# most-drawn-down names on top. They stay listed, tagged 'broken_base'.
+# Overridden from config.json "broken_base" via build_json.
+BROKEN_BASE_GAP_PCT  = 10.0
+BROKEN_BASE_RSI      = 25.0
+BROKEN_BASE_TECH_CAP = 12.0
+
+# ── Visibility governance (plan 2.5) ──────────────────────────────────
+# Sector priors shared by the legacy path and the registry fallback.
+SECTOR_VIS_PRIORS = {
+    'Utilities': 18,
+    'Consumer Defensive': 16,
+    'Healthcare': 15,
+    'Financial Services': 14,
+    'Industrials': 14,
+    'Technology': 13,
+    'Communication Services': 13,
+    'Basic Materials': 11,
+    'Consumer Cyclical': 11,
+    'Energy': 12,
+    'Real Estate': 15,
+}
+# In registry mode, a name with NO researched override earns at most this
+# much of the 25-pt factor from sector priors alone — an un-researched
+# "visibility" score is unearned judgment (the old fallback gave a bitcoin
+# miner 16/25). Config-tunable: "visibility_fallback_cap".
+VISIBILITY_FALLBACK_CAP = 10.0
+VIS_REGISTRY = None   # set in main() from data/visibility_registry.json
+
+
+def load_visibility_registry():
+    """Governed replacement for the hardcoded VISIBILITY_OVERRIDES (per-entry
+    rationale, review dates, decay — the thesis-registry pattern). ACTIVE ONLY
+    ONCE FROZEN (Werner-approved); until then the legacy dict stays
+    authoritative and we say so loudly. Never auto-merged."""
+    import json as _json
+    reg_path = Path(__file__).resolve().parent.parent / "data" / "visibility_registry.json"
+    if not reg_path.exists():
+        return None
+    try:
+        reg = _json.loads(reg_path.read_text())
+    except Exception as e:
+        print(f"  WARNING: visibility_registry.json unreadable ({e}) — legacy overrides in effect")
+        return None
+    if not reg.get("frozen_at"):
+        print(f"  visibility registry v{reg.get('version')} PENDING APPROVAL — legacy overrides in effect")
+        return None
+    print(f"  visibility registry v{reg.get('version')} ACTIVE (frozen {reg.get('frozen_at')}, "
+          f"{len(reg.get('entries', {}))} entries)")
+    return reg
+
+
+def visibility_from_registry(fund_data, ticker):
+    """Registry-mode visibility: frozen entry value with review-decay, or the
+    capped sector fallback. Decay (Werner's cadence spec, 2026-07-29): past
+    review_by the override decays LINEARLY to the sector prior over 90 days.
+    Hard triggers (guidance cut, backlog decline, cancelled PPA) override the
+    calendar — those arrive as registry edits, not computed here."""
+    from datetime import date
+    sector = (fund_data or {}).get('sector', '')
+    prior = min(SECTOR_VIS_PRIORS.get(sector, 12.5), VISIBILITY_FALLBACK_CAP)
+
+    entry = VIS_REGISTRY.get('entries', {}).get(ticker)
+    if entry:
+        val = float(entry['value'])
+        details = {'override': entry.get('rationale', ''), 'registry': True}
+        rb = entry.get('review_by')
+        if rb:
+            try:
+                days_late = (date.today() - date.fromisoformat(rb)).days
+            except ValueError:
+                days_late = 0
+            if days_late > 0:
+                w = max(0.0, 1.0 - days_late / 90.0)
+                val = prior + (val - prior) * w
+                details['review_due'] = f"{rb} ({days_late}d overdue — decaying to sector prior)"
+        return round(val, 1), details
+
+    if not fund_data:
+        return min(12.5, VISIBILITY_FALLBACK_CAP), {}
+    base = SECTOR_VIS_PRIORS.get(sector, 12.5)
+    gross = fund_data.get('grossMargins')
+    if gross and gross > 0.60:
+        base += 2
+    elif gross and gross > 0.40:
+        base += 1
+    industry = fund_data.get('industry', '')
+    if any(kw in industry.lower() for kw in ['software', 'saas', 'subscription', 'service']):
+        base += 2
+    capped = min(base, VISIBILITY_FALLBACK_CAP)
+    return round(min(25, capped), 1), {'sector_base': sector,
+                                       'fallback_capped': bool(capped < base)}
+
+
 def get_sp500_tickers():
     """Fetch current S&P 500 constituents."""
     try:
@@ -334,20 +430,27 @@ def compute_fundamental_score(fund_data):
     details = {}
     
     # FCF Yield / Valuation (0-7)
+    # Score priority unchanged: FCF yield first, forward P/E fallback. But BOTH
+    # metrics are recorded in details regardless of which branch scored — the
+    # display layer previously fell back fwd_pe→fcf_yield across semantic
+    # types, publishing FCF yields labeled as P/Es (GOOG "0.6", NVDA "1.0").
     fwd_pe = fund_data.get('forwardPE')
     mcap = fund_data.get('marketCap', 0)
     fcf = fund_data.get('freeCashflow', 0)
-    
+
+    if fwd_pe and fwd_pe > 0:
+        details['forward_pe'] = round(fwd_pe, 1)
     if fcf and mcap and mcap > 0:
-        fcf_yield = fcf / mcap * 100
+        fcf_yield = fcf / mcap * 100          # raw, so thresholds are unchanged
         details['fcf_yield'] = round(fcf_yield, 1)
+
+    if 'fcf_yield' in details:
         if fcf_yield > 6: val_score = 7.0
         elif fcf_yield > 4: val_score = 6.0
         elif fcf_yield > 2: val_score = 4.5
         elif fcf_yield > 0: val_score = 3.0
         else: val_score = 1.0
-    elif fwd_pe and fwd_pe > 0:
-        details['forward_pe'] = round(fwd_pe, 1)
+    elif 'forward_pe' in details:
         if fwd_pe < 12: val_score = 6.5
         elif fwd_pe < 20: val_score = 5.5
         elif fwd_pe < 30: val_score = 4.0
@@ -450,32 +553,23 @@ def compute_visibility_score(fund_data, ticker):
         "TLN":  (19, "AWS nuclear PPA"),
     }
     
+    # Registry mode (plan 2.5): once the governed registry is frozen it is the
+    # single authority — the hardcoded dict above becomes migration history.
+    if VIS_REGISTRY is not None:
+        return visibility_from_registry(fund_data, ticker)
+
     if ticker in VISIBILITY_OVERRIDES:
         score, reason = VISIBILITY_OVERRIDES[ticker]
         return score, {'override': reason}
-    
+
     if not fund_data:
         return 12.5, {}
-    
+
     # Sector-based visibility premium
     sector = fund_data.get('sector', '')
     industry = fund_data.get('industry', '')
-    
-    sector_premiums = {
-        'Utilities': 18,
-        'Consumer Defensive': 16,
-        'Healthcare': 15,
-        'Financial Services': 14,
-        'Industrials': 14,
-        'Technology': 13,
-        'Communication Services': 13,
-        'Basic Materials': 11,
-        'Consumer Cyclical': 11,
-        'Energy': 12,
-        'Real Estate': 15,
-    }
-    
-    base = sector_premiums.get(sector, 12.5)
+
+    base = SECTOR_VIS_PRIORS.get(sector, 12.5)
     
     # Adjust for margin stability (high margins = more pricing power = more visibility)
     gross = fund_data.get('grossMargins')
@@ -491,71 +585,107 @@ def compute_visibility_score(fund_data, ticker):
     return min(25, round(base, 1)), {'sector_base': sector}
 
 
-def compute_correlation_penalty(prices_df, ticker, portfolio_tickers, portfolio_weights):
+def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
     """
-    Correlation Penalty (0 to -10)
-    Penalizes tickers highly correlated with existing portfolio.
+    Correlation Penalty (0 to -10) — book-aware, null on failure.
+
+    Primary measure: correlation of the candidate's daily returns against the
+    position-weighted PORTFOLIO return series over the last ~126 trading days.
+    This is weight-aware by construction — duplicating a 30% position moves
+    the book series far more than duplicating a 2% one. The max pairwise
+    correlation vs any single holding is retained for the "duplicates NVDA"
+    message. Bucket thresholds unchanged from the original design.
+
+    Held names exclude THEMSELVES from the book series (self-correlation is
+    1.0 by definition); an add-to candidate is judged on what it duplicates
+    in the rest of the book.
+
+    July 2026 rewrite — why: the original ran `prices_df.pct_change().dropna()`
+    on the full 536-column frame. dropna(how='any') deletes every row where ANY
+    ticker is NaN, so once the universe grew to 535 (new listings, chunk-fetch
+    misses) essentially no rows survived, every pair fell below the obs floor,
+    and the function returned 0.0/None for ALL names — silently. Correlations
+    are now computed per-pair / per-book on aligned series only.
+
+    Returns (penalty, details). On failure returns (None, corr_status=
+    'unavailable') — NEVER a silent zero-fill. A zero must mean "measured,
+    uncorrelated", not "computation died" (that ambiguity hid the bug).
     """
-    if ticker not in prices_df.columns:
-        return 0, {}
-    
-    px = prices_df[ticker].dropna()
-    if len(px) < 60:
-        return 0, {}
-    
-    returns = prices_df.pct_change().dropna()
-    if ticker not in returns.columns:
-        return 0, {}
-    
-    max_corr = 0
-    max_corr_ticker = None
-    weighted_corr = 0
-    
-    for pticker, weight in portfolio_tickers.items():
-        pticker_yf = pticker.replace('.', '-')
-        if pticker_yf in returns.columns:
-            corr_series = returns[[ticker, pticker_yf]].dropna()
-            if len(corr_series) > 30:
-                corr = corr_series.corr().iloc[0, 1]
-                if not np.isnan(corr):
-                    weighted_corr += abs(corr) * weight
-                    if abs(corr) > max_corr:
-                        max_corr = abs(corr)
-                        max_corr_ticker = pticker
-    
-    # Penalty: 0 for uncorrelated, up to -10 for highly correlated
-    if max_corr > 0.85:
+    WINDOW  = 126   # ~6 trading months of daily returns
+    MIN_OBS = 60    # floor for a usable book correlation
+
+    fail = {'corr_status': 'unavailable', 'max_corr': None,
+            'max_corr_with': None, 'portfolio_corr': None, 'n_obs': 0}
+
+    if ticker not in prices_df.columns or not portfolio_weights:
+        return None, fail
+
+    tail = prices_df.tail(WINDOW + 1)
+    cand = tail[ticker].pct_change()
+
+    # Holdings' return series (self excluded for held candidates)
+    held = {}
+    for pticker, w in portfolio_weights.items():
+        col = pticker.replace('.', '-')
+        if col == ticker:
+            continue
+        if col in tail.columns:
+            held[pticker] = (tail[col].pct_change(), w)
+    if not held:
+        return None, fail
+
+    # Pairwise max — for the user-facing "highest overlap: NVDA" message
+    max_corr, max_corr_ticker = 0.0, None
+    for pticker, (ret, _w) in held.items():
+        pair = pd.concat([cand, ret], axis=1).dropna()
+        if len(pair) < 30:
+            continue
+        c = pair.corr().iloc[0, 1]
+        if not np.isnan(c) and abs(c) > max_corr:
+            max_corr, max_corr_ticker = abs(c), pticker
+
+    # Book-level correlation: candidate vs position-weighted portfolio returns
+    book = pd.concat({p: r for p, (r, _w) in held.items()}, axis=1)
+    aligned = pd.concat([cand.rename('_cand'), book], axis=1).dropna()
+    if len(aligned) < MIN_OBS:
+        return None, fail
+    weights = pd.Series({p: w for p, (_r, w) in held.items()})
+    weights = weights / weights.sum()
+    book_ret = (aligned[list(weights.index)] * weights).sum(axis=1)
+    portfolio_corr = aligned['_cand'].corr(book_ret)
+    if np.isnan(portfolio_corr):
+        return None, fail
+
+    apc = abs(portfolio_corr)
+    if apc > 0.85:
         penalty = -10.0
-    elif max_corr > 0.75:
+    elif apc > 0.75:
         penalty = -7.0
-    elif max_corr > 0.65:
+    elif apc > 0.65:
         penalty = -4.0
-    elif max_corr > 0.50:
+    elif apc > 0.50:
         penalty = -2.0
     else:
         penalty = 0.0
-    
-    # Additional penalty for high weighted correlation
-    if weighted_corr > 0.5:
-        penalty -= 2.0
-    
-    penalty = max(-10.0, penalty)
-    
+
     details = {
-        'max_corr': round(max_corr, 3),
+        'corr_status': 'ok',
+        'max_corr': round(float(max_corr), 3),
         'max_corr_with': max_corr_ticker,
-        'weighted_corr': round(weighted_corr, 3),
+        'portfolio_corr': round(float(portfolio_corr), 3),
+        'n_obs': int(len(aligned)),
     }
-    
     return round(penalty, 1), details
 
 
 # ── Main Pipeline ─────────────────────────────────────────────────────
 
 def main():
+    global VIS_REGISTRY
     print("=" * 60)
     print(f"PORTFOLIO SCORING MODEL — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("=" * 60)
+    VIS_REGISTRY = load_visibility_registry()
     
     # 1. Build universe
     # Load the curated 535-ticker universe (same as the portfolio-tournament
@@ -608,13 +738,42 @@ def main():
         # Visibility score
         vis_score, vis_details = compute_visibility_score(fund, ticker)
         
-        # Correlation penalty
+        # Correlation penalty (None = computation failed → visible impairment,
+        # contributes 0 to the composite but is NEVER displayed as a measured 0)
         corr_penalty, corr_details = compute_correlation_penalty(
-            prices, ticker, CURRENT_PORTFOLIO, CURRENT_PORTFOLIO
+            prices, ticker, CURRENT_PORTFOLIO
         )
-        
+        penalty_applied = corr_penalty if corr_penalty is not None else 0.0
+
+        # Entry level — computed BEFORE the composite so the broken-base cap
+        # can reference it (20-DMA or recent support)
+        px_series = prices[ticker].dropna() if ticker in prices.columns else pd.Series()
+        if len(px_series) > 20:
+            ma20 = px_series.rolling(20).mean().iloc[-1]
+            ma50 = px_series.rolling(50).mean().iloc[-1] if len(px_series) > 50 else ma20
+            current_px = px_series.iloc[-1]
+            # Suggest entry at the higher of: 5% below current, or 50-DMA
+            entry_level = max(ma50, current_px * 0.95)
+            entry_level = round(entry_level, 2)
+        else:
+            current_px = fund.get('currentPrice', 0)
+            entry_level = round(current_px * 0.95, 2) if current_px else 0
+
+        # Broken-base cap (plan 2.3 — Werner approved "Cap it" 2026-07-29):
+        # >GAP% below base with RSI<RSI_MAX = falling knife, not an entry.
+        # Cap the technical score and tag the row — stated design and actual
+        # behavior now agree (the old text claimed a penalty that never fired).
+        rsi_val = tech_details.get('rsi')
+        broken_base = bool(
+            entry_level and current_px and rsi_val is not None
+            and current_px < entry_level * (1 - BROKEN_BASE_GAP_PCT / 100.0)
+            and rsi_val < BROKEN_BASE_RSI
+        )
+        if broken_base:
+            tech_score = min(tech_score, BROKEN_BASE_TECH_CAP)
+
         # Composite score
-        composite = tech_score + fund_score + vis_score + corr_penalty
+        composite = tech_score + fund_score + vis_score + penalty_applied
         composite = max(0, min(75, composite))  # 0-75 range (25+25+25-10)
         
         # Category classification
@@ -633,22 +792,22 @@ def main():
         else:
             category = "Core"
         
-        # Entry level suggestion (20-DMA or recent support)
-        px_series = prices[ticker].dropna() if ticker in prices.columns else pd.Series()
-        if len(px_series) > 20:
-            ma20 = px_series.rolling(20).mean().iloc[-1]
-            ma50 = px_series.rolling(50).mean().iloc[-1] if len(px_series) > 50 else ma20
-            current_px = px_series.iloc[-1]
-            # Suggest entry at the higher of: 5% below current, or 50-DMA
-            entry_level = max(ma50, current_px * 0.95)
-            entry_level = round(entry_level, 2)
-        else:
-            current_px = fund.get('currentPrice', 0)
-            entry_level = round(current_px * 0.95, 2) if current_px else 0
-        
         # Already in portfolio?
         in_portfolio = ticker in CURRENT_PORTFOLIO or ticker.replace('-', '.') in CURRENT_PORTFOLIO
-        
+
+        # Typed display fields + ingest-time range checks (never fall back
+        # across semantic types; out-of-range → null + flag, never a
+        # substituted value). Scoring above reads raw values and is unchanged.
+        data_flags = []
+        fwd_pe_val = fund_details.get('forward_pe')
+        if fwd_pe_val is not None and not (3.0 <= fwd_pe_val <= 150.0):
+            data_flags.append(f"fwd_pe_out_of_range({fwd_pe_val})")
+            fwd_pe_val = None
+        fcf_yield_val = fund_details.get('fcf_yield')
+        if fcf_yield_val is not None and not (-5.0 <= fcf_yield_val <= 25.0):
+            data_flags.append(f"fcf_yield_out_of_range({fcf_yield_val})")
+            fcf_yield_val = None
+
         rows.append({
             'ticker': ticker,
             'name': fund.get('shortName', ticker)[:30],
@@ -662,18 +821,25 @@ def main():
             'fundamental': fund_score,
             'technical': tech_score,
             'visibility': vis_score,
-            'corr_penalty': corr_penalty,
+            'corr_penalty': corr_penalty,          # None = unavailable, NOT 0
+            'corr_status': corr_details.get('corr_status', 'ok'),
+            'broken_base': broken_base,
             'composite': round(composite, 1),
-            # Key metrics
-            'fwd_pe': fund_details.get('forward_pe', fund_details.get('fcf_yield', '')),
+            # Key metrics — typed: fwd_pe is a P/E ratio or empty, never an
+            # FCF yield (the old column fell back across semantic types)
+            'fwd_pe': fwd_pe_val if fwd_pe_val is not None else '',
+            'fcf_yield_pct': fcf_yield_val if fcf_yield_val is not None else '',
             'rev_growth_pct': fund_details.get('rev_growth', ''),
             'gross_margin_pct': fund_details.get('gross_margin', ''),
             'roe_pct': fund_details.get('roe', ''),
             'rsi': tech_details.get('rsi', ''),
             'ma200_dist_pct': tech_details.get('ma200_dist', ''),
             'rel_str_6m_pct': tech_details.get('rel_strength_6m', ''),
-            'max_corr': corr_details.get('max_corr', ''),
-            'max_corr_with': corr_details.get('max_corr_with', ''),
+            'portfolio_corr': corr_details.get('portfolio_corr'),
+            'max_corr': corr_details.get('max_corr'),
+            'max_corr_with': corr_details.get('max_corr_with'),
+            'n_corr_obs': corr_details.get('n_obs', 0),
+            'data_flags': ';'.join(data_flags),
             'in_portfolio': in_portfolio,
         })
         scored += 1
@@ -716,10 +882,12 @@ def main():
 
     for idx, row in watchlist.iterrows():
         held_mark = "★" if row.get('in_portfolio') else " "
+        cp = row['corr_penalty']
+        corr_str = f"{cp:>5.1f}" if pd.notna(cp) else "  n/a"   # unavailable ≠ 0
         report_lines.append(
             f"{idx:<5}{held_mark}{row['ticker']:<6} {row['name']:<25} {row['composite']:>6.1f} "
             f"{row['fundamental']:>5.1f} {row['technical']:>5.1f} {row['visibility']:>5.1f} "
-            f"{row['corr_penalty']:>5.1f} {row['entry_level']:>9.2f} {row['category']:<12}"
+            f"{corr_str} {row['entry_level']:>9.2f} {row['category']:<12}"
         )
     
     report_lines.append("\n" + "─" * 70)

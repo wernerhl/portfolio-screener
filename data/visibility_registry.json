@@ -1,6 +1,6 @@
 {
  "version": 1,
- "frozen_at": null,
+ "frozen_at": "2026-07-29",
  "proposed_at": "2026-07-29",
  "policy": {
   "review": "earnings-anchored +14d grace for overrides >=5 pts above sector prior; 180d for the rest",
@@ -314,5 +314,6 @@
     "hard_triggers": "guidance cut \u00b7 backlog decline QoQ \u00b7 cancelled PPA/contract \u2192 immediate review"
    }
   }
- }
+ },
+ "approval": "Frozen 2026-07-29 on Werner's explicit approval (in-session, batched with thesis registry v1). Values migrated unchanged from code+config union; governance (earnings-anchored review, 90d decay, hard triggers, 10/25 fallback cap) active from tonight's run."
 }

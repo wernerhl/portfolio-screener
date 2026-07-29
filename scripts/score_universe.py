@@ -33,6 +33,7 @@ except ImportError:
 
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data"
 OUTPUT_DIR.mkdir(exist_ok=True)
+LAST_PRICE_DATE = None   # [5] set by main() after the price fetch
 
 # Current portfolio (for correlation penalty)
 CURRENT_PORTFOLIO = {
@@ -241,8 +242,13 @@ def get_sp500_tickers():
 
 # ── Data Fetching ─────────────────────────────────────────────────────
 
+FETCH_FAILED = set()   # [3] tickers with no usable prices after batch + individual retry
+
 def fetch_price_data(tickers, period="1y"):
-    """Batch download price history."""
+    """Batch download price history. [3]: batch failures retry individually
+    once; still-failing names land in FETCH_FAILED so every downstream null
+    carries a reason instead of vanishing silently."""
+    global FETCH_FAILED
     print(f"  Downloading price data for {len(tickers)} tickers...")
     # Split into chunks to avoid timeout
     chunk_size = 100
@@ -262,7 +268,20 @@ def fetch_price_data(tickers, period="1y"):
             time.sleep(1)
         except Exception as e:
             print(f"    Chunk {i//chunk_size + 1} error: {e}")
-    
+
+    # [3] individual retry for anything the batch missed, once
+    missing = [t for t in tickers if t not in all_data]
+    for t in missing:
+        try:
+            s = yf.download(t, period=period, progress=False, auto_adjust=True, threads=False)
+            if s is not None and 'Close' in s.columns and not s['Close'].isna().all():
+                c = s['Close']
+                all_data[t] = c.iloc[:, 0] if isinstance(c, pd.DataFrame) else c
+        except Exception:
+            pass
+    FETCH_FAILED = {t for t in tickers if t not in all_data}
+    if FETCH_FAILED:
+        print(f"  FETCH FAILED after retry ({len(FETCH_FAILED)}): {sorted(FETCH_FAILED)[:10]}...")
     print(f"  Got price data for {len(all_data)} tickers")
     return pd.DataFrame(all_data)
 
@@ -445,11 +464,16 @@ def compute_fundamental_score(fund_data):
         details['fcf_yield'] = round(fcf_yield, 1)
 
     if 'fcf_yield' in details:
+        # [2] Tail extension (written instruction 2026-07-29): the old ladder
+        # collapsed everything <=0 to 1.0 and the old [-5,25] range check
+        # nulled true deep-burn readings (NBIS -15.6% became a neutral null).
+        # Steps above 2% unchanged; (0,2] drops 3.0->2.0; tails score.
         if fcf_yield > 6: val_score = 7.0
         elif fcf_yield > 4: val_score = 6.0
         elif fcf_yield > 2: val_score = 4.5
-        elif fcf_yield > 0: val_score = 3.0
-        else: val_score = 1.0
+        elif fcf_yield > 0: val_score = 2.0
+        elif fcf_yield > -5: val_score = 1.0
+        else: val_score = 0.5
     elif 'forward_pe' in details:
         if fwd_pe < 12: val_score = 6.5
         elif fwd_pe < 20: val_score = 5.5
@@ -519,7 +543,7 @@ def compute_fundamental_score(fund_data):
     return round(total, 1), details
 
 
-def compute_visibility_score(fund_data, ticker):
+def compute_visibility_score(fund_data, ticker, force_legacy=False):
     """
     Visibility / Backlog Score (0-25)
     
@@ -555,7 +579,9 @@ def compute_visibility_score(fund_data, ticker):
     
     # Registry mode (plan 2.5): once the governed registry is frozen it is the
     # single authority — the hardcoded dict above becomes migration history.
-    if VIS_REGISTRY is not None:
+    # force_legacy exists ONLY for the [6] board-delta ablation (computes the
+    # pre-registry visibility alongside), never for scoring.
+    if VIS_REGISTRY is not None and not force_legacy:
         return visibility_from_registry(fund_data, ticker)
 
     if ticker in VISIBILITY_OVERRIDES:
@@ -612,34 +638,46 @@ def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
     uncorrelated", not "computation died" (that ambiguity hid the bug).
     """
     WINDOW  = 126   # ~6 trading months of daily returns
-    MIN_OBS = 60    # floor for a usable book correlation
+    MIN_OBS = 60    # [3] floor for pairwise AND book overlap (60 trading days)
 
-    fail = {'corr_status': 'unavailable', 'max_corr': None,
-            'max_corr_with': None, 'portfolio_corr': None, 'n_obs': 0}
+    def _fail(reason):
+        return None, {'corr_status': 'unavailable', 'corr_null_reason': reason,
+                      'max_corr': None, 'max_corr_with': None,
+                      'portfolio_corr': None, 'n_obs': 0}
 
-    if ticker not in prices_df.columns or not portfolio_weights:
-        return None, fail
+    if not portfolio_weights:
+        return _fail('no_book_overlap')
+    if ticker in FETCH_FAILED:
+        return _fail('fetch_failed')
+    if ticker not in prices_df.columns:
+        return _fail('fetch_failed')
 
     tail = prices_df.tail(WINDOW + 1)
     cand = tail[ticker].pct_change()
+    if cand.dropna().shape[0] < MIN_OBS:
+        return _fail('insufficient_history')
 
-    # Holdings' return series (self excluded for held candidates)
+    # Holdings' return series (self excluded for held candidates).
+    # [3] Per-member overlap floor: a book position with <60 overlapping
+    # days vs THIS candidate (e.g. a short-history BMNR) is excluded from
+    # this candidate's pair set and the book weights renormalize over the
+    # remaining members — the candidate is NOT nulled for a member's gap.
     held = {}
     for pticker, w in portfolio_weights.items():
         col = pticker.replace('.', '-')
         if col == ticker:
             continue
         if col in tail.columns:
-            held[pticker] = (tail[col].pct_change(), w)
+            pair_n = pd.concat([cand, tail[col].pct_change()], axis=1).dropna().shape[0]
+            if pair_n >= MIN_OBS:
+                held[pticker] = (tail[col].pct_change(), w)
     if not held:
-        return None, fail
+        return _fail('no_book_overlap')
 
     # Pairwise max — for the user-facing "highest overlap: NVDA" message
     max_corr, max_corr_ticker = 0.0, None
     for pticker, (ret, _w) in held.items():
         pair = pd.concat([cand, ret], axis=1).dropna()
-        if len(pair) < 30:
-            continue
         c = pair.corr().iloc[0, 1]
         if not np.isnan(c) and abs(c) > max_corr:
             max_corr, max_corr_ticker = abs(c), pticker
@@ -648,13 +686,13 @@ def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
     book = pd.concat({p: r for p, (r, _w) in held.items()}, axis=1)
     aligned = pd.concat([cand.rename('_cand'), book], axis=1).dropna()
     if len(aligned) < MIN_OBS:
-        return None, fail
+        return _fail('insufficient_history')
     weights = pd.Series({p: w for p, (_r, w) in held.items()})
     weights = weights / weights.sum()
     book_ret = (aligned[list(weights.index)] * weights).sum(axis=1)
     portfolio_corr = aligned['_cand'].corr(book_ret)
     if np.isnan(portfolio_corr):
-        return None, fail
+        return _fail('insufficient_history')
 
     apc = abs(portfolio_corr)
     if apc > 0.85:
@@ -670,6 +708,7 @@ def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
 
     details = {
         'corr_status': 'ok',
+        'corr_null_reason': None,
         'max_corr': round(float(max_corr), 3),
         'max_corr_with': max_corr_ticker,
         'portfolio_corr': round(float(portfolio_corr), 3),
@@ -710,6 +749,8 @@ def main():
     # 2. Fetch price data
     print("\n[2/5] Fetching price data...")
     prices = fetch_price_data(universe_with_bench, period="1y")
+    global LAST_PRICE_DATE   # [5] session stamp consumed by build_json's guard
+    LAST_PRICE_DATE = str(prices.index.max().date()) if len(prices) else None
     
     # 3. Fetch fundamentals
     print("\n[3/5] Fetching fundamentals...")
@@ -769,8 +810,13 @@ def main():
             and current_px < entry_level * (1 - BROKEN_BASE_GAP_PCT / 100.0)
             and rsi_val < BROKEN_BASE_RSI
         )
+        tech_precap = tech_score          # [6] ablation input for board-delta
         if broken_base:
             tech_score = min(tech_score, BROKEN_BASE_TECH_CAP)
+
+        # [6] ablation input: what the legacy (pre-registry) visibility path
+        # would have scored — consumed only by scripts/oneoff/board_delta.py.
+        vis_legacy, _ = compute_visibility_score(fund, ticker, force_legacy=True)
 
         # Composite score
         composite = tech_score + fund_score + vis_score + penalty_applied
@@ -803,8 +849,11 @@ def main():
         if fwd_pe_val is not None and not (3.0 <= fwd_pe_val <= 150.0):
             data_flags.append(f"fwd_pe_out_of_range({fwd_pe_val})")
             fwd_pe_val = None
+        # [2] bounds widened to [-60, 30]: the check catches corruption, not
+        # true readings. A missing forward P/E from negative earnings is a
+        # legitimate null, not a flag (only present-but-absurd values flag).
         fcf_yield_val = fund_details.get('fcf_yield')
-        if fcf_yield_val is not None and not (-5.0 <= fcf_yield_val <= 25.0):
+        if fcf_yield_val is not None and not (-60.0 <= fcf_yield_val <= 30.0):
             data_flags.append(f"fcf_yield_out_of_range({fcf_yield_val})")
             fcf_yield_val = None
 
@@ -838,7 +887,10 @@ def main():
             'portfolio_corr': corr_details.get('portfolio_corr'),
             'max_corr': corr_details.get('max_corr'),
             'max_corr_with': corr_details.get('max_corr_with'),
+            'corr_null_reason': corr_details.get('corr_null_reason'),
             'n_corr_obs': corr_details.get('n_obs', 0),
+            'technical_precap': tech_precap,       # [6] ablation columns
+            'visibility_legacy': vis_legacy,
             'data_flags': ';'.join(data_flags),
             'in_portfolio': in_portfolio,
         })

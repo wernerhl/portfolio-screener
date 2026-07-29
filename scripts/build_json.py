@@ -151,9 +151,24 @@ def main():
             if isinstance(obj, (np.floating,)): return float(obj)
             if isinstance(obj, np.ndarray): return obj.tolist()
             return super().default(obj)
-    
+
+    # Sanitize NaN/Infinity → null. Python's json.dump emits literal `NaN`
+    # (valid for Python, INVALID for the browser's JSON.parse — it throws
+    # "Unexpected token N" and the page renders "No data found"). This bit
+    # when the universe grew to 535 + held names were included: names with
+    # no correlation match carry max_corr_with = NaN. allow_nan=False makes
+    # any future NaN a loud CI failure instead of a silently-broken page.
+    import math
+    def _clean(o):
+        if isinstance(o, dict):  return {k: _clean(v) for k, v in o.items()}
+        if isinstance(o, list):  return [_clean(v) for v in o]
+        if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+        if isinstance(o, (np.floating,)):
+            x = float(o); return None if (math.isnan(x) or math.isinf(x)) else x
+        return o
+
     with open(OUTPUT, 'w') as f:
-        json.dump(output, f, indent=2, cls=NpEncoder)
+        json.dump(_clean(output), f, indent=2, cls=NpEncoder, allow_nan=False)
     
     print(f"\nJSON output: {OUTPUT}")
     print(f"Portfolio: {len(portfolio_summary)} positions, ${total_equity_value:,.0f} equity + ${cash:,.0f} cash = ${total_value:,.0f}")

@@ -87,15 +87,19 @@ def main():
     cash = config.get("cash", 0)
     total_value = total_equity_value + cash
     
-    # Build watchlist (top 30 non-portfolio)
+    # Build watchlist — INCLUDE held names (you can always add to a position).
+    # Held names stay in the ranking, flagged `held:true` so the frontend can
+    # tag them as add-to-position candidates rather than hiding them. Top 40 so
+    # the held names don't crowd out fresh ideas.
     portfolio_tickers = set(portfolio.keys())
-    watchlist_df = df[~df['ticker'].isin(portfolio_tickers)].head(30)
-    
+    watchlist_df = df.head(40)
+
     watchlist = []
     for _, r in watchlist_df.iterrows():
         watchlist.append({
             'rank': int(r.get('rank', 0)) if 'rank' in r else int(_ + 1),
             'ticker': r['ticker'],
+            'held': bool(r.get('in_portfolio', False)) or (r['ticker'] in portfolio_tickers),
             'name': r.get('name', ''),
             'sector': r.get('sector', ''),
             'category': r.get('category', ''),

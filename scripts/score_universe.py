@@ -691,10 +691,13 @@ def main():
     df.to_csv(OUTPUT_DIR / "scored_universe.csv")
     print(f"  Full universe: {OUTPUT_DIR / 'scored_universe.csv'}")
     
-    # Top 30 watchlist (excluding current portfolio)
-    watchlist = df[~df['in_portfolio']].head(30)
+    # Top 40 watchlist — INCLUDE held names (you can always add to a position).
+    # Held names stay in the ranking, tagged 'in_portfolio', so an add-to-position
+    # candidate that scores well isn't hidden. Bumped 30→40 so held names don't
+    # crowd out fresh ideas.
+    watchlist = df.head(40)
     watchlist.to_csv(OUTPUT_DIR / "watchlist_top30.csv")
-    print(f"  Top 30 watchlist: {OUTPUT_DIR / 'watchlist_top30.csv'}")
+    print(f"  Top 40 watchlist (incl. held): {OUTPUT_DIR / 'watchlist_top30.csv'}")
     
     # Summary report
     report_lines = []
@@ -706,14 +709,15 @@ def main():
     report_lines.append(f"Median: {df['composite'].median():.1f}")
     
     report_lines.append("\n" + "─" * 70)
-    report_lines.append("TOP 30 CANDIDATES (excluding current portfolio)")
+    report_lines.append("TOP 40 CANDIDATES (all names · ★ = already held, add-to candidate)")
     report_lines.append("─" * 70)
     report_lines.append(f"{'Rank':<5} {'Ticker':<7} {'Name':<25} {'Score':>6} {'Fund':>5} {'Tech':>5} {'Vis':>5} {'Corr':>5} {'Entry':>9} {'Cat':<12}")
     report_lines.append("─" * 70)
-    
+
     for idx, row in watchlist.iterrows():
+        held_mark = "★" if row.get('in_portfolio') else " "
         report_lines.append(
-            f"{idx:<5} {row['ticker']:<7} {row['name']:<25} {row['composite']:>6.1f} "
+            f"{idx:<5}{held_mark}{row['ticker']:<6} {row['name']:<25} {row['composite']:>6.1f} "
             f"{row['fundamental']:>5.1f} {row['technical']:>5.1f} {row['visibility']:>5.1f} "
             f"{row['corr_penalty']:>5.1f} {row['entry_level']:>9.2f} {row['category']:<12}"
         )

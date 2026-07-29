@@ -133,7 +133,7 @@ function renderWatchlistTable(watchlist){
       const gapCls=gap<=-2?'pos':gap>=2?'neg':'neut';
       return`<tr>
       <td style="color:var(--t3)">${i+1}</td>
-      <td class="tk">${r.ticker}</td>
+      <td class="tk">${r.ticker}${r.held?' <span title="Already held — add-to-position candidate" style="font:700 8px var(--m);color:var(--g);border:1px solid var(--g);border-radius:3px;padding:0 3px;vertical-align:middle">HELD</span>':''}</td>
       <td class="nm">${r.name}</td>
       <td style="color:var(--t3);font-size:10px">${(r.sector||'').substring(0,18)}</td>
       <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>

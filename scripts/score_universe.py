@@ -286,24 +286,33 @@ def fetch_price_data(tickers, period="1y"):
     return pd.DataFrame(all_data)
 
 
-def fetch_fundamentals(tickers):
-    """Fetch fundamental data for each ticker."""
-    print(f"  Fetching fundamentals for {len(tickers)} tickers...")
+def fetch_fundamentals(tickers, _retry_pass=False):
+    """Fetch fundamental data for each ticker.
+
+    2026-07-30 hardening: the 19:00 ET nightly lost 113/535 names to Yahoo
+    rate-limiting (a board scored on 423 names was correctly REJECTED by the
+    named-seven tripwire). Failed names now get one full retry pass with a
+    long backoff — same policy item [3] mandated for the price fetch."""
+    if not _retry_pass:
+        print(f"  Fetching fundamentals for {len(tickers)} tickers...")
     results = {}
     errors = 0
-    
+    failed = []
+
     for i, ticker in enumerate(tickers):
         if i % 50 == 0 and i > 0:
-            print(f"    ... {i}/{len(tickers)} done ({errors} errors)")
-            time.sleep(2)  # Rate limit
-        
+            if not _retry_pass:
+                print(f"    ... {i}/{len(tickers)} done ({errors} errors)")
+            time.sleep(2 if not _retry_pass else 4)  # heavier backoff on retry
+
         try:
             t = yf.Ticker(ticker)
             info = t.info
             if not info or 'marketCap' not in info:
                 errors += 1
+                failed.append(ticker)
                 continue
-            
+
             results[ticker] = {
                 'marketCap': info.get('marketCap', 0),
                 'forwardPE': info.get('forwardPE'),
@@ -332,8 +341,18 @@ def fetch_fundamentals(tickers):
             }
         except Exception:
             errors += 1
-    
-    print(f"  Got fundamentals for {len(results)} tickers ({errors} errors)")
+            failed.append(ticker)
+
+    if failed and not _retry_pass:
+        print(f"  Retry pass for {len(failed)} failed fundamentals (30s backoff)...")
+        time.sleep(30)
+        recovered = fetch_fundamentals(failed, _retry_pass=True)
+        results.update(recovered)
+        still = sorted(set(failed) - set(recovered))
+        print(f"  Retry recovered {len(recovered)}; still failed ({len(still)}): {still[:12]}")
+
+    if not _retry_pass:
+        print(f"  Got fundamentals for {len(results)} tickers ({len(tickers)-len(results)} unrecovered)")
     return results
 
 

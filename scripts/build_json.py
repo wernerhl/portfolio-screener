@@ -285,7 +285,10 @@ def main():
         # 3) Structural floors
         if len(watchlist) < 30:
             raise SystemExit(f"CI FAIL: watchlist collapsed to {len(watchlist)} rows")
-        if len(df) < 400:
+        # Floor tightened 400->500 (2026-07-30): the 19:00 ET run scored 423
+        # names (113 Yahoo failures) and PASSED the 400 floor — only the
+        # named-seven assert saved the publish. 500/535 = 93% minimum.
+        if len(df) < 500:
             raise SystemExit(f"CI FAIL: scored universe collapsed to {len(df)} rows "
                              "(535 expected — Wikipedia-fallback-style regression?)")
         print(f"  validate_outputs: OK  (corr alive {n_alive}, coverage {coverage:.1f}%, "

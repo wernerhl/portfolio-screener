@@ -205,7 +205,9 @@ def visibility_from_registry(fund_data, ticker):
         base += 2
     elif gross and gross > 0.40:
         base += 1
-    industry = fund_data.get('industry', '')
+    # `or ''`: a key present with value None defeats .get's default (#92
+    # canonical data carries explicit nulls where the old fetcher wrote '')
+    industry = fund_data.get('industry') or ''
     if any(kw in industry.lower() for kw in ['software', 'saas', 'subscription', 'service']):
         base += 2
     capped = min(base, VISIBILITY_FALLBACK_CAP)
@@ -243,6 +245,88 @@ def get_sp500_tickers():
 # ── Data Fetching ─────────────────────────────────────────────────────
 
 FETCH_FAILED = set()   # [3] tickers with no usable prices after batch + individual retry
+
+# #92 canonical artifact (plan 4.1): the tournament repo performs the ONE
+# fundamentals fetch nightly and publishes data/canonical/fundamentals.json +
+# data/source/prices_daily.parquet (public repo). This screener consumes those
+# instead of running its own 535-name fetch — the double-fetch is what caused
+# the 2026-07-29 rejection night (113/535 names lost to Yahoo rate limits on
+# our runner). Direct fetch remains as a LOUD fallback, never a silent one.
+CANONICAL_BASES = [
+    "/Users/whl/portfolio-tournament",                                  # dev sibling
+    "https://raw.githubusercontent.com/wernerhl/portfolio-tournament/main",
+]
+DATA_SOURCE = {"mode": "direct"}      # overwritten when canonical is consumed
+FUNDAMENTALS_USED = {}                # for build_json's sample equality assert
+
+
+def fetch_canonical(universe, universe_with_bench):
+    """Try each canonical base; return (prices_df, fundamentals, provenance)
+    or (None, None, reason) so main() can fall back to direct fetch."""
+    import json as _json, urllib.request, tempfile, os
+    from datetime import date
+
+    for base in CANONICAL_BASES:
+        try:
+            local = not base.startswith("http")
+            fpath = f"{base}/data/canonical/fundamentals.json"
+            if local:
+                if not Path(fpath).exists():
+                    continue
+                blob = _json.loads(Path(fpath).read_text())
+            else:
+                with urllib.request.urlopen(fpath, timeout=30) as r:
+                    blob = _json.loads(r.read())
+            prov = blob["provenance"]
+
+            # Cheap staleness sanity (the [5] session guard in build_json does
+            # the strict data-session == current-session assert downstream).
+            sd = date.fromisoformat(prov["session_date"])
+            if (date.today() - sd).days > 5:
+                print(f"  canonical at {base}: stale (session {sd}) — skipping")
+                continue
+
+            ppath = f"{base}/{prov['prices_ref']}"
+            if local:
+                prices = pd.read_parquet(ppath)
+            else:
+                tmp = os.path.join(tempfile.gettempdir(), "canon_prices.parquet")
+                urllib.request.urlretrieve(ppath, tmp)
+                prices = pd.read_parquet(tmp)
+            prices.index = pd.to_datetime(prices.index)
+            prices = prices.tail(260)                    # ~1y window
+            if "SPY_volume" in prices.columns:
+                prices = prices.drop(columns=["SPY_volume"])
+
+            fund = dict(blob["tickers"])
+            miss_f = sorted(set(universe) - set(fund))
+            miss_p = sorted(set(universe) - set(prices.columns))
+            if len(miss_f) > 0.05 * len(universe) or len(miss_p) > 0.05 * len(universe):
+                print(f"  canonical at {base}: coverage short (fund -{len(miss_f)}, "
+                      f"prices -{len(miss_p)}) — falling back entirely")
+                continue
+
+            # Top-ups: benchmark + the few names canonical lacks
+            topup = sorted(set(miss_p) | {"^GSPC"})
+            px2 = fetch_price_data(topup, period="1y")
+            prices = prices.join(px2, how="outer") if len(px2.columns) else prices
+            if miss_f:
+                fund.update(fetch_fundamentals(miss_f))
+
+            prov_out = {
+                "mode": "canonical", "base": base,
+                "canonical_session": prov["session_date"],
+                "canonical_built_at": prov["built_at"],
+                "canonical_coverage_pct": prov["coverage_pct"],
+                "fund_topups": miss_f, "price_topups": miss_p,
+            }
+            print(f"  canonical consumed from {base} "
+                  f"(session {prov['session_date']}, {len(fund)} names, "
+                  f"topups fund={len(miss_f)} prices={len(miss_p)})")
+            return prices, fund, prov_out
+        except Exception as e:
+            print(f"  canonical at {base}: {type(e).__name__}: {e} — trying next")
+    return None, None, {"mode": "direct", "reason": "no usable canonical base"}
 
 def fetch_price_data(tickers, period="1y"):
     """Batch download price history. [3]: batch failures retry individually
@@ -612,7 +696,7 @@ def compute_visibility_score(fund_data, ticker, force_legacy=False):
 
     # Sector-based visibility premium
     sector = fund_data.get('sector', '')
-    industry = fund_data.get('industry', '')
+    industry = fund_data.get('industry') or ''   # None-safe (#92 canonical nulls)
 
     base = SECTOR_VIS_PRIORS.get(sector, 12.5)
     
@@ -765,15 +849,20 @@ def main():
     universe_with_bench = list(set(universe + ['^GSPC']))
     print(f"  Universe: {len(universe)} tickers  [{src} + {len(MIDCAP_ADDITIONS)} mid-caps + portfolio]")
     
-    # 2. Fetch price data
-    print("\n[2/5] Fetching price data...")
-    prices = fetch_price_data(universe_with_bench, period="1y")
-    global LAST_PRICE_DATE   # [5] session stamp consumed by build_json's guard
+    # 2+3. Canonical-first (#92): one fetch feeds both repos. Direct fetch is
+    # the fallback and says so in provenance — never a silent substitution.
+    global LAST_PRICE_DATE, DATA_SOURCE, FUNDAMENTALS_USED
+    print("\n[2+3/5] Consuming canonical artifact...")
+    prices, fundamentals, DATA_SOURCE = fetch_canonical(universe, universe_with_bench)
+    if prices is None:
+        print("  CANONICAL UNAVAILABLE — direct-fetch fallback (recorded in provenance)")
+        print("\n[2/5] Fetching price data (direct)...")
+        prices = fetch_price_data(universe_with_bench, period="1y")
+        print("\n[3/5] Fetching fundamentals (direct)...")
+        fundamentals = fetch_fundamentals(universe)
+    FUNDAMENTALS_USED = fundamentals
+    # [5] session stamp consumed by build_json's guard
     LAST_PRICE_DATE = str(prices.index.max().date()) if len(prices) else None
-    
-    # 3. Fetch fundamentals
-    print("\n[3/5] Fetching fundamentals...")
-    fundamentals = fetch_fundamentals(universe)
     
     # 4. Score everything
     print("\n[4/5] Scoring universe...")
@@ -878,9 +967,9 @@ def main():
 
         rows.append({
             'ticker': ticker,
-            'name': fund.get('shortName', ticker)[:30],
+            'name': (fund.get('shortName') or ticker)[:30],
             'sector': sector,
-            'industry': fund.get('industry', '')[:30],
+            'industry': (fund.get('industry') or '')[:30],
             'category': category,
             'mcap_B': round(mcap / 1e9, 1) if mcap else 0,
             'current_price': round(current_px, 2) if isinstance(current_px, (int, float)) else 0,

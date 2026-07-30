@@ -285,6 +285,26 @@ def main():
         # 3) Structural floors
         if len(watchlist) < 30:
             raise SystemExit(f"CI FAIL: watchlist collapsed to {len(watchlist)} rows")
+        # #92 sample equality assert (plan 4.1): when the canonical artifact
+        # was consumed, N sampled tickers must match it exactly — catches
+        # partial consumption or mutation between source and board.
+        ds = getattr(su, 'DATA_SOURCE', {})
+        if ds.get('mode') == 'canonical':
+            import json as _json, urllib.request
+            base = ds['base']
+            fp = f"{base}/data/canonical/fundamentals.json"
+            blob = (_json.loads(Path(fp).read_text()) if not base.startswith('http')
+                    else _json.loads(urllib.request.urlopen(fp, timeout=30).read()))
+            canon = blob['tickers']
+            used = getattr(su, 'FUNDAMENTALS_USED', {})
+            sample = [t for t in list(canon)[::max(1, len(canon)//10)][:10] if t in used]
+            for t in sample:
+                for f in ('marketCap', 'forwardPE'):
+                    if canon[t].get(f) != used[t].get(f):
+                        raise SystemExit(f"CI FAIL: canonical equality broken for {t}.{f}: "
+                                         f"canonical={canon[t].get(f)} consumed={used[t].get(f)}")
+            print(f"  canonical equality assert: OK on {len(sample)} sampled tickers")
+
         # Floor tightened 400->500 (2026-07-30): the 19:00 ET run scored 423
         # names (113 Yahoo failures) and PASSED the 400 floor — only the
         # named-seven assert saved the publish. 500/535 = 93% minimum.
@@ -350,6 +370,7 @@ def main():
             'mode': 'publish' if publish else 'scratch',
             'forced_publish': bool(forced),
             'force_reason': args.force_publish,
+            'data_source': getattr(su, 'DATA_SOURCE', {'mode': 'direct'}),   # #92
         },
         'corr_coverage_pct': covmeta['coverage_pct'],   # [3]
         'corr_impaired': covmeta['impaired'],           # [3] every null + reason

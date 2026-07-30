@@ -2,10 +2,12 @@ name: Daily Rescreen
 
 on:
   schedule:
-    # Weekdays after the close (22:00 UTC ≈ 6pm ET) — settled prices for the
-    # RSI / entry-level / momentum inputs. ~7 min fundamentals fetch for the
-    # 535-ticker universe is well within the Actions runtime budget.
-    - cron: '0 22 * * 1-5'
+    # 23:15 UTC (#92): AFTER the tournament's 22:00 nightly builds the
+    # canonical artifact this job consumes (one fetch feeds both repos).
+    # Freshness/session asserts fail loudly if the canonical is stale, so a
+    # tournament failure can't feed us yesterday's data silently — the
+    # direct-fetch fallback then runs and says so in provenance.
+    - cron: '15 23 * * 1-5'
   workflow_dispatch: # Manual trigger
 
 permissions:
@@ -24,7 +26,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install yfinance pandas numpy
+        run: pip install yfinance pandas numpy pyarrow
 
       - name: Run scoring model
         id: score

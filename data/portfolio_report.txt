@@ -1,10 +1,10 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-07-29 23:03
+PORTFOLIO SCORING MODEL — 2026-07-30 04:00
 ======================================================================
 
-Universe: 423 scored tickers
+Universe: 533 scored tickers
 Score range: 26.0 — 62.7
-Median: 41.6
+Median: 41.4
 
 ──────────────────────────────────────────────────────────────────────
 TOP 40 CANDIDATES (all names · ★ = already held, add-to candidate)
@@ -16,8 +16,8 @@ Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry
 3     ANET   Arista Networks, Inc.       58.1  21.5  16.6  20.0   0.0    165.22 Growth      
 4    ★NVDA   NVIDIA Corporation          56.9  20.0  18.9  20.0  -2.0    207.06 Growth      
 5     TLN    Talen Energy Corporation    56.5  19.0  18.5  19.0   0.0    375.55 Growth      
-6    ★GOOG   Alphabet Inc.               56.3  19.0  17.3  20.0   0.0    358.39 Compounder  
-7     POWL   Powell Industries, Inc.     56.3  16.0  22.3  18.0   0.0    266.17 Speculative 
+6     POWL   Powell Industries, Inc.     56.3  16.0  22.3  18.0   0.0    266.17 Speculative 
+7    ★GOOG   Alphabet Inc.               56.3  19.0  17.3  20.0   0.0    358.39 Compounder  
 8     TSM    Taiwan Semiconductor Manufactu   55.0  24.0  12.0  21.0  -2.0    424.62 Growth      
 9     NOC    Northrop Grumman Corporation   54.8  16.0  17.8  21.0   0.0    535.69 Compounder  
 10    META   Meta Platforms, Inc.        54.3  19.0  18.3  17.0   0.0    604.33 Growth      
@@ -28,29 +28,29 @@ Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry
 15    PTC    PTC Inc.                    50.0  24.0  16.0  10.0   0.0    127.28 Core        
 16    UBER   Uber Technologies, Inc.     49.9  21.0  18.9  10.0   0.0     71.99 Core        
 17    LMT    Lockheed Martin Corporation   49.7  16.5  11.2  22.0   0.0    540.74 Compounder  
-18    LITE   Lumentum Holdings Inc.      49.4  17.5  21.9  10.0   0.0    833.51 Growth      
-19    NEM    Newmont Corporation         49.4  22.0  17.4  10.0   0.0     99.28 Cyclical    
-20    NFLX   Netflix, Inc.               49.0  23.0  16.0  10.0   0.0     77.79 Core        
-21    ORCL   Oracle Corporation          48.9  16.0  15.9  19.0  -2.0    166.67 Core        
-22    KEYS   Keysight Technologies Inc.   48.8  19.0  19.8  10.0   0.0    334.28 Growth      
-23    EXE    Expand Energy Corporation   48.7  22.5  16.2  10.0   0.0     90.61 Growth      
-24    TT     Trane Technologies plc      48.6  18.5  20.1  10.0   0.0    469.51 Core        
+18    NEM    Newmont Corporation         49.4  22.0  17.4  10.0   0.0     99.28 Cyclical    
+19    LITE   Lumentum Holdings Inc.      49.4  17.5  21.9  10.0   0.0    833.51 Growth      
+20    TER    Teradyne, Inc.              49.2  19.0  20.2  10.0   0.0    378.63 Growth      
+21    NFLX   Netflix, Inc.               49.0  23.0  16.0  10.0   0.0     77.79 Core        
+22    ORCL   Oracle Corporation          48.9  16.0  15.9  19.0  -2.0    166.67 Core        
+23    KEYS   Keysight Technologies Inc.   48.8  19.0  19.8  10.0   0.0    334.28 Growth      
+24    EXE    Expand Energy Corporation   48.7  22.5  16.2  10.0   0.0     90.61 Growth      
 25    CEG    Constellation Energy Corporati   48.6  14.0  13.6  21.0   0.0    263.13 Growth      
-26    AXP    American Express Company    48.5  21.0  17.5  10.0   0.0    331.95 Core        
-27    AMZN   Amazon.com, Inc.            48.4  16.0  17.4  17.0  -2.0    246.97 Core        
-28    RL     Ralph Lauren Corporation    48.2  20.0  18.2  10.0   0.0    382.13 Core        
-29    RMD    ResMed Inc.                 48.1  21.0  17.1  10.0   0.0    203.58 Core        
-30    ADBE   Adobe Inc.                  48.0  23.0  15.0  10.0   0.0    250.26 Core        
-31    BX     Blackstone Inc.             47.6  22.5  15.1  10.0   0.0    122.93 Core        
+26    TT     Trane Technologies plc      48.6  18.5  20.1  10.0   0.0    469.51 Core        
+27    AXP    American Express Company    48.5  21.0  17.5  10.0   0.0    331.95 Core        
+28    AMZN   Amazon.com, Inc.            48.4  16.0  17.4  17.0  -2.0    246.97 Core        
+29    RL     Ralph Lauren Corporation    48.2  20.0  18.2  10.0   0.0    382.13 Core        
+30    RMD    ResMed Inc.                 48.1  21.0  17.1  10.0   0.0    203.58 Core        
+31    ADBE   Adobe Inc.                  48.0  23.0  15.0  10.0   0.0    250.26 Core        
 32    GEN    Gen Digital Inc.            47.6  22.5  15.1  10.0   0.0     26.25 Core        
-33    GILD   Gilead Sciences, Inc.       47.5  21.0  16.5  10.0   0.0    129.39 Core        
-34    DECK   Deckers Outdoor Corporation   47.5  19.5  18.0  10.0   0.0    105.82 Core        
-35    STZ    Constellation Brands, Inc.   47.3  19.5  17.8  10.0   0.0    138.79 Core        
-36    CSCO   Cisco Systems, Inc.         47.3  19.5  17.8  10.0   0.0    117.48 Core        
-37    MKC    McCormick & Company, Incorpora   47.2  20.0  17.2  10.0   0.0     49.39 Core        
-38    MS     Morgan Stanley              47.1  19.5  17.6  10.0   0.0    213.62 Core        
+33    BX     Blackstone Inc.             47.6  22.5  15.1  10.0   0.0    122.93 Core        
+34    GILD   Gilead Sciences, Inc.       47.5  21.0  16.5  10.0   0.0    129.39 Core        
+35    DECK   Deckers Outdoor Corporation   47.5  19.5  18.0  10.0   0.0    105.82 Core        
+36    STZ    Constellation Brands, Inc.   47.3  19.5  17.8  10.0   0.0    138.79 Core        
+37    CSCO   Cisco Systems, Inc.         47.3  19.5  17.8  10.0   0.0    117.48 Core        
+38    MKC    McCormick & Company, Incorpora   47.2  20.0  17.2  10.0   0.0     49.39 Core        
 39    TPL    Texas Pacific Land Corporation   47.1  18.0  19.1  10.0   0.0    395.26 Cyclical    
-40    JBL    Jabil Inc.                  47.0  16.5  20.5  10.0   0.0    348.77 Core        
+40    MU     Micron Technology, Inc.     47.1  20.0  17.1  10.0   0.0    958.40 Growth      
 
 ──────────────────────────────────────────────────────────────────────
 CURRENT PORTFOLIO SCORES
@@ -64,13 +64,13 @@ CURRENT PORTFOLIO SCORES
 ──────────────────────────────────────────────────────────────────────
 SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Technology                     14
+  Technology                     15
   Industrials                    8
   Communication Services         3
-  Financial Services             3
   Consumer Cyclical              3
   Utilities                      2
   Energy                         2
+  Financial Services             2
   Healthcare                     2
   Consumer Defensive             2
   Basic Materials                1
@@ -78,8 +78,8 @@ SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
 CATEGORY DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Core                 21
-  Growth               11
+  Core                 19
+  Growth               13
   Compounder           5
   Cyclical             2
   Speculative          1

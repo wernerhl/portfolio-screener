@@ -619,23 +619,16 @@ def compute_fundamental_score(fund_data):
     scores.append(margin_score)
     
     # Return on Equity / Capital Efficiency (0-6)
+    # The old buried D/E haircut (-1.5/-0.5) moved to compute_leverage_penalty
+    # (#93) so leverage is scored ONCE, visibly, not twice invisibly.
     roe = fund_data.get('returnOnEquity')
-    dte = fund_data.get('debtToEquity')
     if roe is not None:
         details['roe'] = round(roe * 100, 1)
-        # Penalize high leverage
-        leverage_penalty = 0
-        if dte and dte > 200:
-            leverage_penalty = 1.5
-        elif dte and dte > 100:
-            leverage_penalty = 0.5
-        
-        if roe > 0.30: roe_score = 6.0 - leverage_penalty
-        elif roe > 0.20: roe_score = 5.0 - leverage_penalty
-        elif roe > 0.10: roe_score = 3.5 - leverage_penalty
+        if roe > 0.30: roe_score = 6.0
+        elif roe > 0.20: roe_score = 5.0
+        elif roe > 0.10: roe_score = 3.5
         elif roe > 0: roe_score = 2.0
         else: roe_score = 1.0
-        roe_score = max(1.0, roe_score)
     else:
         roe_score = 3.0
     scores.append(roe_score)
@@ -712,6 +705,54 @@ def compute_visibility_score(fund_data, ticker, force_legacy=False):
         base += 2
     
     return min(25, round(base, 1)), {'sector_base': sector}
+
+
+def compute_leverage_penalty(fund_data):
+    """#93 Leverage penalty (0 to -5) — absolute ramps, both-systems module.
+
+    Primary: net-debt / EBITDA. Fallback: debt-to-equity. Negative-EBITDA
+    names with meaningful debt (>10% of market cap) are levered cash burners
+    and take a fixed -4. Financials are exempt (banks/insurers carry balance-
+    sheet leverage by construction — D/E and ND/EBITDA are not comparable).
+    Interest coverage is unavailable in the data source (no interestExpense
+    field) — documented, not silently approximated.
+
+    Returns (penalty, details) with penalty=None + lev_status='unavailable'
+    when no metric can be computed — the corr-penalty precedent: a dead
+    input is visibly dead, never a silent 0. This module replaces the old
+    buried -1.5 ROE haircut (removed) so leverage is scored once, visibly.
+    """
+    if not fund_data:
+        return None, {'lev_status': 'unavailable'}
+    if (fund_data.get('sector') or '') == 'Financial Services':
+        return 0.0, {'lev_status': 'financial_na'}
+    td, tc = fund_data.get('totalDebt'), fund_data.get('totalCash')
+    eb, de = fund_data.get('ebitda'), fund_data.get('debtToEquity')
+    mcap = fund_data.get('marketCap') or 0
+
+    if td is not None and eb is not None:
+        if eb > 0:
+            nde = (td - (tc or 0)) / eb
+            if   nde <= 1: p = 0.0
+            elif nde <= 2: p = -0.5
+            elif nde <= 3: p = -1.5
+            elif nde <= 4: p = -2.5
+            elif nde <= 6: p = -3.5
+            else:          p = -5.0
+            return p, {'lev_status': 'ok', 'nd_ebitda': round(nde, 2)}
+        if mcap and td > 0.10 * mcap:
+            return -4.0, {'lev_status': 'neg_ebitda_debt', 'nd_ebitda': None}
+        return 0.0, {'lev_status': 'neg_ebitda_low_debt', 'nd_ebitda': None}
+
+    if de is not None:
+        if   de < 50:  p = 0.0
+        elif de < 100: p = -0.5
+        elif de < 200: p = -1.5
+        elif de < 400: p = -3.0
+        else:          p = -5.0
+        return p, {'lev_status': 'de_fallback', 'dte_pct': round(de, 1)}
+
+    return None, {'lev_status': 'unavailable'}
 
 
 def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
@@ -894,6 +935,10 @@ def main():
         )
         penalty_applied = corr_penalty if corr_penalty is not None else 0.0
 
+        # #93 leverage penalty (same visible-impairment semantics as corr)
+        lev_penalty, lev_details = compute_leverage_penalty(fund)
+        lev_applied = lev_penalty if lev_penalty is not None else 0.0
+
         # Entry level — computed BEFORE the composite so the broken-base cap
         # can reference it (20-DMA or recent support)
         px_series = prices[ticker].dropna() if ticker in prices.columns else pd.Series()
@@ -927,8 +972,8 @@ def main():
         vis_legacy, _ = compute_visibility_score(fund, ticker, force_legacy=True)
 
         # Composite score
-        composite = tech_score + fund_score + vis_score + penalty_applied
-        composite = max(0, min(75, composite))  # 0-75 range (25+25+25-10)
+        composite = tech_score + fund_score + vis_score + penalty_applied + lev_applied
+        composite = max(0, min(75, composite))  # 0-75 (25+25+25, corr -10, lev -5)
         
         # Category classification
         sector = fund.get('sector', '')
@@ -980,6 +1025,10 @@ def main():
             'visibility': vis_score,
             'corr_penalty': corr_penalty,          # None = unavailable, NOT 0
             'corr_status': corr_details.get('corr_status', 'ok'),
+            'leverage_penalty': lev_penalty,       # #93 None = unavailable, NOT 0
+            'lev_status': lev_details.get('lev_status', 'ok'),
+            'nd_ebitda': lev_details.get('nd_ebitda'),
+            'dte_pct': lev_details.get('dte_pct'),
             'broken_base': broken_base,
             'composite': round(composite, 1),
             # Key metrics — typed: fwd_pe is a P/E ratio or empty, never an

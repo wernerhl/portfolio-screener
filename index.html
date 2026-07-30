@@ -127,7 +127,7 @@ function renderWatchlistTable(watchlist){
   let rows=S.sort?sortBy(watchlist,S.sort,S.sortDir):watchlist;
   const cls=(k)=>S.sort===k?(S.sortDir>0?'sort-asc':'sort-desc'):'';
   return`<div class="tbl-wrap"><table>
-    <tr><th class="${cls('composite')}" data-k="composite">#</th><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('sector')}" data-k="sector">SECTOR</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('corr_penalty')}" data-k="corr_penalty">CORR</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('entry_level')}" data-k="entry_level">ENTRY</th><th>GAP</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
+    <tr><th class="${cls('composite')}" data-k="composite">#</th><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('sector')}" data-k="sector">SECTOR</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('corr_penalty')}" data-k="corr_penalty">CORR</th><th class="${cls('leverage_penalty')}" data-k="leverage_penalty">LEV</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('entry_level')}" data-k="entry_level">ENTRY</th><th>GAP</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
     ${rows.map((r,i)=>{
       const gap=r.entry_level&&r.current_price?((r.entry_level/r.current_price-1)*100):0;
       const gapCls=gap<=-2?'pos':gap>=2?'neg':'neut';
@@ -139,6 +139,7 @@ function renderWatchlistTable(watchlist){
       <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>
       <td><div class="sbar"><div style="flex:${r.fundamental};background:var(--b)"></div><div style="flex:${r.technical};background:var(--p)"></div><div style="flex:${r.visibility};background:var(--g)"></div></div><span style="font:400 8px var(--m);color:var(--t4)">F${r.fundamental} T${r.technical} V${r.visibility}</span></td>
       <td style="color:${r.corr_penalty<-4?'var(--r)':r.corr_penalty<0?'var(--y)':'var(--t3)'}" title="${r.corr_status==='unavailable'?'correlation unavailable — computation failed, no penalty applied':(r.max_corr_with?`highest overlap ${r.max_corr_with} |ρ|=${r.max_corr??'—'} · vs book ρ=${r.portfolio_corr??'—'}`:'')}">${r.corr_penalty==null?'<span style="color:var(--t5)">n/a</span>':r.corr_penalty}</td>
+      <td style="color:${r.leverage_penalty<-3?'var(--r)':r.leverage_penalty<0?'var(--y)':'var(--t3)'}" title="${r.lev_status==='financial_na'?'financial — leverage n/a by construction':r.lev_status==='unavailable'?'leverage unavailable — no penalty applied':r.nd_ebitda!=null?`net-debt/EBITDA ${r.nd_ebitda}`:(r.lev_status||'')}">${r.leverage_penalty==null?'<span style="color:var(--t5)">n/a</span>':r.leverage_penalty}</td>
       <td>$${fmtD(r.current_price)}</td>
       <td style="color:var(--b)">$${fmtD(r.entry_level)}</td>
       <td class="${gapCls}" style="font-size:10px">${gap.toFixed(1)}%</td>
@@ -208,6 +209,7 @@ function render(){
       <span><span style="color:var(--p)">■</span> Technical</span>
       <span><span style="color:var(--g)">■</span> Visibility</span>
       <span title="the watchlist ranks marginal additions to the current book; held names are scored against the rest of the book">CORR = penalty for return overlap vs your book (weight-aware, held names vs rest-of-book) · n/a = failed, no penalty, reason recorded</span>
+      <span>LEV = leverage penalty 0 to −5 (net-debt/EBITDA primary, D/E fallback) · financials exempt · replaces the old hidden ROE haircut</span>
       <span>GAP = distance from entry to current price (negative = below entry)</span>
     </div>`;
     // [4] Drawdown-watch shelf: quality names in broken technical state.

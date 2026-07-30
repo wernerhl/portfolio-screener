@@ -202,6 +202,9 @@ def main():
             'corr_penalty': _num(r.get('corr_penalty'), 1),
             'corr_status': r.get('corr_status', 'ok') if isinstance(r.get('corr_status'), str) else 'ok',
             'corr_null_reason': (r.get('corr_null_reason') if isinstance(r.get('corr_null_reason'), str) else None),
+            'leverage_penalty': _num(r.get('leverage_penalty'), 1),   # #93
+            'lev_status': r.get('lev_status', 'ok') if isinstance(r.get('lev_status'), str) else 'ok',
+            'nd_ebitda': _num(r.get('nd_ebitda'), 2),
             'portfolio_corr': _num(r.get('portfolio_corr')),
             'max_corr': _num(r.get('max_corr')),
             'max_corr_with': (r.get('max_corr_with') if isinstance(r.get('max_corr_with'), str) and r.get('max_corr_with') else None),
@@ -285,6 +288,14 @@ def main():
         # 3) Structural floors
         if len(watchlist) < 30:
             raise SystemExit(f"CI FAIL: watchlist collapsed to {len(watchlist)} rows")
+        # #93 leverage module must be ALIVE (the corr-column lesson): if the
+        # status column is overwhelmingly 'unavailable', the input feed died.
+        lev_ok = df['lev_status'].isin(['ok', 'de_fallback', 'financial_na',
+                                        'neg_ebitda_debt', 'neg_ebitda_low_debt']).sum()
+        if lev_ok < 0.8 * len(df):
+            raise SystemExit(f"CI FAIL: leverage module dead — only {lev_ok}/{len(df)} "
+                             "names have a computable leverage status")
+
         # #92 sample equality assert (plan 4.1): when the canonical artifact
         # was consumed, N sampled tickers must match it exactly — catches
         # partial consumption or mutation between source and board.

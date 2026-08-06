@@ -391,8 +391,31 @@ def fetch_fundamentals(tickers, _retry_pass=False):
 
         try:
             t = yf.Ticker(ticker)
-            info = t.info
-            if not info or 'marketCap' not in info:
+            try:
+                info = t.info or {}
+            except Exception:
+                info = {}
+            # 2026-08-06 quoteSummary outage ladder: .info is broken server-
+            # side for a growing symbol shard (73 names incl. MU/AMD/JPM by
+            # 08-05); fast_info is a different endpoint and stayed healthy.
+            # A name with fast_info-only data stays SCORED (missing fields
+            # hit the same neutral defaults as any absent metric) instead of
+            # vanishing and tripping the named-seven publish block.
+            if not info.get('marketCap'):
+                try:
+                    fi = t.fast_info
+                    mcap = (fi.get('marketCap') if hasattr(fi, 'get') else None) or \
+                           (fi.get('market_cap') if hasattr(fi, 'get') else None) or \
+                           getattr(fi, 'market_cap', None)
+                    px = (fi.get('lastPrice') if hasattr(fi, 'get') else None) or \
+                         (fi.get('last_price') if hasattr(fi, 'get') else None)
+                    if mcap:
+                        info['marketCap'] = float(mcap)
+                        if not info.get('currentPrice') and px:
+                            info['currentPrice'] = float(px)
+                except Exception:
+                    pass
+            if not info.get('marketCap'):
                 errors += 1
                 failed.append(ticker)
                 continue

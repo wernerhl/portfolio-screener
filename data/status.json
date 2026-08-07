@@ -1,6 +1,6 @@
 {
- "last_attempt": "2026-08-06T17:56:28-04:00",
+ "last_attempt": "2026-08-06T21:43:48-04:00",
  "last_success": "2026-08-06T17:56:28-04:00",
- "failure_reason": null,
+ "failure_reason": "CI FAIL: TSM is not corr-alive (order item 3.3 names it explicitly)",
  "session_date": "2026-08-06"
 }

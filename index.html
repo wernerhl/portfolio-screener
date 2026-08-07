@@ -178,7 +178,7 @@ function render(){
       const exp=d.toISOString().slice(0,10);
       if(sd<exp)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ as of ${sd}; today's run did not publish${S.status?.failure_reason?' — '+S.status.failure_reason:''}</div>`;
     }
-    if(S.status?.failure_reason&&!b)b+=`<div style="background:rgba(255,100,80,.10);border:1px solid rgba(255,100,80,.45);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--r)">✗ last run rejected: ${S.status.failure_reason}</div>`;
+    if(S.status?.failure_reason&&!b)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">ℹ board is current (session ${sd}); a later redundant run was rejected (${S.status.failure_reason}) — served board unaffected</div>`;
     if(typeof D.corr_coverage_pct==='number'&&D.corr_coverage_pct<90)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ correlation coverage ${D.corr_coverage_pct}% — ${(D.corr_impaired||[]).length} names impaired (reasons in data)</div>`;
     return b;})()}
   <div class="sum">

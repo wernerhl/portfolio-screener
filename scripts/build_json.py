@@ -55,6 +55,15 @@ def _expected_session(now_et):
 
 
 def main():
+    # yfinance's sqlite caches (tz/cookies) are shared per-user and throw
+    # 'database is locked' under concurrent access — one such lock killed
+    # TSM's price top-up on 08-07 and blocked that publish. Isolate per run.
+    try:
+        import yfinance as _yf, tempfile
+        _yf.set_tz_cache_location(tempfile.mkdtemp(prefix="yfcache_"))
+    except Exception:
+        pass
+
     # [5] Run guard: publish only after the close (>=16:15 ET) on trading
     # days, or under --force-publish REASON. Otherwise every output routes to
     # data/scratch/<ts>/ — a manual midday run can no longer overwrite the

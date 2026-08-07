@@ -353,16 +353,24 @@ def fetch_price_data(tickers, period="1y"):
         except Exception as e:
             print(f"    Chunk {i//chunk_size + 1} error: {e}")
 
-    # [3] individual retry for anything the batch missed, once
+    # [3] individual retry for anything the batch missed — twice, because
+    # yfinance's shared sqlite caches throw transient 'database is locked'
+    # errors under concurrency (a lock killed TSM's top-up on 08-07 and
+    # blocked that night's publish). Lock errors get a 5s settle first.
     missing = [t for t in tickers if t not in all_data]
     for t in missing:
-        try:
-            s = yf.download(t, period=period, progress=False, auto_adjust=True, threads=False)
-            if s is not None and 'Close' in s.columns and not s['Close'].isna().all():
-                c = s['Close']
-                all_data[t] = c.iloc[:, 0] if isinstance(c, pd.DataFrame) else c
-        except Exception:
-            pass
+        for attempt in (1, 2):
+            try:
+                s = yf.download(t, period=period, progress=False, auto_adjust=True, threads=False)
+                if s is not None and 'Close' in s.columns and not s['Close'].isna().all():
+                    c = s['Close']
+                    all_data[t] = c.iloc[:, 0] if isinstance(c, pd.DataFrame) else c
+                break
+            except Exception as e:
+                if attempt == 1 and 'locked' in str(e).lower():
+                    time.sleep(5)
+                    continue
+                break
     FETCH_FAILED = {t for t in tickers if t not in all_data}
     if FETCH_FAILED:
         print(f"  FETCH FAILED after retry ({len(FETCH_FAILED)}): {sorted(FETCH_FAILED)[:10]}...")

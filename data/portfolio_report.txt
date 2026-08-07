@@ -1,84 +1,83 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-08-07 01:44
+PORTFOLIO SCORING MODEL — 2026-08-07 23:47
 ======================================================================
 
-Universe: 533 scored tickers
-Score range: 24.2 — 59.9
-Median: 40.2
+Universe: 534 scored tickers
+Score range: 24.3 — 60.5
+Median: 40.1
 
 ──────────────────────────────────────────────────────────────────────
 TOP 40 CANDIDATES (all names · ★ = already held, add-to candidate)
 ──────────────────────────────────────────────────────────────────────
 Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry Cat         
 ──────────────────────────────────────────────────────────────────────
-1     GEV    GE Vernova Inc.             59.9  19.0  17.9  23.0   0.0   1022.14 Compounder  
-2     VRT    Vertiv Holdings, LLC        59.5  20.5  19.0  20.0   0.0    301.66 Compounder  
-3    ★AVGO   Broadcom Inc.               56.6  20.0  15.1  22.0   0.0    399.54 Growth      
-4    ★NVDA   NVIDIA Corporation          53.8  20.0  15.8  20.0  -2.0    208.04 Growth      
-5     META   Meta Platforms, Inc.        53.3  18.0  18.3  17.0   0.0    600.62 Core        
-6    ★GOOG   Alphabet Inc.               53.2  19.0  14.2  20.0   0.0    355.34 Compounder  
-7     POWL   Powell Industries, Inc.     53.1  17.5  17.6  18.0   0.0    258.65 Speculative 
-8     TLN    Talen Energy Corporation    52.4  19.0  19.4  19.0   0.0    373.83 Growth      
-9     ANET   Arista Networks, Inc.       51.8  19.0  12.8  20.0   0.0    182.70 Growth      
-10    CEG    Constellation Energy Corporati   51.1  14.0  17.6  21.0   0.0    261.29 Growth      
-11    QCOM   QUALCOMM Incorporated       50.8  20.0  20.8  10.0   0.0    193.09 Core        
-12    EOG    EOG Resources, Inc.         50.6  24.0  16.6  10.0   0.0    137.36 Growth      
-13    HOOD   Robinhood Markets, Inc.     50.2  20.0  22.2  10.0  -2.0     98.00 Growth      
-14    NXPI   NXP Semiconductors N.V.     50.1  22.0  18.6  10.0   0.0    284.27 Core        
-15    CF     CF Industries Holdings, Inc.   50.0  21.0  19.0  10.0   0.0    114.54 Cyclical    
-16    LMT    Lockheed Martin Corporation   49.3  18.0   9.8  22.0   0.0    553.71 Compounder  
-17    NOC    Northrop Grumman Corporation   49.2  16.0  13.7  21.0   0.0    539.35 Compounder  
-18    FDS    FactSet Research Systems Inc.   49.1  21.0  18.1  10.0   0.0    260.85 Speculative 
-19    GDDY   GoDaddy Inc.                49.0  22.0  17.5  10.0   0.0     86.90 Core        
-20    BX     Blackstone Inc.             48.6  22.5  16.1  10.0   0.0    126.78 Core        
-21    APP    Applovin Corporation        48.5  22.5  16.0  10.0   0.0    482.93 Growth      
-22    TROW   T. Rowe Price Group, Inc.   48.4  20.5  17.9  10.0   0.0    112.26 Core        
-23    UBER   Uber Technologies, Inc.     48.3  21.0  17.8  10.0   0.0     71.66 Core        
-24    ON     ON Semiconductor Corporation   48.2  17.0  21.2  10.0   0.0    102.21 Core        
-25    ESTC   Elastic N.V.                48.2  22.0  16.2  10.0   0.0     66.45 Speculative 
-26   ★MSFT   Microsoft Corporation       48.1  18.0  12.1  18.0   0.0    474.87 Core        
-27    ADBE   Adobe Inc.                  48.1  23.0  15.1  10.0   0.0    247.23 Core        
-28    SPGI   S&P Global Inc.             48.0  19.5  18.5  10.0   0.0    423.07 Core        
-29    CDNS   Cadence Design Systems, Inc.   47.9  18.0  19.9  10.0   0.0    369.08 Core        
-30    DECK   Deckers Outdoor Corporation   47.9  21.0  16.9  10.0   0.0    105.53 Core        
-31    GD     General Dynamics Corporation   47.9  14.5  12.4  21.0   0.0    367.57 Compounder  
-32    PODD   Insulet Corporation         47.9  21.5  16.4  10.0   0.0    155.06 Speculative 
-33    BRO    Brown & Brown, Inc.         47.7  21.5  16.2  10.0   0.0     67.62 Growth      
-34    AXP    American Express Company    47.7  21.5  16.2  10.0   0.0    336.37 Core        
-35    MCO    Moody's Corporation         47.6  20.5  17.1  10.0   0.0    470.62 Core        
-36    PLTR   Palantir Technologies Inc.   47.5  20.0  17.5  10.0   0.0    148.12 Growth      
-37    EXPE   Expedia Group, Inc.         47.4  23.0  14.4  10.0   0.0    291.24 Core        
-38    FANG   Diamondback Energy, Inc.    47.4  21.0  16.9  10.0   0.0    191.09 Growth      
-39    ADSK   Autodesk, Inc.              47.3  22.0  15.3  10.0   0.0    230.35 Core        
-40    EBAY   eBay Inc.                   47.3  20.5  17.3  10.0   0.0    111.04 Core        
+1     VRT    Vertiv Holdings, LLC        60.5  20.5  20.0  20.0   0.0    300.71 Compounder  
+2     GEV    GE Vernova Inc.             59.3  19.0  17.3  23.0   0.0   1021.31 Compounder  
+3     TSM    Taiwan Semiconductor Manufactu   56.5  24.0  13.5  21.0  -2.0    425.68 Growth      
+4    ★AVGO   Broadcom Inc.               54.4  20.0  12.9  22.0   0.0    406.37 Growth      
+5    ★GOOG   Alphabet Inc.               53.8  19.0  14.8  20.0   0.0    354.72 Compounder  
+6     ANET   Arista Networks, Inc.       53.5  19.0  14.5  20.0   0.0    179.24 Growth      
+7     META   Meta Platforms, Inc.        53.2  18.0  18.2  17.0   0.0    599.76 Core        
+8     POWL   Powell Industries, Inc.     52.3  17.5  16.8  18.0   0.0    256.96 Speculative 
+9     EOG    EOG Resources, Inc.         51.6  24.0  17.6  10.0   0.0    137.37 Growth      
+10    SNDK   Sandisk Corporation         51.4  24.0  17.4  10.0   0.0   1688.09 Growth      
+11   ★NVDA   NVIDIA Corporation          51.2  20.0  13.2  20.0  -2.0    212.76 Growth      
+12    CF     CF Industries Holdings, Inc.   50.7  22.0  18.7  10.0   0.0    114.50 Cyclical    
+13    OXY    Occidental Petroleum Corporati   49.8  22.5  17.3  10.0   0.0     54.47 Growth      
+14    QCOM   QUALCOMM Incorporated       49.4  19.0  20.4  10.0   0.0    191.78 Core        
+15    NXPI   NXP Semiconductors N.V.     49.4  21.0  18.9  10.0   0.0    282.48 Core        
+16    LMT    Lockheed Martin Corporation   49.2  18.0   9.7  22.0   0.0    558.55 Compounder  
+17    NOC    Northrop Grumman Corporation   49.1  16.0  13.6  21.0   0.0    543.00 Compounder  
+18    GDDY   GoDaddy Inc.                48.9  22.0  17.4  10.0   0.0     86.97 Core        
+19    APP    Applovin Corporation        48.9  22.5  16.4  10.0   0.0    478.50 Growth      
+20    WDC    Western Digital Corporation   48.8  20.0  18.8  10.0   0.0    561.20 Growth      
+21    TLN    Talen Energy Corporation    48.8  17.5  17.3  19.0   0.0    373.19 Growth      
+22    MCO    Moody's Corporation         48.5  20.5  18.0  10.0   0.0    471.15 Core        
+23    HOOD   Robinhood Markets, Inc.     48.5  20.0  20.5  10.0  -2.0     98.34 Growth      
+24    SPGI   S&P Global Inc.             48.0  19.5  18.5  10.0   0.0    422.93 Core        
+25    ADBE   Adobe Inc.                  48.0  23.0  15.0  10.0   0.0    251.95 Core        
+26    DECK   Deckers Outdoor Corporation   48.0  21.0  17.0  10.0   0.0    105.19 Core        
+27   ★MSFT   Microsoft Corporation       48.0  18.0  12.0  18.0   0.0    474.99 Core        
+28    CBOE   Cboe Global Markets, Inc.   47.9  20.5  17.4  10.0   0.0    277.79 Core        
+29    PYPL   PayPal Holdings, Inc.       47.8  20.0  17.8  10.0   0.0     56.12 Core        
+30    AXP    American Express Company    47.8  21.5  16.3  10.0   0.0    336.93 Core        
+31    CEG    Constellation Energy Corporati   47.7  11.0  17.2  21.0   0.0    260.92 Compounder  
+32    GD     General Dynamics Corporation   47.7  14.5  12.2  21.0   0.0    372.45 Compounder  
+33    FDS    FactSet Research Systems Inc.   47.5  21.0  16.5  10.0   0.0    271.29 Core        
+34    ADSK   Autodesk, Inc.              47.5  22.0  15.5  10.0   0.0    236.63 Core        
+35    CINF   Cincinnati Financial Corporati   47.4  22.0  15.4  10.0   0.0    175.38 Growth      
+36    FANG   Diamondback Energy, Inc.    47.3  21.0  16.8  10.0   0.0    190.99 Growth      
+37    BX     Blackstone Inc.             47.2  22.5  14.7  10.0   0.0    130.27 Core        
+38    TROW   T. Rowe Price Group, Inc.   47.1  20.5  16.6  10.0   0.0    112.45 Core        
+39    WRB    W.R. Berkley Corporation    47.0  20.0  17.0  10.0   0.0     70.24 Core        
+40    ON     ON Semiconductor Corporation   46.9  17.0  19.9  10.0   0.0    101.34 Core        
 
 ──────────────────────────────────────────────────────────────────────
 CURRENT PORTFOLIO SCORES
 ──────────────────────────────────────────────────────────────────────
-  AVGO    Broadcom Inc.             Score:  56.6  (F:20 T:15 V:22)
-  NVDA    NVIDIA Corporation        Score:  53.8  (F:20 T:16 V:20)
-  GOOG    Alphabet Inc.             Score:  53.2  (F:19 T:14 V:20)
-  MSFT    Microsoft Corporation     Score:  48.1  (F:18 T:12 V:18)
-  BMNR    BitMine Immersion Technologies Score:  36.8  (F:14 T:15 V:10)
+  AVGO    Broadcom Inc.             Score:  54.4  (F:20 T:13 V:22)
+  GOOG    Alphabet Inc.             Score:  53.8  (F:19 T:15 V:20)
+  NVDA    NVIDIA Corporation        Score:  51.2  (F:20 T:13 V:20)
+  MSFT    Microsoft Corporation     Score:  48.0  (F:18 T:12 V:18)
+  BMNR    BitMine Immersion Technologies Score:  35.4  (F:14 T:13 V:10)
 
 ──────────────────────────────────────────────────────────────────────
 SECTOR DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
-  Technology                     14
-  Financial Services             8
+  Technology                     13
+  Financial Services             11
   Industrials                    6
   Communication Services         3
-  Consumer Cyclical              3
+  Energy                         3
   Utilities                      2
-  Energy                         2
   Basic Materials                1
-  Healthcare                     1
+  Consumer Cyclical              1
 
 ──────────────────────────────────────────────────────────────────────
 CATEGORY DISTRIBUTION — TOP 30
 ──────────────────────────────────────────────────────────────────────
   Core                 18
-  Growth               11
-  Compounder           6
-  Speculative          4
+  Growth               13
+  Compounder           7
+  Speculative          1
   Cyclical             1

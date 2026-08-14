@@ -1,7 +1,7 @@
 {
-  "updated": "2026-08-14T21:52:19.949927",
+  "updated": "2026-08-14T23:36:30.640765",
   "session_date": "2026-08-14",
-  "computed_at": "2026-08-14T17:51:36-04:00",
+  "computed_at": "2026-08-14T19:35:47-04:00",
   "provenance": {
     "mode": "publish",
     "forced_publish": false,
@@ -10,7 +10,7 @@
       "mode": "canonical",
       "base": "https://raw.githubusercontent.com/wernerhl/portfolio-tournament/main",
       "canonical_session": "2026-08-14",
-      "canonical_built_at": "2026-08-14T21:50:19+00:00",
+      "canonical_built_at": "2026-08-14T22:34:14+00:00",
       "canonical_coverage_pct": 99.4,
       "fund_topups": [
         "BK",
@@ -158,7 +158,7 @@
       "portfolio_corr": 0.388,
       "max_corr": 0.446,
       "max_corr_with": "AVGO",
-      "fwd_pe": 42.4,
+      "fwd_pe": 42.2,
       "fcf_yield_pct": 5.6,
       "data_flags": "",
       "rev_growth_pct": 21.9,
@@ -747,7 +747,7 @@
       "portfolio_corr": 0.287,
       "max_corr": 0.395,
       "max_corr_with": "AVGO",
-      "fwd_pe": 16.3,
+      "fwd_pe": 16.2,
       "fcf_yield_pct": 5.9,
       "data_flags": "",
       "rev_growth_pct": -4.0,

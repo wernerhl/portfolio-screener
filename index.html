@@ -3,95 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
 <title>Portfolio Screener</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>◎</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#07070a;--c1:rgba(255,255,255,0.02);--bd:rgba(255,255,255,0.04);
---t1:#a3a3a3;--t2:#737373;--t3:#525252;--t4:#333;--t5:#1a1a1a;
---g:#4ade80;--y:#facc15;--r:#f87171;--b:#60a5fa;--p:#a78bfa;
---m:'IBM Plex Mono','SF Mono',monospace;--s:'Inter',-apple-system,sans-serif}
-body{background:var(--bg);color:#d4d4d4;font-family:var(--s);min-height:100vh}
-.w{max-width:900px;margin:0 auto;padding:24px 16px 48px}
-a{color:var(--b);text-decoration:none}
-button{cursor:pointer;font-family:var(--m)}
-
-/* Header */
-.hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
-.hd h1{font:700 14px var(--m);color:var(--t1);letter-spacing:.06em}
-.hd-dot{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(74,222,128,.5);display:inline-block;margin-right:8px}
-.hd-sub{font:400 10px var(--m);color:var(--t4);margin-top:3px}
-.hd-r{font:400 9px var(--m);color:var(--t5);text-align:right}
-
-/* Summary cards row */
-.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.sum-card{background:var(--c1);border:1px solid var(--bd);border-radius:6px;padding:12px 14px}
-.sum-label{font:600 8px var(--m);color:var(--t3);letter-spacing:.2em;margin-bottom:4px}
-.sum-val{font:800 20px var(--m);color:#d4d4d4;letter-spacing:-.03em}
-.sum-val small{font-size:11px;color:var(--t3);font-weight:500}
-.sum-sub{font:400 9px var(--m);color:var(--t4);margin-top:2px}
-
-/* Tabs */
-.tabs{display:flex;gap:3px;margin-bottom:14px;border-bottom:1px solid var(--bd);padding-bottom:10px}
-.tab{background:0;border:1px solid transparent;color:var(--t3);border-radius:4px;padding:5px 12px;font:600 10px var(--m);letter-spacing:.03em;transition:all .1s}
-.tab:hover{color:var(--t2)}
-.tab.on{background:rgba(255,255,255,.05);color:var(--t1);border-color:rgba(255,255,255,.08)}
-
-/* Table */
-.tbl-wrap{overflow-x:auto;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--m)}
-th{font:600 8.5px var(--m);color:var(--t3);letter-spacing:.12em;text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);cursor:pointer;user-select:none;white-space:nowrap}
-th:hover{color:var(--t2)}
-th.sort-asc::after{content:' ▲';color:var(--b)}
-th.sort-desc::after{content:' ▼';color:var(--b)}
-td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.02);white-space:nowrap}
-tr:hover td{background:rgba(255,255,255,.02)}
-.tk{font-weight:700;color:#e5e5e5}
-.nm{color:var(--t2);font-weight:400;max-width:160px;overflow:hidden;text-overflow:ellipsis}
-.sc{font-weight:700;font-size:13px}
-.pos{color:var(--g)}.neg{color:var(--r)}.neut{color:var(--t2)}
-.badge{display:inline-block;font:700 7.5px var(--m);letter-spacing:.1em;padding:2px 6px;border-radius:3px}
-.badge-growth{color:var(--p);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)}
-.badge-compounder{color:var(--b);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2)}
-.badge-core{color:var(--t2);background:rgba(115,115,115,.1);border:1px solid rgba(115,115,115,.2)}
-.badge-cyclical{color:var(--y);background:rgba(202,138,4,.1);border:1px solid rgba(202,138,4,.2)}
-.badge-speculative{color:var(--r);background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2)}
-.badge-catalyst{color:#fb923c;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2)}
-
-/* Score bar inline */
-.sbar{display:flex;height:3px;width:60px;border-radius:2px;overflow:hidden;gap:1px;margin-top:2px}
-.sbar div{border-radius:1px}
-
-/* Section */
-.sec{margin-bottom:20px}
-.sec-title{font:700 9px var(--m);color:var(--t3);letter-spacing:.15em;margin-bottom:8px;padding-left:2px}
-
-/* Footer */
-.ft{margin-top:24px;padding:12px;background:var(--c1);border:1px solid var(--bd);border-radius:6px;font:400 9px var(--m);color:var(--t5);line-height:1.8}
-.ft .k{color:var(--t4);font-weight:700;letter-spacing:.1em}
-
-/* Loading */
-.ld{text-align:center;padding:60px;font:500 12px var(--m);color:var(--t3)}
-
-@media(max-width:640px){
-  .sum{grid-template-columns:repeat(2,1fr)}
-  .tbl-wrap{font-size:10px}
-}
-</style>
+<link rel="preload" href="fonts/texgyrepagella-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/IBMPlexMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="screener.css">
+<!-- P5.3: styles.css, charts.js and fonts/ are byte-identical copies of the tournament's (copied, not linked,
+     so each site deploys independently). This page draws no chart, so neither Chart.js nor charts.js is loaded;
+     charts.js waits in the repository for the day a chart is added (Chart.js from the CDN, then charts.js,
+     both before the page script). -->
 </head>
 <body>
-<div class="w" id="app"><div class="ld">Loading screener data...</div></div>
+<div class="w" id="app"><div class="ld">Loading screener data…</div></div>
 <script>
-let S={tab:'watchlist',sort:null,sortDir:1,data:null};
+// P5.3 layout: three tiers (styles.css .tier-1/2/3). Tier one = title, as-of, status strips. Tier two = the
+// watchlist and the drawdown-watch shelf. Tier three (tokens re-bound one size and one contrast level down) =
+// the universe statistics, the book, the model notes. Every colour and size is a class bound to the tokens; the
+// only inline styles are data-driven: the F/T/V breakdown bar weights and the universe distribution bar widths.
+let S={data:null,status:null,sort:{watch:null,book:null}};
 
-const badgeCls=c=>({Growth:'badge-growth',Compounder:'badge-compounder',Core:'badge-core',Cyclical:'badge-cyclical',Speculative:'badge-speculative',Catalyst:'badge-catalyst'}[c]||'badge-core');
+// Category → semantic palette member (styles.css .sig-* for badges, .bg-* for bars); the palette does not grow.
+const CAT={Growth:'info',Compounder:'pos',Core:'2',Cyclical:'warn',Speculative:'neg',Catalyst:'accent'};
+const catKind=c=>CAT[c]||'2';
+const badge=c=>`<span class="badge sig-${catKind(c)}">${(c||'Core').toUpperCase()}</span>`;
+const HELD='<span class="badge sig-pos" title="Already held — add-to-position candidate">HELD</span>';
+const BB='<span class="badge sig-neg" title="Broken base — price >10% below base with RSI<25 · technical score capped at 12/25">BB</span>';
+
 const fmt=n=>typeof n==='number'?n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}):'—';
 const fmtD=n=>typeof n==='number'?n.toFixed(2):'—';
 const fmtP=n=>typeof n==='number'?(n>=0?'+':'')+n.toFixed(1)+'%':'—';
 const pnl=n=>n>=0?'pos':n<0?'neg':'neut';
+const scoreCls=s=>s>=55?'c-pos':s>=45?'c-warn':s>=35?'c-2':'c-neg';
+const penCls=(v,red)=>v==null?'c-3':v<red?'c-neg':v<0?'c-warn':'c-3';
 
-function scoreColor(s){return s>=55?'var(--g)':s>=45?'var(--y)':s>=35?'var(--t2)':'var(--r)'}
+// F/T/V breakdown bar: the three segment weights are the data, so they stay inline (as custom properties read by
+// screener.css .sbar); the segment colours are classes (cat-2 = fundamental, cat-7 = technical, cat-3 = visibility).
+const sbar=r=>`<span class="sbar" style="--f:${r.fundamental??0};--t:${r.technical??0};--v:${r.visibility??0}"><span class="bg-cat-2"></span><span class="bg-cat-7"></span><span class="bg-cat-3"></span></span><span class="t1 c-3 nowrap">F${r.fundamental} T${r.technical} V${r.visibility}</span>`;
+const legend=full=>`<div class="legend">
+  <span><span class="sw bg-cat-2"></span>Fundamental</span>
+  <span><span class="sw bg-cat-7"></span>Technical</span>
+  <span><span class="sw bg-cat-3"></span>Visibility</span>
+  <span>Scores: 0–25 per factor · 75 max composite</span>${full?`
+  <span title="the watchlist ranks marginal additions to the current book; held names are scored against the rest of the book">CORR = penalty for return overlap vs your book (weight-aware, held names vs rest-of-book) · n/a = failed, no penalty, reason recorded</span>
+  <span>LEV = leverage penalty 0 to −5 (net-debt/EBITDA primary, D/E fallback) · financials exempt · replaces the old hidden ROE haircut</span>
+  <span>GAP = distance from entry to current price (negative = below entry)</span>`:''}
+</div>`;
 
 function sortBy(data,key,dir){
   return[...data].sort((a,b)=>{
@@ -101,165 +59,216 @@ function sortBy(data,key,dir){
     return dir*(va-vb);
   });
 }
+// Sortable header: one sort state per table (S.sort.watch / S.sort.book).
+const th=(tbl,k,label,num)=>{
+  const s=S.sort[tbl];
+  const cls=[num?'num':'',k&&s&&s.k===k?(s.dir>0?'sort asc':'sort'):''].filter(Boolean).join(' ');
+  return`<th${cls?` class="${cls}"`:''}${k?` data-tbl="${tbl}" data-k="${k}"`:''}>${label}</th>`;
+};
+const ordered=(tbl,rows)=>{const s=S.sort[tbl];return s?sortBy(rows,s.k,s.dir):rows;};
 
-function renderPortfolioTable(holdings){
-  if(!holdings||!holdings.length)return'<p style="color:var(--t4)">No holdings data</p>';
-  let rows=S.sort?sortBy(holdings,S.sort,S.sortDir):holdings;
-  const cls=(k)=>S.sort===k?(S.sortDir>0?'sort-asc':'sort-desc'):'';
-  return`<div class="tbl-wrap"><table>
-    <tr><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('shares')}" data-k="shares">SHARES</th><th class="${cls('cost')}" data-k="cost">COST</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('market_value')}" data-k="market_value">VALUE</th><th class="${cls('gain_pct')}" data-k="gain_pct">GAIN</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
-    ${rows.map(r=>`<tr>
-      <td class="tk">${r.ticker}</td>
-      <td class="nm">${r.name}</td>
-      <td>${r.shares}</td>
-      <td>$${fmtD(r.cost)}</td>
-      <td>$${fmtD(r.current_price)}</td>
-      <td>$${fmt(r.market_value)}</td>
-      <td class="${pnl(r.gain_pct)}">${fmtP(r.gain_pct)}</td>
-      <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>
-      <td><div class="sbar"><div style="flex:${r.fundamental};background:var(--b)"></div><div style="flex:${r.technical};background:var(--p)"></div><div style="flex:${r.visibility};background:var(--g)"></div></div><span style="font:400 8px var(--m);color:var(--t4)">F${r.fundamental} T${r.technical} V${r.visibility}</span></td>
-      <td><span class="badge ${badgeCls(r.category)}">${r.category.toUpperCase()}</span></td>
-    </tr>`).join('')}</table></div>`;
+// ── Tier one: status strips (styles.css .strip-*) ──
+function renderStrips(D){
+  const st=S.status||{};
+  const strip=(kind,txt)=>`<div class="strip strip-${kind}">${txt}</div>`;
+  let b='';
+  const sd=D.session_date;
+  if(sd){  // [5] staleness badge
+    // expected last completed session, weekday approximation in ET
+    const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+    const past=(now.getHours()>16)||(now.getHours()===16&&now.getMinutes()>=15);
+    // holiday-aware (mirrors the tournament's trading_calendar NYSE_HOLIDAYS 2025-2027; keep in sync):
+    // weekend-only logic badged the board stale the morning after Labor Day.
+    const HOL=new Set(["2025-01-01","2025-01-09","2025-01-20","2025-02-17","2025-04-18","2025-05-26","2025-06-19","2025-07-04","2025-09-01","2025-11-27","2025-12-25",
+      "2026-01-01","2026-01-19","2026-02-16","2026-04-03","2026-05-25","2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25",
+      "2027-01-01","2027-01-18","2027-02-15","2027-03-26","2027-05-31","2027-06-18","2027-07-05","2027-09-06","2027-11-25","2027-12-24"]);
+    const iso=x=>new Date(x.getTime()-x.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    const isSess=x=>x.getDay()>=1&&x.getDay()<=5&&!HOL.has(iso(x));
+    let d=new Date(now);
+    if(!(isSess(d)&&past)){ do{d.setDate(d.getDate()-1);}while(!isSess(d)); }
+    const exp=iso(d);
+    if(sd<exp)b+=strip('warn',`⚠ as of ${sd}; today's run did not publish${st.failure_reason?' — '+st.failure_reason:''}`);
+  }
+  if(st.failure_reason&&!b)b+=strip('2',`ℹ board is current (session ${sd}); a later redundant run was rejected (${st.failure_reason}) — served board unaffected`);
+  const au=st.audit||{};
+  if(au.critical?.length)b+=strip('neg',`✗ audit CRITICAL — ${au.critical.join(', ')} · served board is the last good one`);
+  if(au.high?.length)b+=strip('2',`audit: ${au.high.length} HIGH — ${au.high.join(', ')} <span class="c-3">(logged, non-blocking)</span>`);
+  if(au.xfile?.length)b+=strip('2',`cross-file: ${au.xfile.join(', ')} <span class="c-3">(reported in both repositories; blocks neither)</span>`);
+  if(au.critical_other_repo?.length)b+=strip('2',`tournament CRITICAL: ${au.critical_other_repo.join(', ')} <span class="c-3">(does not block this board)</span>`);
+  // [3] correlation-coverage banner
+  if(typeof D.corr_coverage_pct==='number'&&D.corr_coverage_pct<90)b+=strip('warn',`⚠ correlation coverage ${D.corr_coverage_pct}% — ${(D.corr_impaired||[]).length} names impaired (reasons in data)`);
+  return b;
 }
 
-function renderWatchlistTable(watchlist){
-  if(!watchlist||!watchlist.length)return'<p style="color:var(--t4)">No watchlist data</p>';
-  let rows=S.sort?sortBy(watchlist,S.sort,S.sortDir):watchlist;
-  const cls=(k)=>S.sort===k?(S.sortDir>0?'sort-asc':'sort-desc'):'';
-  return`<div class="tbl-wrap"><table>
-    <tr><th class="${cls('composite')}" data-k="composite">#</th><th class="${cls('ticker')}" data-k="ticker">TICKER</th><th class="${cls('name')}" data-k="name">NAME</th><th class="${cls('sector')}" data-k="sector">SECTOR</th><th class="${cls('composite')}" data-k="composite">SCORE</th><th>BREAKDOWN</th><th class="${cls('corr_penalty')}" data-k="corr_penalty">CORR</th><th class="${cls('leverage_penalty')}" data-k="leverage_penalty">LEV</th><th class="${cls('current_price')}" data-k="current_price">PRICE</th><th class="${cls('entry_level')}" data-k="entry_level">ENTRY</th><th>GAP</th><th class="${cls('category')}" data-k="category">CAT</th></tr>
+// ── Tier two: the watchlist ──
+function renderWatchlist(W,U){
+  const rows=ordered('watch',W);
+  const head=`<div class="lb-h"><h2>WATCHLIST</h2><div class="lb-h-sub">top ${W.length} of ${U.total||0} · ranked by composite score · all names · HELD = add-to-position candidate</div></div>`;
+  if(!W.length)return`<div class="lbtable">${head}<div class="note">No watchlist data</div></div>`;
+  return`<div class="lbtable">${head}
+  <div class="tbl-scroll"><table><thead><tr>
+    ${th('watch','composite','#',1)}${th('watch','ticker','TICKER')}${th('watch','name','NAME')}${th('watch','sector','SECTOR')}${th('watch','composite','SCORE',1)}${th('watch',null,'BREAKDOWN')}${th('watch','corr_penalty','CORR',1)}${th('watch','leverage_penalty','LEV',1)}${th('watch','current_price','PRICE',1)}${th('watch','entry_level','ENTRY',1)}${th('watch',null,'GAP',1)}${th('watch','category','CAT')}
+  </tr></thead><tbody>
     ${rows.map((r,i)=>{
       const gap=r.entry_level&&r.current_price?((r.entry_level/r.current_price-1)*100):0;
       const gapCls=gap<=-2?'pos':gap>=2?'neg':'neut';
+      const corrT=r.corr_status==='unavailable'?'correlation unavailable — computation failed, no penalty applied':(r.max_corr_with?`highest overlap ${r.max_corr_with} |ρ|=${r.max_corr??'—'} · vs book ρ=${r.portfolio_corr??'—'}`:'');
+      const levT=r.lev_status==='financial_na'?'financial — leverage n/a by construction':r.lev_status==='unavailable'?'leverage unavailable — no penalty applied':r.nd_ebitda!=null?`net-debt/EBITDA ${r.nd_ebitda}`:(r.lev_status||'');
       return`<tr>
-      <td style="color:var(--t3)">${i+1}</td>
-      <td class="tk">${r.ticker}${r.held?' <span title="Already held — add-to-position candidate" style="font:700 8px var(--m);color:var(--g);border:1px solid var(--g);border-radius:3px;padding:0 3px;vertical-align:middle">HELD</span>':''}${r.broken_base?' <span title="Broken base — price >10% below base with RSI<25 · technical score capped at 12/25" style="font:700 8px var(--m);color:var(--r);border:1px solid var(--r);border-radius:3px;padding:0 3px;vertical-align:middle">BB</span>':''}</td>
+      <td class="num c-3">${i+1}</td>
+      <td class="tk">${r.ticker}${r.held?' '+HELD:''}${r.broken_base?' '+BB:''}</td>
       <td class="nm">${r.name}</td>
-      <td style="color:var(--t3);font-size:10px">${(r.sector||'').substring(0,18)}</td>
-      <td class="sc" style="color:${scoreColor(r.composite)}">${r.composite}</td>
-      <td><div class="sbar"><div style="flex:${r.fundamental};background:var(--b)"></div><div style="flex:${r.technical};background:var(--p)"></div><div style="flex:${r.visibility};background:var(--g)"></div></div><span style="font:400 8px var(--m);color:var(--t4)">F${r.fundamental} T${r.technical} V${r.visibility}</span></td>
-      <td style="color:${r.corr_penalty<-4?'var(--r)':r.corr_penalty<0?'var(--y)':'var(--t3)'}" title="${r.corr_status==='unavailable'?'correlation unavailable — computation failed, no penalty applied':(r.max_corr_with?`highest overlap ${r.max_corr_with} |ρ|=${r.max_corr??'—'} · vs book ρ=${r.portfolio_corr??'—'}`:'')}">${r.corr_penalty==null?'<span style="color:var(--t5)">n/a</span>':r.corr_penalty}</td>
-      <td style="color:${r.leverage_penalty<-3?'var(--r)':r.leverage_penalty<0?'var(--y)':'var(--t3)'}" title="${r.lev_status==='financial_na'?'financial — leverage n/a by construction':r.lev_status==='unavailable'?'leverage unavailable — no penalty applied':r.nd_ebitda!=null?`net-debt/EBITDA ${r.nd_ebitda}`:(r.lev_status||'')}">${r.leverage_penalty==null?'<span style="color:var(--t5)">n/a</span>':r.leverage_penalty}</td>
-      <td>$${fmtD(r.current_price)}</td>
-      <td style="color:var(--b)">$${fmtD(r.entry_level)}</td>
-      <td class="${gapCls}" style="font-size:10px">${gap.toFixed(1)}%</td>
-      <td><span class="badge ${badgeCls(r.category)}">${(r.category||'Core').toUpperCase()}</span></td>
-    </tr>`}).join('')}</table></div>`;
+      <td class="t1 c-3">${(r.sector||'').substring(0,18)}</td>
+      <td class="num w7 ${scoreCls(r.composite)}">${r.composite}</td>
+      <td>${sbar(r)}</td>
+      <td class="num ${penCls(r.corr_penalty,-4)}" title="${corrT}">${r.corr_penalty==null?'n/a':r.corr_penalty}</td>
+      <td class="num ${penCls(r.leverage_penalty,-3)}" title="${levT}">${r.leverage_penalty==null?'n/a':r.leverage_penalty}</td>
+      <td class="num">$${fmtD(r.current_price)}</td>
+      <td class="num c-info">$${fmtD(r.entry_level)}</td>
+      <td class="num ${gapCls}">${gap.toFixed(1)}%</td>
+      <td>${badge(r.category)}</td>
+    </tr>`}).join('')}
+  </tbody></table></div>
+  ${legend(true)}
+  </div>`;
+}
+
+// ── Tier two: the drawdown-watch shelf — [4] quality names in a broken technical state ──
+function renderDrawdownWatch(DW){
+  const head=`<div class="lb-h"><h2>DRAWDOWN WATCH — QUALITY ON SALE</h2><div class="lb-h-sub">${DW.length} name${DW.length===1?'':'s'} · quality names in a broken technical state · technical score capped</div></div>`;
+  if(!DW.length)return`<div class="lbtable">${head}<div class="note">None today — no quality name is in a broken technical state.</div></div>`;
+  return`<div class="lbtable">${head}
+  <div class="tbl-scroll"><table><thead><tr>
+    <th class="num">#</th><th>TICKER</th><th>NAME</th><th class="num">F</th><th class="num">V</th><th class="num">T (CAPPED)</th><th class="num">BELOW BASE</th><th class="num">RSI</th><th class="num">CORR</th>
+  </tr></thead><tbody>
+    ${DW.map((r,i)=>`<tr>
+      <td class="num c-3">${i+1}</td>
+      <td class="tk">${r.ticker} ${BB}</td>
+      <td class="nm">${r.name||''}</td>
+      <td class="num">${r.fundamental??'—'}</td><td class="num">${r.visibility??'—'}</td>
+      <td class="num c-3">${r.technical_capped??'—'}</td>
+      <td class="num neg">${r.depth_below_base_pct??'—'}%</td>
+      <td class="num">${r.rsi??'—'}</td>
+      <td class="num" title="${r.max_corr_with?`highest overlap ${r.max_corr_with} · vs book ρ=${r.portfolio_corr??'—'}`:''}">${r.corr_penalty==null?'n/a':r.corr_penalty}</td>
+    </tr>`).join('')}
+  </tbody></table></div>
+  <div class="note">Technical state: broken (score capped). Ranked by business quality and visibility only. Entry timing unvalidated.</div>
+  </div>`;
+}
+
+// ── Tier three: universe statistics ──
+function renderUniverse(U,D){
+  const total=U.total||0;
+  // distribution rows: the bar width is data (share of the largest bucket), so it stays inline
+  const dist=(map,kind)=>{
+    const es=Object.entries(map||{}).sort((a,b)=>b[1]-a[1]);
+    const max=es.length?Math.max(1,es[0][1]):1;
+    return es.map(([k,n])=>`<div class="th-exp-row mono t1 c-1"><span class="dist-lbl" title="${k}">${k}</span><div class="th-exp-bar"><span class="${kind==='cat'?'bg-'+catKind(k):'bg-info'}" style="width:${(n/max*100).toFixed(1)}%"></span></div><span class="th-exp-v">${n}</span></div>`).join('');
+  };
+  return`<div class="lbtable">
+    <div class="lb-h"><h2>UNIVERSE STATISTICS</h2><div class="lb-h-sub">${total} tickers scored · composite 0–75 · session ${D.session_date||'—'}</div></div>
+    <div class="panel-body">
+      <div class="stats">
+        <div class="stat-cell"><div class="k">TICKERS</div><div class="v">${fmt(total)}</div><div class="s">scored this session</div></div>
+        <div class="stat-cell"><div class="k">MEDIAN SCORE</div><div class="v">${U.median_score??'—'}</div><div class="s">mean ${U.mean_score??'—'}</div></div>
+        <div class="stat-cell"><div class="k">TOP SCORE</div><div class="v">${U.max_score??'—'}</div><div class="s">of 75</div></div>
+        <div class="stat-cell"><div class="k">LOWEST SCORE</div><div class="v">${U.min_score??'—'}</div><div class="s">of 75</div></div>
+      </div>
+      <div class="dist-grid">
+        <div><div class="dist-head">BY SECTOR</div>${dist(U.sectors,'sec')||'<div class="note">—</div>'}</div>
+        <div><div class="dist-head">BY CATEGORY</div>${dist(U.categories,'cat')||'<div class="note">—</div>'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Tier three: the book (holdings from the tournament's data/holdings.json, P3.1) ──
+function renderBook(P){
+  const H=P.holdings||[];
+  const costBasis=H.reduce((s,h)=>s+h.cost*h.shares,0);
+  const totalGain=H.reduce((s,h)=>s+(h.current_price-h.cost)*h.shares,0);
+  const gainPct=costBasis?totalGain/costBasis*100:null;
+  const rows=ordered('book',H);
+  const table=H.length?`<div class="tbl-scroll"><table><thead><tr>
+    ${th('book','ticker','TICKER')}${th('book','name','NAME')}${th('book','shares','SHARES',1)}${th('book','cost','COST',1)}${th('book','current_price','PRICE',1)}${th('book','market_value','VALUE',1)}${th('book','gain_pct','GAIN',1)}${th('book','composite','SCORE',1)}${th('book',null,'BREAKDOWN')}${th('book','category','CAT')}
+  </tr></thead><tbody>
+    ${rows.map(r=>`<tr>
+      <td class="tk">${r.ticker}</td>
+      <td class="nm">${r.name}</td>
+      <td class="num">${r.shares}</td>
+      <td class="num">$${fmtD(r.cost)}</td>
+      <td class="num">$${fmtD(r.current_price)}</td>
+      <td class="num">$${fmt(r.market_value)}</td>
+      <td class="num ${pnl(r.gain_pct)}">${fmtP(r.gain_pct)}</td>
+      <td class="num w7 ${scoreCls(r.composite)}">${r.composite}</td>
+      <td>${sbar(r)}</td>
+      <td>${badge(r.category)}</td>
+    </tr>`).join('')}
+  </tbody></table></div>${legend(false)}`:`<div class="note">No holdings data</div>`;
+  return`<div class="lbtable">
+    <div class="lb-h"><h2>THE BOOK</h2><div class="lb-h-sub">${H.length} position${H.length===1?'':'s'} + cash · holdings from the tournament's data/holdings.json</div></div>
+    <div class="panel-body"><div class="stats">
+      <div class="stat-cell"><div class="k">TOTAL VALUE</div><div class="v">$${fmt(P.total_value)}</div><div class="s">${H.length} positions + cash</div></div>
+      <div class="stat-cell"><div class="k">EQUITY</div><div class="v">$${fmt(P.total_equity)}<small>${P.equity_pct||0}%</small></div><div class="s">${H.length} positions</div></div>
+      <div class="stat-cell"><div class="k">CASH</div><div class="v">$${fmt(P.cash)}<small>${P.cash_pct||0}%</small></div><div class="s">dry powder</div></div>
+      <div class="stat-cell"><div class="k">UNREAL. P&amp;L</div><div class="v ${pnl(totalGain)}">${totalGain>=0?'+':''}$${fmt(Math.abs(totalGain))}</div><div class="s">${gainPct==null?'—':fmtP(gainPct)+' on cost'}</div></div>
+    </div></div>
+    ${table}
+  </div>`;
 }
 
 function render(){
   const a=document.getElementById('app');
-  if(!S.data){a.innerHTML='<div class="ld">Loading...</div>';return}
+  if(!S.data){a.innerHTML='<div class="ld">Loading…</div>';return}
   const D=S.data;
   const P=D.portfolio||{};
   const W=D.watchlist||[];
   const U=D.universe||{};
+  const DW=D.drawdown_watch||[];
   // SEPT AUDIT [8.3]: header reads the declared dates (session_date + tz-aware
   // computed_at); the naive-UTC 'updated' field no longer exists.
-  const up=D.computed_at?new Date(D.computed_at).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})+(D.session_date?' · session '+D.session_date:''):(D.session_date?'session '+D.session_date:'—');
+  const asOf=D.computed_at?new Date(D.computed_at).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})+' ET':'—';
+  // P5.1 (as in the tournament): on mobile every tier-three panel sits under a disclosure control, closed by
+  // default; on desktop the controls are open and their summaries hidden (styles.css).
+  const isMobile=window.matchMedia&&window.matchMedia('(max-width: 820px)').matches;
+  const d3=(title,html)=>html?`<details class="t3-panel"${isMobile?'':' open'}><summary>${title}</summary>${html}</details>`:'';
 
-  const totalGain=P.holdings?P.holdings.reduce((s,h)=>(s+(h.current_price-h.cost)*h.shares),0):0;
-  const totalGainPct=P.total_value?((P.total_equity-P.holdings.reduce((s,h)=>s+h.cost*h.shares,0))/P.total_value*100):0;
+  // ══ TIER ONE: page title · as-of · status strips ══
+  let h=`<section class="tier tier-1">
+    <div class="hd2">
+      <div>
+        <span class="hd-dot"></span><h1 class="inl">PORTFOLIO SCREENER</h1><span class="mono t1 c-3 ml2">v1.0</span>
+        <div class="hd2-sub">${U.total||0} tickers scored · 4-factor model · daily refresh · private repository</div>
+      </div>
+      <div class="asof"><span class="c-2">as of ${asOf}</span>${D.session_date?`<br>session ${D.session_date}`:''}</div>
+    </div>
+    ${renderStrips(D)}
+  </section>`;
 
-  let h=`
-  <div class="hd">
-    <div><div><span class="hd-dot"></span><h1 style="display:inline">PORTFOLIO SCREENER</h1><span style="font:400 9px var(--m);color:var(--t5);margin-left:6px">v1.0</span></div>
-    <div class="hd-sub">${up} ET · ${U.total||0} tickers scored · 4-factor model</div></div>
-    <div class="hd-r">private repo<br>daily refresh</div>
-  </div>
+  // ══ TIER TWO: the watchlist · the drawdown-watch shelf ══
+  h+=`<section class="tier tier-2"><h2 class="tier-title">CANDIDATES</h2>
+    ${renderWatchlist(W,U)}
+    ${renderDrawdownWatch(DW)}
+  </section>`;
 
-  ${(()=>{  // [5] staleness badge + [3] correlation-coverage banner
-    let b='';
-    const sd=D.session_date;
-    if(sd){
-      // expected last completed session, weekday approximation in ET
-      const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
-      const past=(now.getHours()>16)||(now.getHours()===16&&now.getMinutes()>=15);
-      // holiday-aware (mirrors the tournament's trading_calendar NYSE_HOLIDAYS 2025-2027; keep in sync):
-      // weekend-only logic badged the board stale the morning after Labor Day.
-      const HOL=new Set(["2025-01-01","2025-01-09","2025-01-20","2025-02-17","2025-04-18","2025-05-26","2025-06-19","2025-07-04","2025-09-01","2025-11-27","2025-12-25",
-        "2026-01-01","2026-01-19","2026-02-16","2026-04-03","2026-05-25","2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25",
-        "2027-01-01","2027-01-18","2027-02-15","2027-03-26","2027-05-31","2027-06-18","2027-07-05","2027-09-06","2027-11-25","2027-12-24"]);
-      const iso=x=>new Date(x.getTime()-x.getTimezoneOffset()*60000).toISOString().slice(0,10);
-      const isSess=x=>x.getDay()>=1&&x.getDay()<=5&&!HOL.has(iso(x));
-      let d=new Date(now);
-      if(!(isSess(d)&&past)){ do{d.setDate(d.getDate()-1);}while(!isSess(d)); }
-      const exp=iso(d);
-      if(sd<exp)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ as of ${sd}; today's run did not publish${S.status?.failure_reason?' — '+S.status.failure_reason:''}</div>`;
-    }
-    if(S.status?.failure_reason&&!b)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">ℹ board is current (session ${sd}); a later redundant run was rejected (${S.status.failure_reason}) — served board unaffected</div>`;
-    if(S.status?.audit?.critical?.length)b+=`<div style="background:rgba(255,100,80,.10);border:1px solid rgba(255,100,80,.45);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--r)">✗ audit CRITICAL — ${S.status.audit.critical.join(', ')} · served board is the last good one</div>`;
-    if(S.status?.audit?.high?.length)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">audit: ${S.status.audit.high.length} HIGH — ${S.status.audit.high.join(', ')} <span style="color:var(--t5)">(logged, non-blocking)</span></div>`;
-    if(S.status?.audit?.xfile?.length)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">cross-file: ${S.status.audit.xfile.join(', ')} <span style="color:var(--t5)">(reported in both repositories; blocks neither)</span></div>`;
-    if(S.status?.audit?.critical_other_repo?.length)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">tournament CRITICAL: ${S.status.audit.critical_other_repo.join(', ')} <span style="color:var(--t5)">(does not block this board)</span></div>`;
-    if(typeof D.corr_coverage_pct==='number'&&D.corr_coverage_pct<90)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ correlation coverage ${D.corr_coverage_pct}% — ${(D.corr_impaired||[]).length} names impaired (reasons in data)</div>`;
-    return b;})()}
-  <div class="sum">
-    <div class="sum-card"><div class="sum-label">TOTAL VALUE</div><div class="sum-val">$${fmt(P.total_value)}</div><div class="sum-sub">${P.holdings?.length||0} positions + cash</div></div>
-    <div class="sum-card"><div class="sum-label">EQUITY</div><div class="sum-val">$${fmt(P.total_equity)}<small> ${P.equity_pct||0}%</small></div><div class="sum-sub">${P.holdings?.length||0} positions</div></div>
-    <div class="sum-card"><div class="sum-label">CASH</div><div class="sum-val">$${fmt(P.cash)}<small> ${P.cash_pct||0}%</small></div><div class="sum-sub">dry powder</div></div>
-    <div class="sum-card"><div class="sum-label">UNREAL. P&L</div><div class="sum-val ${pnl(totalGain)}">${totalGain>=0?'+':''}$${fmt(Math.abs(totalGain))}</div><div class="sum-sub">universe median: ${U.median_score||0}</div></div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab ${S.tab==='watchlist'?'on':''}" data-t="watchlist">Watchlist (${W.length})</button>
-    <button class="tab ${S.tab==='portfolio'?'on':''}" data-t="portfolio">Portfolio (${P.holdings?.length||0})</button>
-  </div>`;
-
-  if(S.tab==='portfolio'){
-    h+=`<div class="sec"><div class="sec-title">CURRENT HOLDINGS</div>${renderPortfolioTable(P.holdings)}</div>`;
-    // Score breakdown legend
-    h+=`<div style="font:400 9px var(--m);color:var(--t4);padding:4px 8px;display:flex;gap:12px">
-      <span><span style="color:var(--b)">■</span> Fundamental</span>
-      <span><span style="color:var(--p)">■</span> Technical</span>
-      <span><span style="color:var(--g)">■</span> Visibility</span>
-      <span style="margin-left:auto">Scores: 0-25 per factor · 75 max composite</span>
-    </div>`;
-  } else {
-    h+=`<div class="sec"><div class="sec-title">TOP CANDIDATES — ALL NAMES · HELD = ADD-TO-POSITION</div>${renderWatchlistTable(W)}</div>`;
-    h+=`<div style="font:400 9px var(--m);color:var(--t4);padding:4px 8px;display:flex;gap:12px;flex-wrap:wrap">
-      <span><span style="color:var(--b)">■</span> Fundamental</span>
-      <span><span style="color:var(--p)">■</span> Technical</span>
-      <span><span style="color:var(--g)">■</span> Visibility</span>
-      <span title="the watchlist ranks marginal additions to the current book; held names are scored against the rest of the book">CORR = penalty for return overlap vs your book (weight-aware, held names vs rest-of-book) · n/a = failed, no penalty, reason recorded</span>
-      <span>LEV = leverage penalty 0 to −5 (net-debt/EBITDA primary, D/E fallback) · financials exempt · replaces the old hidden ROE haircut</span>
-      <span>GAP = distance from entry to current price (negative = below entry)</span>
-    </div>`;
-    // [4] Drawdown-watch shelf: quality names in broken technical state.
-    const DW=D.drawdown_watch||[];
-    if(DW.length){
-      h+=`<div class="sec" style="margin-top:14px"><div class="sec-title">DRAWDOWN WATCH: QUALITY ON SALE</div>
-      <div class="tbl-wrap"><table>
-      <tr><th>#</th><th>TICKER</th><th>NAME</th><th>F</th><th>V</th><th>T (CAPPED)</th><th>BELOW BASE</th><th>RSI</th><th>CORR</th></tr>
-      ${DW.map((r,i)=>`<tr>
-        <td style="color:var(--t3)">${i+1}</td>
-        <td class="tk">${r.ticker} <span title="Broken base — price >10% below base with RSI<25 · technical score capped at 12/25" style="font:700 8px var(--m);color:var(--r);border:1px solid var(--r);border-radius:3px;padding:0 3px;vertical-align:middle">BB</span></td>
-        <td class="nm">${r.name||''}</td>
-        <td>${r.fundamental??'—'}</td><td>${r.visibility??'—'}</td>
-        <td style="color:var(--t4)">${r.technical_capped??'—'}</td>
-        <td class="neg">${r.depth_below_base_pct??'—'}%</td>
-        <td>${r.rsi??'—'}</td>
-        <td title="${r.max_corr_with?`highest overlap ${r.max_corr_with} · vs book ρ=${r.portfolio_corr??'—'}`:''}">${r.corr_penalty==null?'n/a':r.corr_penalty}</td>
-      </tr>`).join('')}</table></div>
-      <div style="font:italic 400 10px var(--s);color:var(--t3);padding:6px 8px">Technical state: broken (score capped). Ranked by business quality and visibility only. Entry timing unvalidated.</div>
-      </div>`;
-    }
-  }
-
-  h+=`<div class="ft">
-    <span class="k">MODEL </span>4-factor: Fundamental (FCF yield, growth, margins, ROIC) + Technical (200-DMA, RSI, rel str, support) + Visibility (backlog, contracted rev, sector) + Correlation penalty<br>
-    <span class="k">SCHEDULE </span>Daily re-score (weekdays, after close) via GitHub Actions · config.json for portfolio + overrides<br>
-    <span class="k">WORKFLOW </span>Score → Review top 30 → Apply discretionary thesis → Write entry ticket → Set limit order
-  </div>`;
+  // ══ TIER THREE (reduced type and contrast): universe statistics · the book · model notes ══
+  h+=`<section class="tier tier-3"><h2 class="tier-title">UNIVERSE &amp; BOOK</h2>
+    ${d3('UNIVERSE STATISTICS',renderUniverse(U,D))}
+    ${d3('THE BOOK',renderBook(P))}
+    <div class="ft">
+      <span class="k">MODEL </span>4-factor: Fundamental (FCF yield, growth, margins, ROIC) + Technical (200-DMA, RSI, rel str, support) + Visibility (backlog, contracted rev, sector) + Correlation penalty<br>
+      <span class="k">SCHEDULE </span>Daily re-score (weekdays, after close) via GitHub Actions · config.json for overrides · holdings from the tournament's data/holdings.json<br>
+      <span class="k">WORKFLOW </span>Score → Review top 30 → Apply discretionary thesis → Write entry ticket → Set limit order
+    </div>
+  </section>`;
 
   a.innerHTML=h;
 
-  // Bind tabs
-  document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{S.tab=b.dataset.t;S.sort=null;render()}));
-  // Bind sort
-  document.querySelectorAll('th[data-k]').forEach(th=>th.addEventListener('click',()=>{
-    const k=th.dataset.k;
-    if(S.sort===k)S.sortDir*=-1;else{S.sort=k;S.sortDir=-1}
+  // Bind sort (one state per table)
+  document.querySelectorAll('th[data-k]').forEach(el=>el.addEventListener('click',()=>{
+    const t=el.dataset.tbl,k=el.dataset.k;
+    const cur=S.sort[t];
+    if(cur&&cur.k===k)cur.dir*=-1;else S.sort[t]={k,dir:-1};
     render();
   }));
 }
@@ -277,6 +286,17 @@ async function init(){
   else render();
 }
 init();
+
+// P5.1: re-render when the viewport crosses the mobile breakpoint (disclosure state)
+(()=>{
+  const mq=window.matchMedia?window.matchMedia('(max-width: 820px)'):null;
+  if(!mq)return;
+  let was=mq.matches,timer=null;
+  window.addEventListener('resize',()=>{
+    clearTimeout(timer);
+    timer=setTimeout(()=>{if(mq.matches!==was){was=mq.matches;if(S.data)render();}},150);
+  });
+})();
 </script>
 </body>
 </html>

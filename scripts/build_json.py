@@ -1,6 +1,8 @@
 """
 JSON output wrapper for the scoring model.
-Reads config.json, runs scoring, outputs data/scores.json for the frontend.
+Reads config.json (settings + category tags) and the tournament repo's
+data/holdings.json (the book — order 3.1, one holdings source, read
+cross-repository), runs scoring, outputs data/scores.json for the frontend.
 """
 import json, sys, os
 import numpy as np
@@ -91,22 +93,38 @@ def main():
               f"and no --force-publish given → SCRATCH MODE ({scratch_dir.relative_to(ROOT)})")
 
     config = load_config()
-    
+
     # Monkey-patch the portfolio and midcap list into score_universe
     import score_universe as su
-    
+
+    # Order 3.1 (2026-09-09): ONE holdings source. The book comes from the
+    # tournament repo's data/holdings.json, read cross-repository exactly like
+    # the canonical fundamentals artifact (#92). The screener's own
+    # config["portfolio"] list and its "cash" are gone; only the per-ticker
+    # category tag stays here (config["holding_categories"], default "Core").
+    # No source → rejection: status.json records it ([5] semantics), the run
+    # stops, the last good board stays served.
+    status_path = (scratch_dir or DATA) / "status.json"
+    try:
+        holdings_blob, holdings_prov = su.fetch_holdings()
+    except (SystemExit, Exception) as e:
+        _write_status(status_path, ok=False, reason=e, session_date=None,
+                      computed_at=computed_at)
+        print(f"::error::{e}")
+        raise
+    categories = config.get("holding_categories", {})
+    portfolio = {                                   # same per-ticker shape as before
+        h["ticker"]: {"shares": h["shares"], "cost": h["cost_basis"],
+                      "category": categories.get(h["ticker"], "Core")}
+        for h in holdings_blob["holdings"] if (h.get("shares") or 0) > 0
+    }
+    cash = holdings_blob.get("cash", 0) or 0
+    print(f"  book: {len(portfolio)} positions {sorted(portfolio)} + cash {cash:,.2f} "
+          f"(holdings.json as_of {holdings_prov.get('as_of')}, {holdings_prov['mode']})")
+
     # Set portfolio weights (normalize)
-    portfolio = config.get("portfolio", {})
-    total_equity = sum(
-        h.get("shares", 0) * h.get("cost", 0) 
-        for h in portfolio.values()
-    )
-    if total_equity > 0:
-        su.CURRENT_PORTFOLIO = {
-            t: (h["shares"] * h["cost"]) / total_equity
-            for t, h in portfolio.items()
-        }
-    
+    su.CURRENT_PORTFOLIO = su.portfolio_weights(holdings_blob["holdings"])
+
     # Set midcap additions
     su.MIDCAP_ADDITIONS = config.get("midcap_additions", [])
 
@@ -194,7 +212,7 @@ def main():
             })
     
     total_equity_value = sum(p['market_value'] for p in portfolio_summary)
-    cash = config.get("cash", 0)
+    # cash: from holdings.json (loaded above), not from this repo's config
     total_value = total_equity_value + cash
     
     # Build watchlist — INCLUDE held names (you can always add to a position).
@@ -364,7 +382,6 @@ def main():
 
     # [5] session-equality check (publish mode) + status.json on both outcomes
     session_date = getattr(su, 'LAST_PRICE_DATE', None)
-    status_path = (scratch_dir or DATA) / "status.json"
     try:
         # forced publishes bypass the session check too (the reason is in
         # provenance) — force overrides the guard, not just the clock
@@ -419,6 +436,7 @@ def main():
             'forced_publish': bool(forced),
             'force_reason': args.force_publish,
             'data_source': getattr(su, 'DATA_SOURCE', {'mode': 'direct'}),   # #92
+            'holdings_source': holdings_prov,      # order 3.1: where the book came from
         },
         'corr_coverage_pct': covmeta['coverage_pct'],   # [3]
         'corr_impaired': covmeta['impaired'],           # [3] every null + reason

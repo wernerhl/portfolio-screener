@@ -1,12 +1,12 @@
 {
-  "portfolio": {
-    "GOOG": {"shares": 50,       "cost": 326.81, "category": "Compounder"},
-    "AVGO": {"shares": 50,       "cost": 326.75, "category": "Compounder"},
-    "MSFT": {"shares": 50,       "cost": 500.40, "category": "Catalyst"},
-    "NVDA": {"shares": 100.0224, "cost": 86.68,  "category": "Compounder"},
-    "BMNR": {"shares": 200.0702, "cost": 39.046, "category": "Speculative"}
+  "_note": "Order 3.1 (2026-09-09): this file holds NO holdings. The book (ticker, shares, cost basis, cash) lives in the tournament repo's data/holdings.json — the only holdings source — and is read cross-repository by scripts/score_universe.py fetch_holdings(). holding_categories is a screener-only tag per held ticker; a ticker without an entry is 'Core'.",
+  "portfolio_source": "https://raw.githubusercontent.com/wernerhl/portfolio-tournament/main/data/holdings.json (dev fallback: /Users/whl/portfolio-tournament/data/holdings.json, or HOLDINGS_LOCAL_PATH)",
+  "holding_categories": {
+    "GOOG": "Compounder",
+    "AVGO": "Compounder",
+    "MSFT": "Catalyst",
+    "NVDA": "Compounder"
   },
-  "cash": 87820.06,
   "broken_base": {
     "gap_pct": 10,
     "rsi": 25,

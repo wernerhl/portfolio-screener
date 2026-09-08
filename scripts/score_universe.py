@@ -35,18 +35,12 @@ OUTPUT_DIR = Path(__file__).resolve().parent.parent / "data"
 OUTPUT_DIR.mkdir(exist_ok=True)
 LAST_PRICE_DATE = None   # [5] set by main() after the price fetch
 
-# Current portfolio (for correlation penalty)
-CURRENT_PORTFOLIO = {
-    "MSFT": 0.15,   # weight as fraction of equity
-    "AVGO": 0.18,
-    "GOOG": 0.16,
-    "NVDA": 0.17,
-    "TSM":  0.10,
-    "ETN":  0.06,
-    "VRT":  0.06,
-    "CEG":  0.06,
-    # Add BRK-B, PM, JPM if purchased
-}
+# Current portfolio weights (fraction of equity, for the correlation penalty).
+# Order 3.1 (2026-09-09): ONE holdings source — the tournament repo's
+# data/holdings.json, read cross-repository by fetch_holdings() below. No
+# hardcoded book lives here any more: build_json.py fills this before main(),
+# and a standalone run fills it from the same file inside main().
+CURRENT_PORTFOLIO = {}
 
 # The 50 mid-cap AI/infrastructure additions beyond S&P 500
 MIDCAP_ADDITIONS = [
@@ -293,6 +287,16 @@ CANONICAL_BASES = [
 DATA_SOURCE = {"mode": "direct"}      # overwritten when canonical is consumed
 FUNDAMENTALS_USED = {}                # for build_json's sample equality assert
 
+# Order 3.1 (2026-09-09): ONE holdings source. Werner's book (tier 5) lives in
+# the tournament repo's data/holdings.json and is read cross-repository — the
+# canonical-close pattern above. The PUSHED file is the authority, so the GET
+# comes first; the dev sibling is a fallback when the GET fails (or an explicit
+# override via HOLDINGS_LOCAL_PATH, e.g. to test an edited file before it is
+# pushed). The screener's own config["portfolio"] list is gone.
+HOLDINGS_URL     = "https://raw.githubusercontent.com/wernerhl/portfolio-tournament/main/data/holdings.json"
+HOLDINGS_SIBLING = "/Users/whl/portfolio-tournament/data/holdings.json"
+HOLDINGS_SOURCE  = {"mode": "none"}   # provenance of the book actually used
+
 
 def fetch_canonical(universe, universe_with_bench):
     """Try each canonical base; return (prices_df, fundamentals, provenance)
@@ -361,6 +365,76 @@ def fetch_canonical(universe, universe_with_bench):
         except Exception as e:
             print(f"  canonical at {base}: {type(e).__name__}: {e} — trying next")
     return None, None, {"mode": "direct", "reason": "no usable canonical base"}
+
+
+def _validate_holdings(blob, where):
+    """Shape of data/holdings.json: {cash, holdings: [{ticker, shares, cost_basis, ...}]}."""
+    if not isinstance(blob, dict) or not isinstance(blob.get("holdings"), list):
+        raise ValueError(f"{where}: no 'holdings' list")
+    for h in blob["holdings"]:
+        for k in ("ticker", "shares", "cost_basis"):
+            if k not in h:
+                raise ValueError(f"{where}: holding {h} lacks '{k}'")
+    if "cash" not in blob:
+        raise ValueError(f"{where}: no 'cash'")
+    return blob
+
+
+def fetch_holdings():
+    """Return (blob, provenance) for the tournament's data/holdings.json.
+    Sources in order: HOLDINGS_LOCAL_PATH (explicit override) → the GET (two
+    attempts, 30 s timeout, like fetch_canonical) → the dev sibling if it
+    exists. No usable source → SystemExit: a board scored against an empty or
+    invented book must never publish silently (the July-2026 lesson)."""
+    import json as _json, urllib.request, os, time
+    global HOLDINGS_SOURCE
+
+    candidates = []
+    override = os.environ.get("HOLDINGS_LOCAL_PATH")
+    if override:
+        candidates.append(("local_override", override))
+    candidates.append(("cross_repo", HOLDINGS_URL))
+    if Path(HOLDINGS_SIBLING).exists():
+        candidates.append(("local_fallback", HOLDINGS_SIBLING))
+
+    errors = []
+    for mode, where in candidates:
+        attempts = 2 if where.startswith("http") else 1
+        for attempt in range(1, attempts + 1):
+            try:
+                if where.startswith("http"):
+                    with urllib.request.urlopen(where, timeout=30) as r:
+                        blob = _json.loads(r.read())
+                else:
+                    blob = _json.loads(Path(where).read_text())
+                _validate_holdings(blob, where)
+                HOLDINGS_SOURCE = {
+                    "mode": mode, "path": where,
+                    "as_of": blob.get("as_of"), "cadence": blob.get("cadence"),
+                    "n_holdings": len(blob["holdings"]), "cash": blob.get("cash"),
+                }
+                print(f"  holdings consumed from {where} [{mode}] "
+                      f"(as_of {blob.get('as_of')}, {len(blob['holdings'])} positions, "
+                      f"cash {blob.get('cash')})")
+                return blob, dict(HOLDINGS_SOURCE)
+            except Exception as e:
+                errors.append(f"{where} (attempt {attempt}): {type(e).__name__}: {e}")
+                more = "retrying" if attempt < attempts else "trying next"
+                print(f"  holdings at {where}: {type(e).__name__}: {e} — {more}")
+                if attempt < attempts:
+                    time.sleep(2)
+    raise SystemExit("holdings source unavailable — " + "; ".join(errors) +
+                     " (order 3.1: the tournament repo's data/holdings.json is the only holdings source)")
+
+
+def portfolio_weights(holdings):
+    """{ticker: cost-basis weight (fraction of equity)} from a holdings.json
+    list — the CURRENT_PORTFOLIO shape the correlation penalty expects."""
+    total = sum((h.get("shares") or 0) * (h.get("cost_basis") or 0) for h in holdings)
+    if total <= 0:
+        return {}
+    return {h["ticker"]: (h["shares"] * h["cost_basis"]) / total
+            for h in holdings if (h.get("shares") or 0) > 0}
 
 def fetch_price_data(tickers, period="1y"):
     """Batch download price history. [3]: batch failures retry individually
@@ -929,12 +1003,19 @@ def compute_correlation_penalty(prices_df, ticker, portfolio_weights):
 # ── Main Pipeline ─────────────────────────────────────────────────────
 
 def main():
-    global VIS_REGISTRY
+    global VIS_REGISTRY, CURRENT_PORTFOLIO
     print("=" * 60)
     print(f"PORTFOLIO SCORING MODEL — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("=" * 60)
     VIS_REGISTRY = load_visibility_registry()
-    
+
+    # Order 3.1: the book comes from the tournament's holdings.json (one
+    # source). build_json.py sets CURRENT_PORTFOLIO before calling main(); a
+    # standalone run reads the same file here.
+    if not CURRENT_PORTFOLIO:
+        _blob, _ = fetch_holdings()
+        CURRENT_PORTFOLIO = portfolio_weights(_blob["holdings"])
+
     # 1. Build universe
     # Load the curated 535-ticker universe (same as the portfolio-tournament
     # dashboard) from a committed file — deterministic, and it replaces the

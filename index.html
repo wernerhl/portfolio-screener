@@ -175,12 +175,21 @@ function render(){
       // expected last completed session, weekday approximation in ET
       const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
       const past=(now.getHours()>16)||(now.getHours()===16&&now.getMinutes()>=15);
-      let d=new Date(now); const wd=d.getDay();
-      if(!(wd>=1&&wd<=5&&past)){ do{d.setDate(d.getDate()-1);}while(d.getDay()===0||d.getDay()===6); }
-      const exp=d.toISOString().slice(0,10);
+      // holiday-aware (mirrors the tournament's trading_calendar NYSE_HOLIDAYS 2025-2027; keep in sync):
+      // weekend-only logic badged the board stale the morning after Labor Day.
+      const HOL=new Set(["2025-01-01","2025-01-09","2025-01-20","2025-02-17","2025-04-18","2025-05-26","2025-06-19","2025-07-04","2025-09-01","2025-11-27","2025-12-25",
+        "2026-01-01","2026-01-19","2026-02-16","2026-04-03","2026-05-25","2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25",
+        "2027-01-01","2027-01-18","2027-02-15","2027-03-26","2027-05-31","2027-06-18","2027-07-05","2027-09-06","2027-11-25","2027-12-24"]);
+      const iso=x=>new Date(x.getTime()-x.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      const isSess=x=>x.getDay()>=1&&x.getDay()<=5&&!HOL.has(iso(x));
+      let d=new Date(now);
+      if(!(isSess(d)&&past)){ do{d.setDate(d.getDate()-1);}while(!isSess(d)); }
+      const exp=iso(d);
       if(sd<exp)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ as of ${sd}; today's run did not publish${S.status?.failure_reason?' — '+S.status.failure_reason:''}</div>`;
     }
     if(S.status?.failure_reason&&!b)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">ℹ board is current (session ${sd}); a later redundant run was rejected (${S.status.failure_reason}) — served board unaffected</div>`;
+    if(S.status?.audit?.critical?.length)b+=`<div style="background:rgba(255,100,80,.10);border:1px solid rgba(255,100,80,.45);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--r)">✗ audit CRITICAL — ${S.status.audit.critical.join(', ')} · served board is the last good one</div>`;
+    if(S.status?.audit?.high?.length)b+=`<div style="background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:500 11px var(--m);color:var(--t3)">audit: ${S.status.audit.high.length} HIGH — ${S.status.audit.high.join(', ')} <span style="color:var(--t5)">(logged, non-blocking)</span></div>`;
     if(typeof D.corr_coverage_pct==='number'&&D.corr_coverage_pct<90)b+=`<div style="background:rgba(255,180,60,.12);border:1px solid rgba(255,180,60,.5);border-radius:6px;padding:6px 10px;margin-bottom:8px;font:600 11px var(--m);color:var(--y)">⚠ correlation coverage ${D.corr_coverage_pct}% — ${(D.corr_impaired||[]).length} names impaired (reasons in data)</div>`;
     return b;})()}
   <div class="sum">

@@ -42,19 +42,39 @@ jobs:
           cd scripts
           python build_json.py
 
+      - name: Nightly audit sweep (order item 6)
+        id: audit
+        # The suite lives in the tournament repo (public); it audits BOTH data
+        # trees. CRITICAL: this repo's served files restored to the last good
+        # commit, status.json names the checks, step fails (job fails in the
+        # propagate step); the deploy still publishes the last good board + the
+        # new status.json so the badge shows it. HIGH: logged in
+        # status.json.audit.high and surfaced in the info banner; never blocks.
+        continue-on-error: true
+        run: |
+          git clone --depth 1 https://github.com/wernerhl/portfolio-tournament.git ../portfolio-tournament
+          mkdir -p reports
+          set +e
+          python ../portfolio-tournament/scripts/audit_nightly.py ../portfolio-tournament/data data > reports/audit_last.txt 2>&1
+          rc=$?
+          set -e
+          cat reports/audit_last.txt
+          python ../portfolio-tournament/scripts/audit_status.py reports/audit_last.txt --status data/status.json --restore-dir data
+          exit $rc
+
       - name: Commit results
         run: |
           git config user.name "Screener Bot"
           git config user.email "bot@screener"
-          git add data/
+          git add data/ reports/audit_last.txt
           git diff --cached --quiet || git commit -m "📊 Rescore $(date -u +%Y-%m-%d)"
           git pull --rebase origin main || true
           git push
 
       - name: Propagate scoring failure
-        if: steps.score.outcome == 'failure'
+        if: steps.score.outcome == 'failure' || steps.audit.outcome == 'failure'
         run: |
-          echo "scoring was rejected — last good board preserved, status.json published"
+          echo "scoring rejected or audit CRITICAL — last good board preserved, status.json published with the check names"
           exit 1
 
   deploy:

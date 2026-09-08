@@ -315,5 +315,7 @@
    }
   }
  },
- "approval": "Frozen 2026-07-29 on Werner's explicit approval (in-session, batched with thesis registry v1). Values migrated unchanged from code+config union; governance (earnings-anchored review, 90d decay, hard triggers, 10/25 fallback cap) active from tonight's run."
+ "approval": "Frozen 2026-07-29 on Werner's explicit approval (in-session, batched with thesis registry v1). Values migrated unchanged from code+config union; governance (earnings-anchored review, 90d decay, hard triggers, 10/25 fallback cap) active from tonight's run.",
+ "cadence": "on_change",
+ "as_of": "2026-07-29"
 }

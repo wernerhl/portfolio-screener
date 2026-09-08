@@ -383,7 +383,8 @@ def main():
 
     # Assemble output
     output = {
-        'updated': datetime.now().isoformat(),
+        # SEPT AUDIT [8.3]: naive-UTC 'updated' removed — session_date and
+        # computed_at (ET, tz-aware) are the authoritative declared dates.
         'session_date': session_date,          # [5] the session this data represents
         'computed_at': computed_at,            # [5] when it was computed (ET)
         'provenance': {                        # [5] forced publishes carry their reason

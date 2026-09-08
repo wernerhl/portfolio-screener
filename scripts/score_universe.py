@@ -171,6 +171,27 @@ def load_visibility_registry():
     return reg
 
 
+def visibility_retire_at(entry: dict) -> str | None:
+    """Order 9-Sept A2: the date an unreviewed override retires to the sector
+    prior — two consecutive earnings cycles without review. Earnings-anchored
+    entries: the second earnings after the last review (next_earnings + ~91d)
+    plus the 14-day grace; 180-day-cadence entries: as_of + 182d + 14d.
+    A review (new as_of / next_earnings) resets the clock."""
+    from datetime import date as _date, timedelta as _td
+    try:
+        as_of = _date.fromisoformat(str(entry.get('as_of') or '')[:10])
+    except ValueError:
+        return None
+    cadence = str(entry.get('cadence') or '')
+    try:
+        if cadence.startswith('earnings') and entry.get('next_earnings'):
+            anchor = _date.fromisoformat(str(entry['next_earnings'])[:10])
+            return (anchor + _td(days=91 + 14)).isoformat()
+    except ValueError:
+        pass
+    return (as_of + _td(days=182 + 14)).isoformat()
+
+
 def visibility_from_registry(fund_data, ticker):
     """Registry-mode visibility: frozen entry value with review-decay, or the
     capped sector fallback. Decay (Werner's cadence spec, 2026-07-29): past
@@ -185,6 +206,19 @@ def visibility_from_registry(fund_data, ticker):
     if entry:
         val = float(entry['value'])
         details = {'override': entry.get('rationale', ''), 'registry': True}
+        # Order 9-Sept A2 — retirement: an override that passes TWO consecutive
+        # earnings cycles without review retires to the sector prior (the
+        # nightly archival pass in build_json moves it to registry['retired']
+        # with its history; returning requires re-registration with a fresh
+        # rationale and date). The system no longer depends on the operator's
+        # promptness; decay covers the first missed cycle, retirement the second.
+        retire_at = visibility_retire_at(entry)
+        details['retire_at'] = retire_at
+        if retire_at and date.today().isoformat() >= retire_at:
+            return round(prior, 1), {'override': entry.get('rationale', ''), 'registry': True,
+                                     'retired': True, 'retired_at': retire_at,
+                                     'vis_status': 'retired — two earnings cycles without review; '
+                                                   'sector prior applies; re-register to restore'}
         rb = entry.get('review_by')
         if rb:
             try:

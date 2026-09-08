@@ -7,7 +7,8 @@
   "decay": "past review_by, value decays LINEARLY to min(sector prior, fallback cap) over 90 days",
   "hard_triggers": "guidance cut, backlog decline QoQ, cancelled PPA/contract \u2014 immediate review regardless of calendar",
   "fallback_cap": 10,
-  "note": "Judgment artifact. The agent proposes; Werner approves by freeze (frozen_at). Never auto-merged."
+  "note": "Judgment artifact. The agent proposes; Werner approves by freeze (frozen_at). Never auto-merged.",
+  "retirement": "two consecutive earnings cycles without review \u2192 retire to the sector prior, archive with history under 'retired'; re-registration (fresh rationale + date) required to restore"
  },
  "entries": {
   "AMZN": {

@@ -118,11 +118,38 @@ def main():
     su.VISIBILITY_FALLBACK_CAP = float(config.get("visibility_fallback_cap",
                                                   su.VISIBILITY_FALLBACK_CAP))
     
-    # Set visibility overrides
-    for ticker, (score, reason) in config.get("visibility_overrides", {}).items():
-        # Will be picked up in compute_visibility_score
-        pass  # Already in the function via VISIBILITY_OVERRIDES dict
-    
+    # Order 9-Sept A2 — visibility retirement archival pass. An override that
+    # has passed two consecutive earnings cycles without review is moved to
+    # registry['retired'] with its full record (history preserved), removed
+    # from entries, and logged in policy_events. Scoring then uses the sector
+    # prior. Returning it requires a human re-registration with a fresh
+    # rationale and date. Never touches an entry that has been reviewed.
+    try:
+        from datetime import date as _date
+        vreg_p = ROOT / "data" / "visibility_registry.json"
+        vreg = json.load(open(vreg_p))
+        vreg.setdefault("policy", {})["retirement"] = (
+            "two consecutive earnings cycles without review → retire to the sector prior, "
+            "archive with history; re-registration (fresh rationale + date) required to restore")
+        retired_now = []
+        today = _date.today().isoformat()
+        for tk in list((vreg.get("entries") or {}).keys()):
+            e = vreg["entries"][tk]
+            ra = su.visibility_retire_at(e)
+            if ra and today >= ra:
+                rec = dict(e); rec.update({"ticker": tk, "retired_at": today, "retire_rule_date": ra,
+                                           "reason": "two consecutive earnings cycles without review"})
+                vreg.setdefault("retired", []).append(rec)
+                del vreg["entries"][tk]
+                retired_now.append(tk)
+        if retired_now:
+            vreg.setdefault("policy_events", []).append({"date": today, "event": "retired", "tickers": retired_now})
+            with open(vreg_p, "w") as f:
+                json.dump(vreg, f, indent=1)
+            print(f"  visibility retirement: archived {retired_now}")
+    except Exception as e:
+        print(f"  WARNING visibility retirement pass skipped: {type(e).__name__}: {e}")
+
     # [5] scratch mode redirects every score_universe output too
     if scratch_dir is not None:
         su.OUTPUT_DIR = scratch_dir

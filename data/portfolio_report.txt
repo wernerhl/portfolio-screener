@@ -1,5 +1,5 @@
 ======================================================================
-PORTFOLIO SCORING MODEL — 2026-09-05 00:57
+PORTFOLIO SCORING MODEL — 2026-09-08 01:11
 ======================================================================
 
 Universe: 533 scored tickers
@@ -17,9 +17,9 @@ Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry
 4    ★GOOG   Alphabet Inc.               56.8  19.0  17.8  20.0   0.0    346.53 Compounder  
 5     LMT    Lockheed Martin Corporation   56.7  18.0  17.2  22.0   0.0    554.93 Compounder  
 6    ★NVDA   NVIDIA Corporation          54.8  20.0  14.8  20.0   0.0    218.84 Growth      
-7     ANET   Arista Networks, Inc.       54.4  19.0  17.4  18.0   0.0    184.09 Growth      
-8     NOC    Northrop Grumman Corporation   54.2  16.0  18.7  21.0   0.0    543.76 Compounder  
-9     VRT    Vertiv Holdings, LLC        53.6  20.5  15.8  17.3   0.0    282.70 Core        
+7     NOC    Northrop Grumman Corporation   54.2  16.0  18.7  21.0   0.0    543.76 Compounder  
+8     ANET   Arista Networks, Inc.       54.1  19.0  17.4  17.7   0.0    184.09 Growth      
+9     VRT    Vertiv Holdings, LLC        53.3  20.5  15.8  17.0   0.0    282.70 Core        
 10    BX     Blackstone Inc.             52.0  22.5  19.5  10.0   0.0    132.59 Core        
 11    NXPI   NXP Semiconductors N.V.     51.7  22.0  20.2  10.0   0.0    250.27 Core        
 12    ADSK   Autodesk, Inc.              51.4  23.0  18.4  10.0   0.0    230.67 Core        
@@ -27,21 +27,21 @@ Rank  Ticker  Name                       Score  Fund  Tech   Vis  Corr     Entry
 14    TLN    Talen Energy Corporation    50.2  17.5  18.7  19.0   0.0    347.58 Growth      
 15    AXP    American Express Company    50.1  21.5  18.6  10.0   0.0    341.44 Core        
 16    META   Meta Platforms, Inc.        49.7  18.0  14.7  17.0   0.0    595.49 Core        
-17    EXPE   Expedia Group, Inc.         49.3  23.0  16.3  10.0   0.0    294.73 Core        
-18    NFLX   Netflix, Inc.               49.1  23.0  16.1  10.0   0.0     75.44 Core        
+17    PATH   UiPath, Inc.                49.6  22.0  17.6  10.0   0.0     14.43 Speculative 
+18    EXPE   Expedia Group, Inc.         49.3  23.0  16.3  10.0   0.0    294.73 Core        
 19    PTC    PTC Inc.                    49.1  21.0  18.1  10.0   0.0    136.51 Core        
-20    RL     Ralph Lauren Corporation    49.1  22.0  17.1  10.0   0.0    378.95 Core        
-21    APO    Apollo Global Management, Inc.   48.8  20.0  18.8  10.0   0.0    126.99 Growth      
-22    CINF   Cincinnati Financial Corporati   48.7  22.0  16.7  10.0   0.0    177.32 Growth      
-23    GD     General Dynamics Corporation   48.7  14.5  16.1  18.1   0.0    377.93 Core        
+20    NFLX   Netflix, Inc.               49.1  23.0  16.1  10.0   0.0     75.44 Core        
+21    RL     Ralph Lauren Corporation    49.1  22.0  17.1  10.0   0.0    378.95 Core        
+22    APO    Apollo Global Management, Inc.   48.8  20.0  18.8  10.0   0.0    126.99 Growth      
+23    CINF   Cincinnati Financial Corporati   48.7  22.0  16.7  10.0   0.0    177.32 Growth      
 24    PYPL   PayPal Holdings, Inc.       48.6  20.0  18.6  10.0   0.0     55.02 Core        
 25    WDC    Western Digital Corporation   48.6  20.0  18.6  10.0   0.0    506.98 Growth      
 26    FSLR   First Solar, Inc.           48.4  18.5  19.9  10.0   0.0    219.06 Core        
 27    TXN    Texas Instruments Incorporated   48.4  19.0  19.4  10.0   0.0    280.03 Core        
-28    TPR    Tapestry, Inc.              48.2  21.0  17.7  10.0   0.0    140.77 Core        
+28    GD     General Dynamics Corporation   48.3  14.5  16.1  17.7   0.0    377.93 Core        
 29    ORCL   Oracle Corporation          48.2  17.5  17.2  19.0  -2.0    150.84 Core        
-30    HSY    The Hershey Company         48.1  20.0  18.6  10.0   0.0    178.88 Core        
-31    PATH   UiPath, Inc.                48.1  20.5  17.6  10.0   0.0     14.43 Speculative 
+30    TPR    Tapestry, Inc.              48.2  21.0  17.7  10.0   0.0    140.77 Core        
+31    HSY    The Hershey Company         48.1  20.0  18.6  10.0   0.0    178.88 Core        
 32    AON    Aon plc                     48.0  20.0  18.0  10.0   0.0    353.14 Core        
 33    MPWR   Monolithic Power Systems, Inc.   48.0  19.0  19.0  10.0   0.0   1328.53 Growth      
 34    MAS    Masco Corporation           48.0  20.0  18.5  10.0   0.0     76.09 Core        
@@ -58,7 +58,7 @@ CURRENT PORTFOLIO SCORES
   AVGO    Broadcom Inc.             Score:  59.8  (F:20 T:18 V:22)
   GOOG    Alphabet Inc.             Score:  56.8  (F:19 T:18 V:20)
   NVDA    NVIDIA Corporation        Score:  54.8  (F:20 T:15 V:20)
-  MSFT    Microsoft Corporation     Score:  47.2  (F:18 T:13 V:16)
+  MSFT    Microsoft Corporation     Score:  46.9  (F:18 T:13 V:16)
   BMNR    BitMine Immersion Technologies Score:  41.4  (F:14 T:17 V:10)
 
 ──────────────────────────────────────────────────────────────────────

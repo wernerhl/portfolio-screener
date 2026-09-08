@@ -1,6 +1,6 @@
 {
- "last_attempt": "2026-09-04T20:56:17-04:00",
+ "last_attempt": "2026-09-07T21:11:08-04:00",
  "last_success": "2026-09-04T20:56:17-04:00",
- "failure_reason": null,
+ "failure_reason": "CI FAIL: data session 2026-09-04 != current session 2026-09-07 \u2014 refusing to publish stale/partial data",
  "session_date": "2026-09-04"
 }

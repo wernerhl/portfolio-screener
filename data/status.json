@@ -1,6 +1,20 @@
 {
- "last_attempt": "2026-09-07T21:11:08-04:00",
- "last_success": "2026-09-04T20:56:17-04:00",
- "failure_reason": "CI FAIL: data session 2026-09-04 != current session 2026-09-07 \u2014 refusing to publish stale/partial data",
- "session_date": "2026-09-04"
+ "last_attempt": "2026-09-08T21:14:00-04:00",
+ "last_success": "2026-09-08T21:14:00-04:00",
+ "failure_reason": null,
+ "session_date": "2026-09-08",
+ "audit": {
+  "ran_at": "2026-09-09T01:14:53+00:00",
+  "scope": "screener",
+  "n_findings": 16,
+  "critical": [],
+  "critical_other_repo": [],
+  "xfile": [],
+  "high": [
+   "governance:coverage",
+   "governance:review_overdue",
+   "tournament:freshness"
+  ],
+  "report": "reports/audit_last.txt"
+ }
 }

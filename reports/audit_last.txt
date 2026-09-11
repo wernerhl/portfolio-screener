@@ -1,5 +1,5 @@
-last trading session: 2026-09-10
-[HIGH    ] tournament:freshness         tournament.json: max date 2026-09-04 is 3 sessions-old vs last session 2026-09-10
+last trading session: 2026-09-11
+[HIGH    ] tournament:freshness         tournament.json: max date 2026-09-04 is 4 sessions-old vs last session 2026-09-11
 [HIGH    ] governance:coverage          5_werner: unclassified share 16% > 15%
 [HIGH    ] governance:review_overdue    visibility override AMZN review_by 2026-08-13 passed (decay should be active)
 [HIGH    ] governance:review_overdue    visibility override ANET review_by 2026-08-18 passed (decay should be active)

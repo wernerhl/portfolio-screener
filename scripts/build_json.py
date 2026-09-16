@@ -221,6 +221,14 @@ def main():
     # the held names don't crowd out fresh ideas.
     portfolio_tickers = set(portfolio.keys())
     watchlist_df = df.head(40)
+    # Order 16-Sept 1.2: held names are always in the universe and always on the
+    # board. A held name outside the top 40 is appended with its true rank and
+    # flagged held (it is scored like any other name; the board just never
+    # hides the book). The top-40 ordering above it is unchanged.
+    held_extra = df[df['ticker'].isin(portfolio_tickers) & ~df['ticker'].isin(watchlist_df['ticker'])]
+    if len(held_extra):
+        print(f"  board: appending held names outside the top 40: {held_extra['ticker'].tolist()}")
+        watchlist_df = pd.concat([watchlist_df, held_extra])
 
     import math
 
@@ -241,6 +249,7 @@ def main():
             'rank': int(r.get('rank', 0)) if 'rank' in r else int(_ + 1),
             'ticker': r['ticker'],
             'held': bool(r.get('in_portfolio', False)) or (r['ticker'] in portfolio_tickers),
+            'on_board_as': 'top40' if (int(r.get('rank', 0)) if 'rank' in r else int(_ + 1)) <= 40 else 'held',   # 1.2
             'name': r.get('name', ''),
             'sector': r.get('sector', ''),
             'category': r.get('category', ''),
